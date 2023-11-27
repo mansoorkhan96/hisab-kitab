@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\FarmerResource\Pages;
+use App\Filament\Resources\FarmerResource\RelationManagers\LedgersRelationManager;
 use App\Models\Farmer;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -29,7 +30,7 @@ class FarmerResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->searchable(),
+                TextColumn::make('name')->unique(ignoreRecord: true)->searchable(),
             ])
             ->filters([
                 //
@@ -47,7 +48,7 @@ class FarmerResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            LedgersRelationManager::class,
         ];
     }
 

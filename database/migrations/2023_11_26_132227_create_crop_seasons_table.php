@@ -12,9 +12,11 @@ return new class extends Migration
         Schema::create('crop_seasons', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->json('rates');
             $table->timestamps();
+
+            $table->softDeletes();
         });
     }
 

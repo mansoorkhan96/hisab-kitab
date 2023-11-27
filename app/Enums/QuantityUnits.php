@@ -11,5 +11,5 @@ enum QuantityUnits: string
     case KiloGram = 'kg';
     case Sack = 'sack';
     case Hour = 'hour';
-    case Number = 'number';
+    case Bottle = 'bottle';
 }

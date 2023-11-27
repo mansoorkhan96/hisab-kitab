@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Casts\AsCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CropSeason extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $casts = [
         'rates' => AsCollection::class,
@@ -18,15 +19,17 @@ class CropSeason extends Model
     protected static function booted()
     {
         static::creating(function (CropSeason $cropSeason) {
-            $farmingResources = $cropSeason
-                ->user
-                ?->farmingResources
-                ?->map(fn (FarmingResource $farmingResource) => [
-                    'farming_resource_id' => $farmingResource->id,
-                    'rate' => 0,
-                ]);
+            if (blank($cropSeason->rates)) {
+                $farmingResources = $cropSeason
+                    ->user
+                    ?->farmingResources
+                    ?->map(fn (FarmingResource $farmingResource) => [
+                        'farming_resource_id' => $farmingResource->id,
+                        'rate' => 0,
+                    ]);
 
-            $cropSeason->rates = $farmingResources;
+                $cropSeason->rates = $farmingResources;
+            }
         });
     }
 

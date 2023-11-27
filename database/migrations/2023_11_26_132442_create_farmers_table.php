@@ -12,8 +12,10 @@ return new class extends Migration
         Schema::create('farmers', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->timestamps();
+
+            $table->softDeletes();
         });
     }
 

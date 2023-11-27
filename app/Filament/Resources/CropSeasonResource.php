@@ -25,13 +25,23 @@ class CropSeasonResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name')
+                    ->unique(ignoreRecord: true)
                     ->required(),
 
                 Repeater::make('rates')
                     ->columnSpanFull()
                     ->columns(2)
+                    ->default(
+                        fn () => auth()->user()
+                            ?->farmingResources
+                            ?->map(fn (FarmingResource $farmingResource) => [
+                                'farming_resource_id' => $farmingResource->id,
+                                'rate' => 0,
+                            ])
+                    )
                     ->schema([
                         Select::make('farming_resource_id')
+                            ->label('Implement / Fertilizer / Seed')
                             ->options(FarmingResource::whereUserId(auth()->id())->pluck('name', 'id'))
                             ->required(),
 

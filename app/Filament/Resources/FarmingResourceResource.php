@@ -24,7 +24,7 @@ class FarmingResourceResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')->required(),
+                TextInput::make('name')->unique(ignoreRecord: true)->required(),
                 Select::make('type')->options(FarmingResourceType::class)->required(),
                 Select::make('quantity_unit')->options(QuantityUnits::class)->required(),
             ]);

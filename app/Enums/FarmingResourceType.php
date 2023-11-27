@@ -8,8 +8,8 @@ enum FarmingResourceType: string
 {
     use Values;
 
-    case Seed = 'Seed';
-    case Fertilizer = 'Fertilizer';
-    case Implement = 'Implement';
-    case Pesticide = 'Pesticide';
+    case Seed = 'seed';
+    case Fertilizer = 'fertilizer';
+    case Implement = 'implement';
+    case Pesticide = 'pesticide';
 }

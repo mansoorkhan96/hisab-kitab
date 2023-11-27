@@ -10,6 +10,11 @@ class Ledger extends Model
 {
     use HasFactory;
 
+    public function cropSeason(): BelongsTo
+    {
+        return $this->belongsTo(CropSeason::class);
+    }
+
     public function farmer(): BelongsTo
     {
         return $this->belongsTo(Farmer::class);
