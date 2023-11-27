@@ -20,8 +20,8 @@ class CropSeason extends Model
         static::creating(function (CropSeason $cropSeason) {
             $farmingResources = $cropSeason
                 ->user
-                ->farmingResources
-                ->map(fn (FarmingResource $farmingResource) => [
+                ?->farmingResources
+                ?->map(fn (FarmingResource $farmingResource) => [
                     'farming_resource_id' => $farmingResource->id,
                     'rate' => 0,
                 ]);
