@@ -19,11 +19,11 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        $cropSeason = CropSeason::factory()->create();
+        $farmingResources = FarmingResource::factory(5)->for($user)->create();
+
+        $cropSeason = CropSeason::factory()->for($user)->recycle($user)->create();
 
         $farmers = Farmer::factory(5)->for($user)->create();
-
-        $farmingResources = FarmingResource::factory(5)->for($user)->create();
 
         Ledger::factory(100)->recycle($cropSeason)->create([
             'farmer_id' => fn () => $farmers->random()->id,
