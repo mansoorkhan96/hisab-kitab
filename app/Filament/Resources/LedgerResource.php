@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\LedgerResource\Pages;
 use App\Models\Ledger;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -18,10 +20,7 @@ class LedgerResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                //
-            ]);
+        return $form->schema(static::formFields());
     }
 
     public static function table(Table $table): Table
@@ -52,9 +51,9 @@ class LedgerResource extends Resource
                     )
                     ->numeric(),
 
-                TextColumn::make('rate')
-                    ->numeric()
-                    ->prefix('Rs '),
+                // TextColumn::make('rate')
+                //     ->numeric()
+                //     ->prefix('Rs '),
             ])
             ->filters([
                 //
@@ -67,6 +66,36 @@ class LedgerResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return false;
+    }
+
+    public static function formFields(): array
+    {
+        return [
+            Select::make('crop_season_id')
+                ->relationship('cropSeason', 'name')
+                ->searchable()
+                ->preload()
+                ->required(),
+
+            // Select::make('farmer_id')
+            //     ->relationship('farmer', 'name')
+            //     ->searchable()
+            //     ->preload()
+            //     ->required(),
+
+            Select::make('farming_resource_id')
+                ->relationship('farmingResource', 'name')
+                ->searchable()
+                ->preload()
+                ->required(),
+
+            TextInput::make('quantity')->numeric()->required(),
+        ];
     }
 
     public static function getRelations(): array

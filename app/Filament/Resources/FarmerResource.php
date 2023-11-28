@@ -22,7 +22,7 @@ class FarmerResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')->required(),
+                TextInput::make('name')->unique(ignoreRecord: true)->required(),
             ]);
     }
 
@@ -30,7 +30,7 @@ class FarmerResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->unique(ignoreRecord: true)->searchable(),
+                TextColumn::make('name')->searchable(),
             ])
             ->filters([
                 //
@@ -42,7 +42,8 @@ class FarmerResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultSort('name');
     }
 
     public static function getRelations(): array

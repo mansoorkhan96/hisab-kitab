@@ -3,9 +3,10 @@
 namespace App\Filament\Resources\FarmerResource\RelationManagers;
 
 use App\Filament\Resources\LedgerResource;
-use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
 
 class LedgersRelationManager extends RelationManager
@@ -14,16 +15,25 @@ class LedgersRelationManager extends RelationManager
 
     public function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('title')
-                    ->required()
-                    ->maxLength(255),
-            ]);
+        return LedgerResource::form($form);
     }
 
     public function table(Table $table): Table
     {
-        return LedgerResource::table($table);
+        return LedgerResource::table($table)
+            ->headerActions([$this->getCreateAction()])
+            ->emptyStateActions([$this->getCreateAction()])
+            ->defaultSort('created_at', 'desc');
+    }
+
+    protected function getCreateAction(): Action
+    {
+        return Action::make('Add new')
+            ->form(LedgerResource::formFields())
+            ->action(function (array $data) {
+                $this->ownerRecord->ledgers()->create($data);
+
+                Notification::make()->success()->body('Ledger was created!');
+            });
     }
 }

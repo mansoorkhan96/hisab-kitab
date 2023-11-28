@@ -68,7 +68,8 @@ class CropSeasonResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultSort('name', 'desc');
     }
 
     public static function getRelations(): array
