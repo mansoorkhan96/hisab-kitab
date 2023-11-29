@@ -18,19 +18,16 @@ class CropSeason extends Model
 
     protected static function booted()
     {
-        static::creating(function (CropSeason $cropSeason) {
-            if (blank($cropSeason->rates)) {
-                $farmingResources = $cropSeason
-                    ->user
-                    ?->farmingResources
-                    ?->map(fn (FarmingResource $farmingResource) => [
-                        'farming_resource_id' => $farmingResource->id,
-                        'rate' => 0,
-                    ]);
+        // static::creating(function (CropSeason $cropSeason) {
+        //     if (blank($cropSeason->rates)) {
+        //         $farmingResources = FarmingResource::all()->map(fn (FarmingResource $farmingResource) => [
+        //             'farming_resource_id' => $farmingResource->id,
+        //             'rate' => 0,
+        //         ]);
 
-                $cropSeason->rates = $farmingResources;
-            }
-        });
+        //         $cropSeason->rates = $farmingResources;
+        //     }
+        // });
     }
 
     public function user(): BelongsTo

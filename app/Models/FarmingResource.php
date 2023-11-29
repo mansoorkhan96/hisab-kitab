@@ -16,8 +16,8 @@ class FarmingResource extends Model
         'type' => FarmingResourceType::class,
     ];
 
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
+    // public function user(): BelongsTo
+    // {
+    //     return $this->belongsTo(User::class);
+    // }
 }

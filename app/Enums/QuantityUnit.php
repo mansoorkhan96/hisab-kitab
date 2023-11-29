@@ -4,7 +4,7 @@ namespace App\Enums;
 
 use App\Enums\Concerns\Values;
 
-enum QuantityUnits: string
+enum QuantityUnit: string
 {
     use Values;
 

@@ -3,7 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Enums\FarmingResourceType;
-use App\Enums\QuantityUnits;
+use App\Enums\QuantityUnit;
 use App\Filament\Resources\FarmingResourceResource\Pages;
 use App\Models\FarmingResource;
 use Filament\Forms\Components\Select;
@@ -26,7 +26,7 @@ class FarmingResourceResource extends Resource
             ->schema([
                 TextInput::make('name')->unique(ignoreRecord: true)->required(),
                 Select::make('type')->options(FarmingResourceType::class)->required(),
-                Select::make('quantity_unit')->options(QuantityUnits::class)->required(),
+                Select::make('quantity_unit')->options(QuantityUnit::class)->required(),
             ]);
     }
 

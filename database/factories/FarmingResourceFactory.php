@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Enums\FarmingResourceType;
-use App\Enums\QuantityUnits;
+use App\Enums\QuantityUnit;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,10 +20,10 @@ class FarmingResourceFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(),
+            // 'user_id' => User::factory(),
             'name' => fake()->word(),
             'type' => fake()->randomElement(FarmingResourceType::values()),
-            'quantity_unit' => fake()->randomElement(QuantityUnits::values()),
+            'quantity_unit' => fake()->randomElement(QuantityUnit::values()),
         ];
     }
 }
