@@ -3,8 +3,9 @@
 namespace App\Enums;
 
 use App\Enums\Concerns\Values;
+use Filament\Support\Contracts\HasLabel;
 
-enum FarmingResourceType: string
+enum FarmingResourceType: string implements HasLabel
 {
     use Values;
 
@@ -12,4 +13,9 @@ enum FarmingResourceType: string
     case Fertilizer = 'fertilizer';
     case Implement = 'implement';
     case Pesticide = 'pesticide';
+
+    public function getLabel(): ?string
+    {
+        return $this->value;
+    }
 }
