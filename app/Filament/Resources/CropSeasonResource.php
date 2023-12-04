@@ -28,27 +28,27 @@ class CropSeasonResource extends Resource
                     ->unique(ignoreRecord: true)
                     ->required(),
 
-                Repeater::make('rates')
-                    ->columnSpanFull()
-                    ->columns(2)
-                    ->default(
-                        fn () => auth()->user()
-                            ?->farmingResources
-                            ?->map(fn (FarmingResource $farmingResource) => [
-                                'farming_resource_id' => $farmingResource->id,
-                                'rate' => 0,
-                            ])
-                    )
-                    ->schema([
-                        Select::make('farming_resource_id')
-                            ->label('Implement / Fertilizer / Seed')
-                            ->options(FarmingResource::whereUserId(auth()->id())->pluck('name', 'id'))
-                            ->required(),
+                    // Repeater::make('rates')
+                    //     ->columnSpanFull()
+                    //     ->columns(2)
+                    //     ->default(
+                    //         fn () => auth()->user()
+                    //             ?->farmingResources
+                    //             ?->map(fn (FarmingResource $farmingResource) => [
+                    //                 'farming_resource_id' => $farmingResource->id,
+                    //                 'rate' => 0,
+                    //             ])
+                    //     )
+                    //     ->schema([
+                    //         Select::make('farming_resource_id')
+                    //             ->label('Implement / Fertilizer / Seed')
+                    //             ->options(FarmingResource::whereUserId(auth()->id())->pluck('name', 'id'))
+                    //             ->required(),
 
-                        TextInput::make('rate')
-                            ->numeric()
-                            ->required(),
-                    ]),
+                    //         TextInput::make('rate')
+                    //             ->numeric()
+                    //             ->required(),
+                    //     ]),
             ]);
     }
 

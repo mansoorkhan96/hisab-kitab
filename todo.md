@@ -1,14 +1,11 @@
-- Farming resource should be global and not user related
-    However, there should be away to contribute a row.
-
-- Farming resource should not be global and be user related
-    - allows rate input
-    - season should have active/in-active state
-    - when season goes to in-active state, save all the user farming resources to season rates column along with rates for each resource.
-
 - Create a simple page for Season Hisab/Calculation
 
-- Accounts for farmer
+- Farming resource should not be global and not user related
+    - season should have active/in-active state
+    - when season goes to in-active state, save all the user farming resource rates to season
+    - there should be away to contribute a row.
+
+- Accounts/Finance for farmer
     how much farmer lended
 
 - Trackters model

@@ -27,6 +27,7 @@ class FarmingResourceResource extends Resource
                 TextInput::make('name')->unique(ignoreRecord: true)->required(),
                 Select::make('type')->options(FarmingResourceType::class)->required(),
                 Select::make('quantity_unit')->options(QuantityUnit::class)->required(),
+                TextInput::make('rate')->numeric(),
             ]);
     }
 
@@ -37,6 +38,7 @@ class FarmingResourceResource extends Resource
                 TextColumn::make('name')->searchable(),
                 TextColumn::make('type')->searchable(),
                 TextColumn::make('quantity_unit')->searchable(),
+                TextColumn::make('rate'),
             ])
             ->filters([
                 //
