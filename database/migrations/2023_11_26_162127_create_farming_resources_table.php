@@ -12,14 +12,15 @@ return new class extends Migration
         Schema::create('farming_resources', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained();
-            $table->string('name')->unique();
+            $table->string('name');
             $table->string('icon')->nullable();
             $table->string('type'); // For example: Seed, Fertilizer, Machinery
             $table->string('quantity_unit'); // For example: hours, acres, sacks
-            $table->decimal('rate', 10, 2)->nullable();
+            $table->decimal('rate', 10, 2)->default(0.00);
             $table->timestamps();
 
-            $table->softDeletes();
+            // TODO:
+            // $table->unique(['user_id', 'name']);
         });
     }
 

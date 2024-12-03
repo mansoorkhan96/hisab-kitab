@@ -1,0 +1,8 @@
+@import '/vendor/filament/filament/resources/css/theme.css';
+
+@config 'tailwind.config.js';
+
+/* TODO: remove? */
+.ledgers-table .fi-ta-row:last-child {
+    /* @apply hidden */
+}

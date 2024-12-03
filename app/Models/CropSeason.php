@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\User;
 
 class CropSeason extends Model
 {
@@ -15,20 +16,6 @@ class CropSeason extends Model
     protected $casts = [
         'rates' => AsCollection::class,
     ];
-
-    protected static function booted()
-    {
-        // static::creating(function (CropSeason $cropSeason) {
-        //     if (blank($cropSeason->rates)) {
-        //         $farmingResources = FarmingResource::all()->map(fn (FarmingResource $farmingResource) => [
-        //             'farming_resource_id' => $farmingResource->id,
-        //             'rate' => 0,
-        //         ]);
-
-        //         $cropSeason->rates = $farmingResources;
-        //     }
-        // });
-    }
 
     public function user(): BelongsTo
     {

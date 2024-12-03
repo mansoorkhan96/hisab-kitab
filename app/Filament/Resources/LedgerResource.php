@@ -3,13 +3,19 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\LedgerResource\Pages;
+use App\Models\FarmingResource;
 use App\Models\Ledger;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\TextInputColumn;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 
 class LedgerResource extends Resource
@@ -26,34 +32,28 @@ class LedgerResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->groups([
+                Group::make('farmingResource.name')
+                    ->titlePrefixedWithLabel(false),
+            ])
+            ->defaultGroup('farmingResource.name')
             ->columns([
                 TextColumn::make('cropSeason.name')
-                    ->searchable()
-                    ->toggleable()
-                    ->toggledHiddenByDefault(false),
-
+                    ->searchable(), // TODO: HIde and make it filter and default to current
                 TextColumn::make('farmer.name')
                     ->visible((request()->routeIs('filament.admin.resources.ledgers.index')))
-                    ->searchable()
-                    ->toggleable()
-                    ->toggledHiddenByDefault(false),
-
+                    ->searchable(),
                 TextColumn::make('farmingResource.name')
                     ->searchable()
-                    ->toggleable()
-                    ->toggledHiddenByDefault(false)
                     ->suffix(fn (Ledger $record) => ' ('.$record->farmingResource->type->name.')'),
-
                 TextColumn::make('quantity')
-                    ->suffix(fn (Ledger $record) => $record->quantity > 1
-                        ? ' '.str($record->farmingResource->quantity_unit)->plural()
-                        : ' '.$record->farmingResource->quantity_unit
-                    )
-                    ->numeric(),
-
-                // TextColumn::make('rate')
-                //     ->numeric()
-                //     ->prefix('Rs '),
+                    ->suffix(fn (Ledger $record) => $record->quantity_with_unit)
+                    ->numeric()
+                    ->summarize(Sum::make()->label('Total Qty')),
+                TextInputColumn::make('rate')
+                    ->default(fn (Ledger $ledger) => $ledger->farmingResource->rate),
+                TextColumn::make('amount')
+                    ->summarize(Sum::make()->label('Total')->money('PKR')),
             ])
             ->filters([
                 //
@@ -76,25 +76,36 @@ class LedgerResource extends Resource
     public static function formFields(): array
     {
         return [
+            // TODO: preselect current season
             Select::make('crop_season_id')
                 ->relationship('cropSeason', 'name')
                 ->searchable()
                 ->preload()
                 ->required(),
-
             // Select::make('farmer_id')
             //     ->relationship('farmer', 'name')
             //     ->searchable()
             //     ->preload()
             //     ->required(),
-
             Select::make('farming_resource_id')
                 ->relationship('farmingResource', 'name')
+                ->live()
+                ->afterStateUpdated(function (Select $component, Set $set, Get $get) {
+                    if (empty($get('rate'))) {
+                        $set('rate', FarmingResource::find($component->getState())?->rate);
+                    }
+                })
                 ->searchable()
                 ->preload()
                 ->required(),
-
-            TextInput::make('quantity')->numeric()->required(),
+            TextInput::make('quantity')
+                ->default(1)
+                ->numeric()
+                ->required(),
+            TextInput::make('rate')
+                ->prefixIcon('heroicon-m-currency-dollar')
+                ->numeric()
+                ->nullable(),
         ];
     }
 

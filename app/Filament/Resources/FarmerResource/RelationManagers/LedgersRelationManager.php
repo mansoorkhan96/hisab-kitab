@@ -29,7 +29,11 @@ class LedgersRelationManager extends RelationManager
     protected function getCreateAction(): Action
     {
         return Action::make('Add new')
-            ->form(LedgerResource::formFields())
+            ->form(
+                fn (Form $form) => $form
+                    ->columns(2)
+                    ->schema(LedgerResource::formFields())
+            )
             ->action(function (array $data) {
                 $this->ownerRecord->ledgers()->create($data);
 

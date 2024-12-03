@@ -23,8 +23,8 @@ class LedgerFactory extends Factory
             'crop_season_id' => CropSeason::factory(),
             'farmer_id' => Farmer::factory(),
             'farming_resource_id' => FarmingResource::factory(),
-            'quantity' => random_int(5, 20),
-            'rate' => random_int(4_000, 10_000),
+            'quantity' => random_int(1, 3),
+            'rate' => null,
         ];
     }
 }

@@ -8,6 +8,7 @@ use App\Filament\Resources\FarmingResourceResource\Pages;
 use App\Models\FarmingResource;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -24,10 +25,20 @@ class FarmingResourceResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')->unique(ignoreRecord: true)->required(),
-                Select::make('type')->options(FarmingResourceType::class)->required(),
-                Select::make('quantity_unit')->options(QuantityUnit::class)->required(),
-                TextInput::make('rate')->numeric(),
+                TextInput::make('name')
+                    // ->unique(ignoreRecord: true) TODO:
+                    ->required(),
+                Select::make('type')
+                    ->options(FarmingResourceType::class)
+                    ->required(),
+                ToggleButtons::make('quantity_unit')
+                    ->options(QuantityUnit::class)
+                    ->inline()
+                    ->required(),
+                TextInput::make('rate')
+                    ->numeric()
+                    ->required()
+                    ->default(0),
             ]);
     }
 

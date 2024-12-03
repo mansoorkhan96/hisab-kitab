@@ -2,7 +2,6 @@
 
 use App\Models\CropSeason;
 use App\Models\Farmer;
-use App\Models\FarmingResource;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,20 +10,20 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('ledgers', function (Blueprint $table) {
+        Schema::create('calculations', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(CropSeason::class)->constrained();
             $table->foreignIdFor(Farmer::class)->constrained();
-            $table->foreignIdFor(FarmingResource::class)->constrained();
-            $table->decimal('quantity', 10, 2);
-            $table->decimal('rate', 10, 2)->nullable();
-            $table->decimal('amount', 10, 2)->virtualAs('quantity * rate');
+            $table->unsignedInteger('total_wheat_sacks');
+            $table->unsignedInteger('kudhi'); // TODO: rename
+            $table->unsignedInteger('wheat_rate');
+            $table->unsignedInteger('wheat_straw_rate');
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('ledgers');
+        Schema::dropIfExists('calculations');
     }
 };

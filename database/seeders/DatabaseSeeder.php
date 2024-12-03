@@ -15,28 +15,54 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
+    public $user;
+
+    public $farmingResources;
+
+    public $cropSeason;
+
     public function run(): void
     {
-        $user = \App\Models\User::factory()->create([
+        $this->user = User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
 
-        $farmingResources = $this->seedFarmingResources($user);
+        $this->farmingResources = $this->seedFarmingResources($this->user);
 
-        $cropSeason = CropSeason::factory()->for($user)->recycle($user)->create();
+        $this->cropSeason = CropSeason::factory()
+            ->for($this->user)
+            ->recycle($this->user)
+            ->create(['name' => 'Season-'.now()->year]);
 
-        $farmers = Farmer::factory(5)->for($user)->create();
+        $this->seedAshrafRind();
+    }
 
-        Ledger::factory(100)->recycle($cropSeason)->create([
-            'farmer_id' => fn () => $farmers->random()->id,
-            'farming_resource_id' => fn () => $farmingResources->random()->id,
-        ]);
+    public function seedAshrafRind()
+    {
+        $ashraf = Farmer::factory()
+            ->for($this->user)
+            ->create(['name' => 'Ashraf Rind']);
+
+        collect([
+            ['farming_resource' => 'DAP', 'quantity' => 4.00, 'rate' => 9000.00],
+            ['farming_resource' => 'Urea', 'quantity' => 21.00, 'rate' => 3000.00],
+            ['farming_resource' => 'Palaas', 'quantity' => 5, 'rate' => 1800.00],
+            ['farming_resource' => 'Bijj', 'quantity' => 10.50, 'rate' => 6000.00],
+            ['farming_resource' => 'Kean', 'quantity' => 8.00, 'rate' => 2700.00],
+            ['farming_resource' => 'Banna', 'quantity' => 8.00, 'rate' => 500.00],
+            ['farming_resource' => 'Cultivator', 'quantity' => 8.00, 'rate' => 2700.00],
+        ])->each(fn (array $ledger) => Ledger::factory()
+            ->for($this->cropSeason)
+            ->for($ashraf)
+            ->for($this->farmingResources->where('name', $ledger['farming_resource'])->first())
+            ->create(['quantity' => $ledger['quantity'], 'rate' => $ledger['rate']]));
     }
 
     public function seedFarmingResources(User $user)
     {
         return FarmingResource::factory()->for($user)->createMany([
+            // Fertilizer
             [
                 'name' => 'DAP',
                 'type' => FarmingResourceType::Fertilizer,
@@ -50,13 +76,23 @@ class DatabaseSeeder extends Seeder
                 'rate' => random_int(3000, 6000),
             ],
 
+            // Pesticide
             [
-                'name' => 'Sataar Bij',
+                'name' => 'Palaas',
+                'type' => FarmingResourceType::Pesticide,
+                'quantity_unit' => QuantityUnit::Bottle,
+                'rate' => random_int(3000, 6000),
+            ],
+
+            // Seed
+            [
+                'name' => 'Bijj',
                 'type' => FarmingResourceType::Seed,
                 'quantity_unit' => QuantityUnit::Sack,
                 'rate' => random_int(3000, 6000),
             ],
 
+            // Implement
             [
                 'name' => 'Raja',
                 'type' => FarmingResourceType::Implement,
@@ -67,6 +103,18 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Kean',
                 'type' => FarmingResourceType::Implement,
                 'quantity_unit' => QuantityUnit::Hour,
+                'rate' => random_int(3000, 6000),
+            ],
+            [
+                'name' => 'Cultivator',
+                'type' => FarmingResourceType::Implement,
+                'quantity_unit' => QuantityUnit::Acre,
+                'rate' => random_int(3000, 6000),
+            ],
+            [
+                'name' => 'Banna',
+                'type' => FarmingResourceType::Implement,
+                'quantity_unit' => QuantityUnit::Acre,
                 'rate' => random_int(3000, 6000),
             ],
         ]);
