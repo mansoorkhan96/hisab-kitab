@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Enums\FarmingResourceType;
 use App\Enums\QuantityUnit;
+use App\Models\Calculation;
 use App\Models\CropSeason;
 use App\Models\Farmer;
 use App\Models\FarmingResource;
@@ -57,6 +58,16 @@ class DatabaseSeeder extends Seeder
             ->for($ashraf)
             ->for($this->farmingResources->where('name', $ledger['farming_resource'])->first())
             ->create(['quantity' => $ledger['quantity'], 'rate' => $ledger['rate']]));
+
+        Calculation::factory()
+            ->for($ashraf)
+            ->for($this->cropSeason)
+            ->create([
+                'total_wheat_sacks' => 70,
+                'kudhi' => 0,
+                'wheat_rate' => 5250,
+                'wheat_straw_rate' => 310,
+            ]);
     }
 
     public function seedFarmingResources(User $user)
