@@ -6,6 +6,7 @@ use App\Enums\FarmingResourceType;
 use App\Filament\Components\CalculationInfolist;
 use App\Filament\Resources\CalculationResource\Pages;
 use App\Filament\Resources\CalculationResource\Pages\EditCalculation;
+use App\Filament\Widgets\FarmerLoansTableWidget;
 use App\Filament\Widgets\LedgersTableWidget;
 use App\Models\Calculation;
 use Filament\Forms\Components\Group;
@@ -61,6 +62,19 @@ class CalculationResource extends Resource
                     ->live()
                     ->dehydrated(false),
                 Split::make([
+                    Section::make('Calculation')
+                        ->schema([
+                            Placeholder::make('alert')
+                                ->disabled()
+                                ->label('Please save the form to see the calucation...')
+                                ->visible(fn (string $context) => $context === 'create'),
+                            Livewire::make(
+                                CalculationInfolist::class,
+                                fn (EditCalculation $livewire) => ['calculation' => $livewire->getRecord()]
+                            )
+                                ->key('Calculation-Infolist')
+                                ->visible(fn (string $context) => $context === 'edit'),
+                        ]),
                     Group::make([
                         Livewire::make(LedgersTableWidget::class, fn (Get $get) => [
                             'farmer_id' => $get('farmer_id'),
@@ -76,20 +90,14 @@ class CalculationResource extends Resource
                             'tableHeading' => 'Harr & Bij',
                             'groupsOnly' => $get('hide_details'),
                         ])->key('harr-bij'),
+                        Livewire::make(
+                            FarmerLoansTableWidget::class,
+                            fn (Get $get) => ['farmer_id' => $get('farmer_id')]
+                        )->key('farmer-loan'),
                     ]),
-                    Section::make('Calculation')
-                        ->schema([
-                            Placeholder::make('alert')
-                                ->disabled()
-                                ->label('Please save the form to see the calucation...')
-                                ->visible(fn (string $context) => $context === 'create'),
-                            Livewire::make(CalculationInfolist::class, fn (EditCalculation $livewire) => [
-                                'calculation' => $livewire->getRecord(),
-                            ])
-                                ->key('Calculation-Infolist')
-                                ->visible(fn (string $context) => $context === 'edit'),
-                        ]),
-                ])->columnSpanFull(),
+                ])
+                    ->from('md')
+                    ->columnSpanFull(),
             ]);
     }
 

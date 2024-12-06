@@ -20,4 +20,9 @@ class Farmer extends Model
     {
         return $this->hasMany(Ledger::class);
     }
+
+    public function farmerLoans(): HasMany
+    {
+        return $this->hasMany(FarmerLoan::class);
+    }
 }

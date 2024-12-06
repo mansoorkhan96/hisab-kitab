@@ -4,6 +4,7 @@ namespace App\Filament\Components;
 
 use App\Enums\FarmingResourceType;
 use App\Models\Calculation;
+use App\Models\FarmerLoan;
 use App\Models\Ledger;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -12,6 +13,7 @@ use Filament\Infolists\Concerns\InteractsWithInfolists;
 use Filament\Infolists\Contracts\HasInfolists;
 use Filament\Infolists\Infolist;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Number;
 use Livewire\Attributes\Reactive;
 use Livewire\Component;
 
@@ -25,6 +27,7 @@ class CalculationInfolist extends Component implements HasForms, HasInfolists
 
     public function infolist(Infolist $infolist): Infolist
     {
+        // TODO: refactor to a class/value object
         $calculation = [];
 
         $totalSacks = $this->calculation->total_wheat_sacks;
@@ -71,13 +74,13 @@ class CalculationInfolist extends Component implements HasForms, HasInfolists
 
         $amount -= $fertilizerExpenseAmount;
         $calculation['fertilizer_expense_amount'] = $fertilizerExpenseAmount;
-        $calculation['remaining_after_fertilizer_expense_amount'] = $amount;
+        $calculation['remaining_after_fertilizer_expense_amount'] = Number::currency($amount, 'PKR');
 
         // Machine Amount
         $machineAmount = ($amount / 3);
         $amount -= $machineAmount;
         $calculation['machine_amount'] = $machineAmount;
-        $calculation['remaining_after_machine_amount'] = $amount;
+        $calculation['remaining_after_machine_amount'] = Number::currency($amount, 'PKR');
 
         // Harr & Bij
         $implementAndSeedExpenseAmount = Ledger::query()
@@ -88,12 +91,22 @@ class CalculationInfolist extends Component implements HasForms, HasInfolists
 
         $amount -= $implementAndSeedExpenseAmount;
         $calculation['implement_and_seed_expense_amount'] = $implementAndSeedExpenseAmount;
-        $calculation['remaining_after_implement_and_seed_expense_amount'] = $amount;
+        $calculation['remaining_after_implement_and_seed_expense_amount'] = Number::currency($amount, 'PKR');
 
         // Farmer/Landlord profit
         $dividedProfit = $amount / 2;
-        $calculation['farmer_amount'] = $dividedProfit;
+        $farmerAmount = $dividedProfit;
         $calculation['landlord_amount'] = $dividedProfit;
+        $calculation['farmer_amount'] = $farmerAmount;
+
+        // Substract Farmer loan
+        $farmerLoan = FarmerLoan::query()
+            ->whereNull('paid_at')
+            ->where('farmer_id', $this->calculation->farmer_id)
+            ->sum('amount');
+        $farmerAmount -= $farmerLoan;
+        $calculation['farmer_loan'] = $farmerLoan;
+        $calculation['farmer_profit_lost'] = $farmerAmount;
 
         return $infolist
             ->state($calculation)
@@ -117,7 +130,7 @@ class CalculationInfolist extends Component implements HasForms, HasInfolists
                 //     ->helperText('Baqi: '.$calculation['remaining_after_kamdari'])
                 //     ->inlineLabel(),
                 TextEntry::make('sack_amount')
-                    ->label('Total Ann Amount')
+                    ->label('Ann Amount')
                     ->color('success')
                     ->money('PKR')
                     ->inlineLabel(),
@@ -126,6 +139,7 @@ class CalculationInfolist extends Component implements HasForms, HasInfolists
                     ->money('PKR')
                     ->inlineLabel(),
                 TextEntry::make('amount')
+                    ->label('Total Amount')
                     ->color('success')
                     ->money('PKR')
                     ->inlineLabel(),
@@ -149,11 +163,20 @@ class CalculationInfolist extends Component implements HasForms, HasInfolists
                     ->money('PKR')
                     ->helperText('Remaning: '.$calculation['remaining_after_implement_and_seed_expense_amount'])
                     ->inlineLabel(),
+                TextEntry::make('landlord_amount')
+                    ->color(fn ($state) => $state > 0 ? 'success' : 'danger')
+                    ->money('PKR')
+                    ->inlineLabel(),
                 TextEntry::make('farmer_amount')
                     ->color(fn ($state) => $state > 0 ? 'success' : 'danger')
                     ->money('PKR')
                     ->inlineLabel(),
-                TextEntry::make('landlord_amount')
+                TextEntry::make('farmer_loan')
+                    ->color('warning')
+                    ->money('PKR')
+                    ->inlineLabel(),
+                TextEntry::make('farmer_profit_lost')
+                    ->label(fn ($state) => $state > 0 ? 'Farmer Profit' : 'Farmer Debt')
                     ->color(fn ($state) => $state > 0 ? 'success' : 'danger')
                     ->money('PKR')
                     ->inlineLabel(),

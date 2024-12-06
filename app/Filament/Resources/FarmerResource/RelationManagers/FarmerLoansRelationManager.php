@@ -2,25 +2,25 @@
 
 namespace App\Filament\Resources\FarmerResource\RelationManagers;
 
-use App\Filament\Resources\LedgerResource;
+use App\Filament\Resources\FarmerLoanResource;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
 
-class LedgersRelationManager extends RelationManager
+class FarmerLoansRelationManager extends RelationManager
 {
-    protected static string $relationship = 'ledgers';
+    protected static string $relationship = 'farmerLoans';
 
     public function form(Form $form): Form
     {
-        return LedgerResource::form($form);
+        return FarmerLoanResource::form($form);
     }
 
     public function table(Table $table): Table
     {
-        return LedgerResource::table($table)
+        return FarmerLoanResource::table($table)
             ->headerActions([$this->getCreateAction()])
             ->emptyStateActions([$this->getCreateAction()])
             ->defaultSort('created_at', 'desc');
@@ -35,9 +35,9 @@ class LedgersRelationManager extends RelationManager
                     ->columns(2)
             )
             ->action(function (array $data) {
-                $this->ownerRecord->ledgers()->create($data);
+                $this->ownerRecord->farmerLoans()->create($data);
 
-                Notification::make()->success()->body('Ledger was created!');
+                Notification::make()->success()->body('Farmer Loan was created!');
             });
     }
 }

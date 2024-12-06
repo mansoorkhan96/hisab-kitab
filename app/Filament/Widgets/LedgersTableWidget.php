@@ -75,15 +75,5 @@ class LedgersTableWidget extends BaseWidget
             ->groupsOnly($this->groupsOnly)
             ->defaultGroup('farmingResource.name')
             ->paginated(false);
-
-        return $table
-            ->query(
-                Ledger::query()
-                    ->whereBelongsTo($this->farmer)
-                    ->whereBelongsTo($this->cropSeason)
-            )
-            ->columns([
-                // ...
-            ]);
     }
 }

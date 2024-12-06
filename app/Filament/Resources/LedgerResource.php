@@ -26,7 +26,38 @@ class LedgerResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form->schema(static::formFields());
+        return $form->schema([
+            // TODO: preselect current season
+            Select::make('crop_season_id')
+                ->relationship('cropSeason', 'name')
+                ->searchable()
+                ->preload()
+                ->required(),
+            // Select::make('farmer_id')
+            //     ->relationship('farmer', 'name')
+            //     ->searchable()
+            //     ->preload()
+            //     ->required(),
+            Select::make('farming_resource_id')
+                ->relationship('farmingResource', 'name')
+                ->live()
+                ->afterStateUpdated(function (Select $component, Set $set, Get $get) {
+                    if (empty($get('rate'))) {
+                        $set('rate', FarmingResource::find($component->getState())?->rate);
+                    }
+                })
+                ->searchable()
+                ->preload()
+                ->required(),
+            TextInput::make('quantity')
+                ->default(1)
+                ->numeric()
+                ->required(),
+            TextInput::make('rate')
+                ->prefixIcon('heroicon-m-currency-dollar')
+                ->numeric()
+                ->nullable(),
+        ]);
     }
 
     public static function table(Table $table): Table
@@ -71,42 +102,6 @@ class LedgerResource extends Resource
     public static function shouldRegisterNavigation(): bool
     {
         return false;
-    }
-
-    public static function formFields(): array
-    {
-        return [
-            // TODO: preselect current season
-            Select::make('crop_season_id')
-                ->relationship('cropSeason', 'name')
-                ->searchable()
-                ->preload()
-                ->required(),
-            // Select::make('farmer_id')
-            //     ->relationship('farmer', 'name')
-            //     ->searchable()
-            //     ->preload()
-            //     ->required(),
-            Select::make('farming_resource_id')
-                ->relationship('farmingResource', 'name')
-                ->live()
-                ->afterStateUpdated(function (Select $component, Set $set, Get $get) {
-                    if (empty($get('rate'))) {
-                        $set('rate', FarmingResource::find($component->getState())?->rate);
-                    }
-                })
-                ->searchable()
-                ->preload()
-                ->required(),
-            TextInput::make('quantity')
-                ->default(1)
-                ->numeric()
-                ->required(),
-            TextInput::make('rate')
-                ->prefixIcon('heroicon-m-currency-dollar')
-                ->numeric()
-                ->nullable(),
-        ];
     }
 
     public static function getRelations(): array

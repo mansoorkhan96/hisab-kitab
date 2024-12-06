@@ -9,6 +9,7 @@ use App\Enums\QuantityUnit;
 use App\Models\Calculation;
 use App\Models\CropSeason;
 use App\Models\Farmer;
+use App\Models\FarmerLoan;
 use App\Models\FarmingResource;
 use App\Models\Ledger;
 use App\Models\User;
@@ -53,11 +54,23 @@ class DatabaseSeeder extends Seeder
             ['farming_resource' => 'Kean', 'quantity' => 8.00, 'rate' => 2700.00],
             ['farming_resource' => 'Banna', 'quantity' => 8.00, 'rate' => 500.00],
             ['farming_resource' => 'Cultivator', 'quantity' => 8.00, 'rate' => 2700.00],
-        ])->each(fn (array $ledger) => Ledger::factory()
-            ->for($this->cropSeason)
-            ->for($ashraf)
-            ->for($this->farmingResources->where('name', $ledger['farming_resource'])->first())
-            ->create(['quantity' => $ledger['quantity'], 'rate' => $ledger['rate']]));
+        ])->each(
+            fn (array $ledger) => Ledger::factory()
+                ->for($this->cropSeason)
+                ->for($ashraf)
+                ->for($this->farmingResources->where('name', $ledger['farming_resource'])->first())
+                ->create(['quantity' => $ledger['quantity'], 'rate' => $ledger['rate']])
+        );
+
+        collect([
+            ['purpose' => 'Laab 7 borion', 'amount' => 37_800],
+            ['purpose' => 'Derran ji mazoori', 'amount' => 19_000],
+            ['purpose' => '4 Borion Wheat', 'amount' => 21_000],
+        ])->each(
+            fn (array $loan) => FarmerLoan::factory()
+                ->for($ashraf)
+                ->create($loan)
+        );
 
         Calculation::factory()
             ->for($ashraf)
