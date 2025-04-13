@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\LedgerResource\Pages;
+use App\Models\CropSeason;
 use App\Models\FarmingResource;
 use App\Models\Ledger;
 use Filament\Forms\Components\Select;
@@ -32,6 +33,13 @@ class LedgerResource extends Resource
                 ->relationship('cropSeason', 'name')
                 ->searchable()
                 ->preload()
+                ->default(
+                    CropSeason::query()
+                        ->where('user_id', auth()->id())
+                        ->where('is_current', true)
+                        ->first()
+                        ->id
+                )
                 ->required(),
             // Select::make('farmer_id')
             //     ->relationship('farmer', 'name')

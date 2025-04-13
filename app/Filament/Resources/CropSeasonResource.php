@@ -8,10 +8,12 @@ use App\Models\FarmingResource;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 
 class CropSeasonResource extends Resource
@@ -27,28 +29,31 @@ class CropSeasonResource extends Resource
                 TextInput::make('name')
                     ->unique(ignoreRecord: true)
                     ->required(),
+                Toggle::make('is_current')
+                    ->label('Is Current Season')
+                    ->default(true),
 
-                    // Repeater::make('rates')
-                    //     ->columnSpanFull()
-                    //     ->columns(2)
-                    //     ->default(
-                    //         fn () => auth()->user()
-                    //             ?->farmingResources
-                    //             ?->map(fn (FarmingResource $farmingResource) => [
-                    //                 'farming_resource_id' => $farmingResource->id,
-                    //                 'rate' => 0,
-                    //             ])
-                    //     )
-                    //     ->schema([
-                    //         Select::make('farming_resource_id')
-                    //             ->label('Implement / Fertilizer / Seed')
-                    //             ->options(FarmingResource::whereUserId(auth()->id())->pluck('name', 'id'))
-                    //             ->required(),
+                // Repeater::make('rates')
+                //     ->columnSpanFull()
+                //     ->columns(2)
+                //     ->default(
+                //         fn () => auth()->user()
+                //             ?->farmingResources
+                //             ?->map(fn (FarmingResource $farmingResource) => [
+                //                 'farming_resource_id' => $farmingResource->id,
+                //                 'rate' => 0,
+                //             ])
+                //     )
+                //     ->schema([
+                //         Select::make('farming_resource_id')
+                //             ->label('Implement / Fertilizer / Seed')
+                //             ->options(FarmingResource::whereUserId(auth()->id())->pluck('name', 'id'))
+                //             ->required(),
 
-                    //         TextInput::make('rate')
-                    //             ->numeric()
-                    //             ->required(),
-                    //     ]),
+                //         TextInput::make('rate')
+                //             ->numeric()
+                //             ->required(),
+                //     ]),
             ]);
     }
 
@@ -57,6 +62,7 @@ class CropSeasonResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')->searchable(),
+                ToggleColumn::make('is_current'),
             ])
             ->filters([
                 //

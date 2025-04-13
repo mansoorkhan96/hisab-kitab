@@ -13,6 +13,8 @@ class LedgersRelationManager extends RelationManager
 {
     protected static string $relationship = 'ledgers';
 
+    protected static ?string $icon = 'heroicon-o-book-open';
+
     public function form(Form $form): Form
     {
         return LedgerResource::form($form);

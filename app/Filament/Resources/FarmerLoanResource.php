@@ -77,6 +77,8 @@ class FarmerLoanResource extends Resource
                     ->action(fn (FarmerLoan $farmerLoan) => $farmerLoan->update(['paid_at' => now()])),
                 Tables\Actions\EditAction::make()
                     ->visible(fn ($livewire) => $livewire instanceof FarmerLoansRelationManager),
+                Tables\Actions\DeleteAction::make()
+                    ->visible(fn ($livewire) => $livewire instanceof FarmerLoansRelationManager),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

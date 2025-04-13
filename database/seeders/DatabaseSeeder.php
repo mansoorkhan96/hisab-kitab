@@ -38,6 +38,53 @@ class DatabaseSeeder extends Seeder
             ->create(['name' => 'Season-'.now()->year]);
 
         $this->seedAshrafRind();
+        $this->seedSadamLighari();
+    }
+
+    public function seedSadamLighari()
+    {
+        $farmer = Farmer::factory()
+            ->for($this->user)
+            ->create(['name' => 'Sadam Lighari']);
+
+        collect([
+            ['farming_resource' => 'DAP', 'quantity' => 4, 'rate' => 14_000],
+            ['farming_resource' => 'Urea', 'quantity' => 30, 'rate' => 3200],
+            ['farming_resource' => 'Sanga', 'quantity' => 9, 'rate' => 1500],
+            ['farming_resource' => 'Lambda', 'quantity' => 4, 'rate' => 1000],
+
+            ['farming_resource' => 'Bijj', 'quantity' => 7, 'rate' => 11_000],
+            ['farming_resource' => 'Kean', 'quantity' => 4, 'rate' => 2000],
+            ['farming_resource' => 'Gobil', 'quantity' => 20, 'rate' => 2500],
+            ['farming_resource' => 'Banna', 'quantity' => 1, 'rate' => 7500],
+        ])->each(
+            fn (array $ledger) => Ledger::factory()
+                ->for($this->cropSeason)
+                ->for($farmer)
+                ->for($this->farmingResources->where('name', $ledger['farming_resource'])->first())
+                ->create(['quantity' => $ledger['quantity'], 'rate' => $ledger['rate']])
+        );
+
+        collect([
+            ['purpose' => 'Wheat 12 Borion 60 Kg', 'amount' => 131_920],
+            ['purpose' => 'Bijj 1 Bori', 'amount' => 11_000],
+            ['purpose' => 'Derran ji mazoori', 'amount' => 11_500],
+            ['purpose' => 'Zameendar watan khanyal', 'amount' => 2500],
+        ])->each(
+            fn (array $loan) => FarmerLoan::factory()
+                ->for($farmer)
+                ->create($loan)
+        );
+
+        Calculation::factory()
+            ->for($farmer)
+            ->for($this->cropSeason)
+            ->create([
+                'total_wheat_sacks' => '125/50',
+                'kudhi' => 1,
+                'wheat_rate' => 9_700,
+                'wheat_straw_rate' => 458.1673306773,
+            ]);
     }
 
     public function seedAshrafRind()
@@ -107,6 +154,18 @@ class DatabaseSeeder extends Seeder
                 'quantity_unit' => QuantityUnit::Bottle,
                 'rate' => random_int(3000, 6000),
             ],
+            [
+                'name' => 'Sanga',
+                'type' => FarmingResourceType::Pesticide,
+                'quantity_unit' => QuantityUnit::Bottle,
+                'rate' => random_int(3000, 6000),
+            ],
+            [
+                'name' => 'Lambda',
+                'type' => FarmingResourceType::Pesticide,
+                'quantity_unit' => QuantityUnit::Bottle,
+                'rate' => random_int(3000, 6000),
+            ],
 
             // Seed
             [
@@ -131,6 +190,12 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name' => 'Cultivator',
+                'type' => FarmingResourceType::Implement,
+                'quantity_unit' => QuantityUnit::Acre,
+                'rate' => random_int(3000, 6000),
+            ],
+            [
+                'name' => 'Gobil',
                 'type' => FarmingResourceType::Implement,
                 'quantity_unit' => QuantityUnit::Acre,
                 'rate' => random_int(3000, 6000),

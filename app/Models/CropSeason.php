@@ -12,6 +12,22 @@ class CropSeason extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $casts = [
+        'is_current' => 'boolean',
+    ];
+
+    protected static function booted()
+    {
+        static::saving(function (CropSeason $cropSeason) {
+            if ($cropSeason->is_current) {
+                self::query()
+                    ->where('user_id', auth()->id())
+                    ->where('id', '!=', $cropSeason->id)
+                    ->update(['is_current' => false]);
+            }
+        });
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

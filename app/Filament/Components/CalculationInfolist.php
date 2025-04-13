@@ -13,6 +13,7 @@ use Filament\Infolists\Concerns\InteractsWithInfolists;
 use Filament\Infolists\Contracts\HasInfolists;
 use Filament\Infolists\Infolist;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Number;
 use Livewire\Attributes\Reactive;
 use Livewire\Component;
@@ -25,18 +26,30 @@ class CalculationInfolist extends Component implements HasForms, HasInfolists
     #[Reactive]
     public Calculation $calculation;
 
+    #[Reactive]
+    public $thresher = null;
+
     public function infolist(Infolist $infolist): Infolist
     {
         // TODO: refactor to a class/value object
         $calculation = [];
+        $sacks = explode('/', $this->calculation->total_wheat_sacks);
 
-        $totalSacks = $this->calculation->total_wheat_sacks;
-        $calculation['total_wheat_sacks'] = $totalSacks;
+        $totalWeightInKgs = ($sacks[0] * 100) + Arr::get($sacks, 1, 0);
+        $totalSacks = $totalWeightInKgs / 100;
 
-        $totalWeightInKgs = $totalSacks * 100;
+        $calculation['total_wheat_sacks'] = $this->kgsToSacksString($totalWeightInKgs);
 
         // Thresher
-        $thresherInKgs = $totalSacks * 10;
+
+        // TODO:temporary
+        if ($this->thresher) {
+            $thresherSacks = explode('/', $this->thresher);
+            $thresherInKgs = ($thresherSacks[0] * 100) + Arr::get($thresherSacks, 1, 0);
+        } else {
+            $thresherInKgs = $totalSacks * 10;
+        }
+
         $remainingWeightInKgs = $totalWeightInKgs - $thresherInKgs;
         $calculation['thresher'] = $this->kgsToSacksString($thresherInKgs);
         $calculation['remaining_after_thresher'] = $this->kgsToSacksString($remainingWeightInKgs);
@@ -59,6 +72,8 @@ class CalculationInfolist extends Component implements HasForms, HasInfolists
 
         // Buh amount
         $buhAmount = ($totalSacks * 2.5) * $this->calculation->wheat_straw_rate;
+        // TODO: temporary fix to not include remaining kgs
+        $buhAmount = ($sacks[0] * 2.5) * $this->calculation->wheat_straw_rate;
         $calculation['buh_amount'] = $buhAmount;
 
         // Total amount

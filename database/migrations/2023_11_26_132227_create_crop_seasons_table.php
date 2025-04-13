@@ -13,6 +13,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class)->constrained();
             $table->string('name');
+            $table->boolean('is_current')->default(false);
             $table->timestamps();
 
             $table->unique(['name', 'user_id']); // TODO:

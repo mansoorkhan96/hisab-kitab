@@ -13,6 +13,8 @@ class FarmerLoansRelationManager extends RelationManager
 {
     protected static string $relationship = 'farmerLoans';
 
+    protected static ?string $icon = 'heroicon-o-banknotes';
+
     public function form(Form $form): Form
     {
         return FarmerLoanResource::form($form);

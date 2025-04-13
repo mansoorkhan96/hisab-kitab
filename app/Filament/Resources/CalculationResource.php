@@ -9,6 +9,7 @@ use App\Filament\Resources\CalculationResource\Pages\EditCalculation;
 use App\Filament\Widgets\FarmerLoansTableWidget;
 use App\Filament\Widgets\LedgersTableWidget;
 use App\Models\Calculation;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Livewire;
 use Filament\Forms\Components\Placeholder;
@@ -23,6 +24,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\HtmlString;
 
 class CalculationResource extends Resource
 {
@@ -49,8 +51,7 @@ class CalculationResource extends Resource
                     ->prefixIcon('heroicon-m-currency-dollar')
                     ->numeric(),
                 TextInput::make('total_wheat_sacks')
-                    ->live()
-                    ->numeric(),
+                    ->live(),
                 TextInput::make('kudhi')
                     ->live()
                     ->numeric(),
@@ -58,9 +59,52 @@ class CalculationResource extends Resource
                     ->live()
                     ->prefixIcon('heroicon-m-currency-dollar')
                     ->numeric(),
+                TextInput::make('thresher')
+                    ->dehydrated(false)
+                    ->live(),
                 Toggle::make('hide_details')
                     ->live()
                     ->dehydrated(false),
+                Placeholder::make('toggle_finalized_at_placeholder')
+                    ->label(
+                        fn (Calculation $calculation) => filled($calculation->finalized_at)
+                            ? 'Calculation was finalized on: '.$calculation->finalized_at->format('F j, Y')
+                            : ''
+                    )
+                    ->helperText('Finalizing the calculation declares that the future farmer loans should not be added to this calculation.')
+                    ->key('toggle_finalized_at_placeholder_key')
+                    ->hintAction(
+                        Action::make('toggle_finalized_at')
+                            ->button()
+                            ->requiresConfirmation(fn (Calculation $calculation) => filled($calculation->finalized_at))
+                            ->modalDescription(
+                                fn (Calculation $calculation) => filled($calculation->finalized_at)
+                                    ? new HtmlString('After reopening this calculation, all of the '.$calculation->farmer->name."'s loans lended after ".$calculation->finalized_at->format('F j, Y').' will be added to this calculation!<br><br> Are you sure you want reopen this calculation?')
+                                    : '')
+                            ->label(
+                                fn (Calculation $calculation) => empty($calculation->finalized_at)
+                                    ? 'Finalize Calculation'
+                                    : 'Re-Open Calculation'
+                            )
+                            ->color(
+                                fn (Calculation $calculation) => empty($calculation->finalized_at)
+                                    ? 'success'
+                                    : 'warning'
+                            )
+                            ->icon(
+                                fn (Calculation $calculation) => empty($calculation->finalized_at)
+                                    ? 'heroicon-m-check-badge'
+                                    : 'heroicon-m-book-open'
+                            )
+                            ->visible(fn ($context) => $context !== 'create')
+                            ->action(function (Calculation $calculation) {
+                                if (empty($calculation->finalized_at)) {
+                                    $calculation->update(['finalized_at' => now()]);
+                                } else {
+                                    $calculation->update(['finalized_at' => null]);
+                                }
+                            })
+                    ),
                 Split::make([
                     Section::make('Calculation')
                         ->schema([
@@ -70,7 +114,10 @@ class CalculationResource extends Resource
                                 ->visible(fn (string $context) => $context === 'create'),
                             Livewire::make(
                                 CalculationInfolist::class,
-                                fn (EditCalculation $livewire) => ['calculation' => $livewire->getRecord()]
+                                fn (EditCalculation $livewire, Get $get) => [
+                                    'calculation' => $livewire->getRecord(),
+                                    'thresher' => $get('thresher'),
+                                ]
                             )
                                 ->key('Calculation-Infolist')
                                 ->visible(fn (string $context) => $context === 'edit'),

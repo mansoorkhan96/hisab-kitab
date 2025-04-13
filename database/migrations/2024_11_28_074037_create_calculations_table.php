@@ -14,10 +14,12 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(CropSeason::class)->constrained();
             $table->foreignIdFor(Farmer::class)->constrained();
-            $table->unsignedInteger('total_wheat_sacks');
+            $table->string('total_wheat_sacks');
             $table->unsignedInteger('kudhi'); // TODO: rename
+            $table->unsignedInteger('kamdari')->nullable(); // TODO: rename
             $table->unsignedInteger('wheat_rate');
-            $table->unsignedInteger('wheat_straw_rate');
+            $table->unsignedInteger('wheat_straw_rate')->nullable();
+            $table->dateTime('finalized_at')->nullable();
             $table->timestamps();
         });
     }

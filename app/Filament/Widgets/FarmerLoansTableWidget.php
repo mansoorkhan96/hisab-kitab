@@ -22,6 +22,7 @@ class FarmerLoansTableWidget extends BaseWidget
     {
         return FarmerLoanResource::table($table)
             ->heading('Farmer Loans')
+            ->searchable(false)
             ->query(FarmerLoan::where('farmer_id', $this->farmer_id))
             ->headerActions([
                 Action::make('Add new')

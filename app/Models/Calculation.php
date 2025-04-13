@@ -10,6 +10,10 @@ class Calculation extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'finalized_at' => 'datetime',
+    ];
+
     public function cropSeason(): BelongsTo
     {
         return $this->belongsTo(CropSeason::class);
