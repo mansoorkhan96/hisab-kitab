@@ -4,8 +4,6 @@
 
 # TODO:
 
-1. Season select
-2. Substract kudhi
 3. Kamdari input
 4.
 

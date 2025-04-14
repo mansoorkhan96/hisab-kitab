@@ -62,6 +62,9 @@ class CalculationResource extends Resource
                 TextInput::make('thresher')
                     ->dehydrated(false)
                     ->live(),
+                TextInput::make('kamdari')
+                    ->live()
+                    ->numeric(),
                 Toggle::make('hide_details')
                     ->live()
                     ->dehydrated(false),

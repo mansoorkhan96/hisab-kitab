@@ -114,6 +114,11 @@ class CalculationInfolist extends Component implements HasForms, HasInfolists
         $calculation['landlord_amount'] = $dividedProfit;
         $calculation['farmer_amount'] = $farmerAmount;
 
+        if ($this->calculation->kudhi && $this->calculation->kudhi > 0) {
+            $calculation['farmer_kudhi_amount'] = $this->calculation->kudhi * $this->calculation->wheat_rate;
+            $farmerAmount = $calculation['farmer_final_amount'] = $calculation['farmer_amount'] + $calculation['farmer_kudhi_amount'];
+        }
+
         // Substract Farmer loan
         $farmerLoan = FarmerLoan::query()
             ->whereNull('paid_at')
@@ -183,6 +188,16 @@ class CalculationInfolist extends Component implements HasForms, HasInfolists
                     ->money('PKR')
                     ->inlineLabel(),
                 TextEntry::make('farmer_amount')
+                    ->color(fn ($state) => $state > 0 ? 'success' : 'danger')
+                    ->money('PKR')
+                    ->inlineLabel(),
+                TextEntry::make('farmer_kudhi_amount')
+                    ->visible($this->calculation->kudhi && $this->calculation->kudhi > 0)
+                    ->color('success')
+                    ->money('PKR')
+                    ->inlineLabel(),
+                TextEntry::make('farmer_final_amount')
+                    ->visible($this->calculation->kudhi && $this->calculation->kudhi > 0)
                     ->color(fn ($state) => $state > 0 ? 'success' : 'danger')
                     ->money('PKR')
                     ->inlineLabel(),
