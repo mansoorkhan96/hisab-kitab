@@ -16,6 +16,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\TextInputColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 
@@ -28,7 +29,6 @@ class LedgerResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
-            // TODO: preselect current season
             Select::make('crop_season_id')
                 ->relationship('cropSeason', 'name')
                 ->searchable()
@@ -95,7 +95,10 @@ class LedgerResource extends Resource
                     ->summarize(Sum::make()->label('Total')->money('PKR')),
             ])
             ->filters([
-                //
+                SelectFilter::make('crop_season_id')
+                    ->label('Crop Season')
+                    ->default(CropSeason::where('is_current', true)->first()?->id)
+                    ->options(CropSeason::all()->pluck('name', 'id')),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

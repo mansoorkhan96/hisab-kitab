@@ -14,9 +14,8 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(CropSeason::class)->constrained();
             $table->foreignIdFor(Farmer::class)->constrained();
-            $table->string('total_wheat_sacks');
-            $table->unsignedInteger('kudhi')->nullable(); // TODO: rename
-            $table->unsignedInteger('kamdari')->nullable(); // TODO: rename
+            $table->decimal('kudhi_in_kgs', 12, 2)->nullable()->default(0); // TODO: rename
+            $table->decimal('kamdari_in_kgs', 12, 2)->nullable()->default(0); // TODO: rename
             $table->unsignedInteger('wheat_rate');
             $table->unsignedInteger('wheat_straw_rate')->nullable();
             $table->dateTime('finalized_at')->nullable();

@@ -12,12 +12,17 @@ use App\Models\Farmer;
 use App\Models\FarmerLoan;
 use App\Models\FarmingResource;
 use App\Models\Ledger;
+use App\Models\Tractor;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
     public $user;
+
+    public Tractor $tractorA;
+
+    public Tractor $tractorB;
 
     public $farmingResources;
 
@@ -30,12 +35,23 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
+        $this->tractorA = Tractor::factory()
+            ->for($this->user)
+            ->create(['title' => 'Driver: A']);
+
+        $this->tractorB = Tractor::factory()
+            ->for($this->user)
+            ->create(['title' => 'Driver: B']);
+
         $this->farmingResources = $this->seedFarmingResources($this->user);
 
         $this->cropSeason = CropSeason::factory()
             ->for($this->user)
             ->recycle($this->user)
-            ->create(['name' => 'Season-'.now()->year]);
+            ->create([
+                'name' => 'Season-'.now()->year,
+                'is_current' => true,
+            ]);
 
         $this->seedAshrafRind();
         $this->seedSadamLighari();
@@ -76,15 +92,24 @@ class DatabaseSeeder extends Seeder
                 ->create($loan)
         );
 
-        Calculation::factory()
+        $calculation = Calculation::factory()
             ->for($farmer)
             ->for($this->cropSeason)
             ->create([
-                'total_wheat_sacks' => '125/50',
-                'kudhi' => 1,
+                'kudhi_in_kgs' => 1,
                 'wheat_rate' => 9_700,
                 'wheat_straw_rate' => 458.1673306773,
             ]);
+
+        $calculation->threshings()->create([
+            'tractor_id' => $this->tractorA->id,
+            'total_wheat_sacks' => 100,
+        ]);
+
+        $calculation->threshings()->create([
+            'tractor_id' => $this->tractorB->id,
+            'total_wheat_sacks' => 25.5,
+        ]);
     }
 
     public function seedAshrafRind()
@@ -119,15 +144,19 @@ class DatabaseSeeder extends Seeder
                 ->create($loan)
         );
 
-        Calculation::factory()
+        $calculation = Calculation::factory()
             ->for($ashraf)
             ->for($this->cropSeason)
             ->create([
-                'total_wheat_sacks' => 70,
-                'kudhi' => 0,
+                'kudhi_in_kgs' => 0,
                 'wheat_rate' => 5250,
                 'wheat_straw_rate' => 310,
             ]);
+
+        $calculation->threshings()->create([
+            'tractor_id' => $this->tractorB->id,
+            'total_wheat_sacks' => 70,
+        ]);
     }
 
     public function seedFarmingResources(User $user)

@@ -9,21 +9,16 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('crop_seasons', function (Blueprint $table) {
+        Schema::create('tractors', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained();
-            $table->string('name');
-            $table->boolean('is_current')->default(false);
-            $table->unsignedInteger('wheat_rate')->nullable();
-            $table->unsignedInteger('wheat_straw_rate')->nullable();
+            $table->string('title');
             $table->timestamps();
-
-            $table->softDeletes();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('crop_seasons');
+        Schema::dropIfExists('tractors');
     }
 };

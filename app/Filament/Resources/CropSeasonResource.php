@@ -4,9 +4,6 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CropSeasonResource\Pages;
 use App\Models\CropSeason;
-use App\Models\FarmingResource;
-use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
@@ -20,7 +17,7 @@ class CropSeasonResource extends Resource
 {
     protected static ?string $model = CropSeason::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-sun';
 
     public static function form(Form $form): Form
     {
@@ -32,28 +29,10 @@ class CropSeasonResource extends Resource
                 Toggle::make('is_current')
                     ->label('Is Current Season')
                     ->default(true),
-
-                // Repeater::make('rates')
-                //     ->columnSpanFull()
-                //     ->columns(2)
-                //     ->default(
-                //         fn () => auth()->user()
-                //             ?->farmingResources
-                //             ?->map(fn (FarmingResource $farmingResource) => [
-                //                 'farming_resource_id' => $farmingResource->id,
-                //                 'rate' => 0,
-                //             ])
-                //     )
-                //     ->schema([
-                //         Select::make('farming_resource_id')
-                //             ->label('Implement / Fertilizer / Seed')
-                //             ->options(FarmingResource::whereUserId(auth()->id())->pluck('name', 'id'))
-                //             ->required(),
-
-                //         TextInput::make('rate')
-                //             ->numeric()
-                //             ->required(),
-                //     ]),
+                TextInput::make('wheat_rate')
+                    ->numeric(),
+                TextInput::make('wheat_straw_rate')
+                    ->numeric(),
             ]);
     }
 

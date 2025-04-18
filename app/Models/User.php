@@ -44,6 +44,11 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public function tractors(): HasMany
+    {
+        return $this->hasMany(Tractor::class);
+    }
+
     public function farmers(): HasMany
     {
         return $this->hasMany(Farmer::class);

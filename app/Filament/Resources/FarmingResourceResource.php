@@ -36,6 +36,7 @@ class FarmingResourceResource extends Resource
                     ->inline()
                     ->required(),
                 TextInput::make('rate')
+                    ->prefixIcon('heroicon-o-banknotes')
                     ->numeric()
                     ->required()
                     ->default(0),
@@ -49,7 +50,8 @@ class FarmingResourceResource extends Resource
                 TextColumn::make('name')->searchable(),
                 TextColumn::make('type')->searchable(),
                 TextColumn::make('quantity_unit')->searchable(),
-                TextColumn::make('rate'),
+                TextColumn::make('rate')
+                    ->money('PKR'),
             ])
             ->filters([
                 //

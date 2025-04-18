@@ -7,22 +7,22 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Calculation extends Model
+class Tractor extends Model
 {
     use HasFactory;
 
-    protected $casts = [
-        'finalized_at' => 'datetime',
-    ];
-
-    public function cropSeason(): BelongsTo
+    public static function booted(): void
     {
-        return $this->belongsTo(CropSeason::class);
+        static::creating(function (Tractor $tractor) {
+            if (empty($tractor->user_id)) {
+                $tractor->user_id = auth()->id();
+            }
+        });
     }
 
-    public function farmer(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(Farmer::class);
+        return $this->belongsTo(User::class);
     }
 
     public function threshings(): HasMany

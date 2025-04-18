@@ -3,6 +3,7 @@
 namespace App\Filament\Components;
 
 use App\Enums\FarmingResourceType;
+use App\Helpers\Converter;
 use App\Models\Calculation;
 use App\Models\FarmerLoan;
 use App\Models\Ledger;
@@ -26,45 +27,35 @@ class CalculationInfolist extends Component implements HasForms, HasInfolists
     #[Reactive]
     public Calculation $calculation;
 
-    #[Reactive]
-    public $thresher = null;
-
     public function infolist(Infolist $infolist): Infolist
     {
         // TODO: refactor to a class/value object
         $calculation = [];
-        $sacks = explode('/', $this->calculation->total_wheat_sacks);
 
-        $totalWeightInKgs = ($sacks[0] * 100) + Arr::get($sacks, 1, 0);
+        // $sacks = explode('/', $this->calculation->total_wheat_sacks);
+        $sacks = $this->calculation->threshings()->sum('total_wheat_sacks');
+
+        // $totalWeightInKgs = ($sacks[0] * 100) + Arr::get($sacks, 1, 0);
+        $totalWeightInKgs = $sacks * 100;
         $totalSacks = $totalWeightInKgs / 100;
 
         $calculation['total_wheat_sacks'] = $this->kgsToSacksString($totalWeightInKgs);
 
-        // Thresher
-
-        // TODO:temporary
-        if ($this->thresher) {
-            $thresherSacks = explode('/', $this->thresher);
-            $thresherInKgs = ($thresherSacks[0] * 100) + Arr::get($thresherSacks, 1, 0);
-        } else {
-            $thresherInKgs = $totalSacks * 10;
-        }
+        $thresherInKgs = $totalSacks * 10;
 
         $remainingWeightInKgs = $totalWeightInKgs - $thresherInKgs;
         $calculation['thresher'] = $this->kgsToSacksString($thresherInKgs);
         $calculation['remaining_after_thresher'] = $this->kgsToSacksString($remainingWeightInKgs);
 
         // Kudhi
-        $remainingWeightInKgs -= ($this->calculation->kudhi * 100);
-        $calculation['kudhi'] = $this->calculation->kudhi.' Borion';
+        $remainingWeightInKgs -= ($this->calculation->kudhi_in_kgs);
+        $calculation['kudhi'] = $this->calculation->kudhi_in_kgs.' KGs';
         $calculation['remaining_after_kudhi'] = $this->kgsToSacksString($remainingWeightInKgs);
 
-        // TODO: make it flexible
         // Kamdari
-        // $kamdari = $totalSacks * 5;
-        // $remainingWeightInKgs = $remainingWeightInKgs - $kamdari; // Kamdari
-        // $calculation['kamdari'] = $this->kgsToSacksString($kamdari);
-        // $calculation['remaining_after_kamdari'] = $this->kgsToSacksString($remainingWeightInKgs);
+        $remainingWeightInKgs -= ($this->calculation->kamdari_in_kgs);
+        $calculation['kamdari'] = $this->calculation->kamdari_in_kgs.' KGs';
+        $calculation['remaining_after_kamdari'] = $this->kgsToSacksString($remainingWeightInKgs);
 
         // Total amount
         $sackAmount = ($remainingWeightInKgs / 100) * $this->calculation->wheat_rate;
@@ -73,7 +64,7 @@ class CalculationInfolist extends Component implements HasForms, HasInfolists
         // Buh amount
         $buhAmount = ($totalSacks * 2.5) * $this->calculation->wheat_straw_rate;
         // TODO: temporary fix to not include remaining kgs
-        $buhAmount = ($sacks[0] * 2.5) * $this->calculation->wheat_straw_rate;
+        $buhAmount = ($sacks * 2.5) * $this->calculation->wheat_straw_rate;
         $calculation['buh_amount'] = $buhAmount;
 
         // Total amount
@@ -114,8 +105,8 @@ class CalculationInfolist extends Component implements HasForms, HasInfolists
         $calculation['landlord_amount'] = $dividedProfit;
         $calculation['farmer_amount'] = $farmerAmount;
 
-        if ($this->calculation->kudhi && $this->calculation->kudhi > 0) {
-            $calculation['farmer_kudhi_amount'] = $this->calculation->kudhi * $this->calculation->wheat_rate;
+        if ($this->calculation->kudhi_in_kgs && $this->calculation->kudhi_in_kgs > 0) {
+            $calculation['farmer_kudhi_amount'] = ($this->calculation->kudhi_in_kgs / 100) * $this->calculation->wheat_rate;
             $farmerAmount = $calculation['farmer_final_amount'] = $calculation['farmer_amount'] + $calculation['farmer_kudhi_amount'];
         }
 
@@ -144,11 +135,12 @@ class CalculationInfolist extends Component implements HasForms, HasInfolists
                     ->color('danger')
                     ->helperText('Baqi: '.$calculation['remaining_after_kudhi'])
                     ->inlineLabel(),
-                // TextEntry::make('kamdari')
-                //     ->prefix('-')
-                //     ->color('danger')
-                //     ->helperText('Baqi: '.$calculation['remaining_after_kamdari'])
-                //     ->inlineLabel(),
+                TextEntry::make('kamdari')
+                    ->visible($this->calculation->kamdari_in_kgs && $this->calculation->kamdari_in_kgs > 0)
+                    ->prefix('-')
+                    ->color('danger')
+                    ->helperText('Baqi: '.$calculation['remaining_after_kamdari'])
+                    ->inlineLabel(),
                 TextEntry::make('sack_amount')
                     ->label('Ann Amount')
                     ->color('success')
@@ -192,12 +184,12 @@ class CalculationInfolist extends Component implements HasForms, HasInfolists
                     ->money('PKR')
                     ->inlineLabel(),
                 TextEntry::make('farmer_kudhi_amount')
-                    ->visible($this->calculation->kudhi && $this->calculation->kudhi > 0)
+                    ->visible($this->calculation->kudhi_in_kgs && $this->calculation->kudhi_in_kgs > 0)
                     ->color('success')
                     ->money('PKR')
                     ->inlineLabel(),
                 TextEntry::make('farmer_final_amount')
-                    ->visible($this->calculation->kudhi && $this->calculation->kudhi > 0)
+                    ->visible($this->calculation->kudhi_in_kgs && $this->calculation->kudhi_in_kgs > 0)
                     ->color(fn ($state) => $state > 0 ? 'success' : 'danger')
                     ->money('PKR')
                     ->inlineLabel(),
@@ -215,15 +207,7 @@ class CalculationInfolist extends Component implements HasForms, HasInfolists
 
     protected function kgsToSacksString(int|float $kgs): string
     {
-        return str(floor($kgs / 100))
-            ->append(' Borion')
-            ->when(
-                ($remainingKgs = fmod($kgs, 100)) > 0,
-                fn ($str) => $str
-                    ->append(', ')
-                    ->append($remainingKgs)
-                    ->append(' KGs')
-            );
+        return Converter::kgsToSacksString($kgs);
     }
 
     public function render()
