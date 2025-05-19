@@ -18,6 +18,8 @@ class FarmerLoansTableWidget extends BaseWidget
     #[Reactive]
     public $farmer_id;
 
+    public bool $showActions = true;
+
     public function table(Table $table): Table
     {
         return FarmerLoanResource::table($table)
@@ -26,6 +28,7 @@ class FarmerLoansTableWidget extends BaseWidget
             ->query(FarmerLoan::where('farmer_id', $this->farmer_id))
             ->headerActions([
                 Action::make('Add new')
+                    ->visible(fn () => $this->showActions)
                     ->form(fn (Form $form) => FarmerLoanResource::form($form)->columns(2))
                     ->action(function (array $data) {
                         $data['farmer_id'] = $this->farmer_id;
@@ -35,6 +38,7 @@ class FarmerLoansTableWidget extends BaseWidget
                         Notification::make()->success()->body('Farmer Loan was created!');
                     }),
             ])
+            ->bulkActions([])
             ->paginated(false);
     }
 }

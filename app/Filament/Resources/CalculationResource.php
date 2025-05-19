@@ -145,9 +145,8 @@ class CalculationResource extends Resource
                                                 ->visible(fn (string $context) => $context === 'create'),
                                             Livewire::make(
                                                 CalculationInfolist::class,
-                                                fn (EditCalculation $livewire, Get $get) => [
+                                                fn (EditCalculation $livewire) => [
                                                     'calculation' => $livewire->getRecord(),
-                                                    'thresher' => $get('thresher'),
                                                 ]
                                             )
                                                 ->key('Calculation-Infolist')

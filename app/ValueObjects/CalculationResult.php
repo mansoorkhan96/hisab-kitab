@@ -76,7 +76,7 @@ readonly class CalculationResult
         $amount -= $fertilizerExpenseAmount;
 
         // Machine Amount
-        $machineAmount = ($amount / 3);
+        $machineAmount = round($amount / 3);
         $amount -= $machineAmount;
 
         // Harr & Bij
@@ -105,6 +105,7 @@ readonly class CalculationResult
             ->whereNull('paid_at')
             ->where('farmer_id', $calculation->farmer_id)
             ->sum('amount');
+
         $farmerAmount -= $farmerLoan;
 
         return new self(
@@ -125,7 +126,7 @@ readonly class CalculationResult
             implementAndSeedExpenseAmount: $implementAndSeedExpenseAmount,
             remainingAfterImplementAndSeedExpenseAmount: Number::currency($amount, 'PKR'),
             landlordAmount: $dividedProfit,
-            farmerAmount: $farmerAmount + $farmerLoan,
+            farmerAmount: $dividedProfit,
             farmerKudhiAmount: $farmerKudhiAmount,
             farmerFinalAmount: $farmerFinalAmount,
             farmerLoan: $farmerLoan,

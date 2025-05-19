@@ -57,7 +57,8 @@ class LedgersTableWidget extends BaseWidget
                     }),
             ])
             ->columns([
-                TextColumn::make('farmingResource.name'),
+                TextColumn::make('farmingResource.name')
+                    ->label('Item'),
                 TextColumn::make('quantity')
                     ->numeric()
                     ->suffix(fn (Ledger $record) => $record->quantity_with_unit)

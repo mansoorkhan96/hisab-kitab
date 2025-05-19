@@ -70,7 +70,7 @@ class CalculationInfolist extends Component implements HasForms, HasInfolists
                     ->helperText('Remaning: '.$calculation->remainingAfterFertilizerExpenseAmount)
                     ->inlineLabel(),
                 TextEntry::make('machineAmount')
-                    ->label('Machine Amount')
+                    ->label('Machine Amt')
                     ->color('info')
                     ->money('PKR')
                     ->helperText('Remaning: '.$calculation->remainingAfterMachineAmount)
@@ -83,19 +83,24 @@ class CalculationInfolist extends Component implements HasForms, HasInfolists
                     ->helperText('Remaning: '.$calculation->remainingAfterImplementAndSeedExpenseAmount)
                     ->inlineLabel(),
                 TextEntry::make('landlordAmount')
+                    ->label('Landlord Amt')
                     ->color(fn ($state) => $state > 0 ? 'success' : 'danger')
                     ->money('PKR')
                     ->inlineLabel(),
                 TextEntry::make('farmerAmount')
+                    ->label('Farmer Amt')
                     ->color(fn ($state) => $state > 0 ? 'success' : 'danger')
                     ->money('PKR')
                     ->inlineLabel(),
                 TextEntry::make('farmerKudhiAmount')
+                    ->label('Kudhi Amount')
                     ->visible($this->calculation->kudhi_in_kgs && $this->calculation->kudhi_in_kgs > 0)
+                    ->prefix('+')
                     ->color('success')
                     ->money('PKR')
                     ->inlineLabel(),
                 TextEntry::make('farmerFinalAmount')
+                    ->label('Farmer Total')
                     ->visible($this->calculation->kudhi_in_kgs && $this->calculation->kudhi_in_kgs > 0)
                     ->color(fn ($state) => $state > 0 ? 'success' : 'danger')
                     ->money('PKR')

@@ -32,11 +32,10 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('admin')
+            ->path('/admin')
             ->login()
             ->profile()
             ->sidebarFullyCollapsibleOnDesktop()
-            ->viteTheme('resources/css/filament/admin/theme.css')
             ->colors([
                 'primary' => Color::Teal,
             ])

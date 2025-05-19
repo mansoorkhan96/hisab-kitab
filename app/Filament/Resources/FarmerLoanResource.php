@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\FarmerLoanResource\Pages;
+use App\Filament\Resources\FarmerLoanResource\Pages\ListFarmerLoans;
 use App\Filament\Resources\FarmerResource\RelationManagers\FarmerLoansRelationManager;
 use App\Models\FarmerLoan;
 use Filament\Forms\Components\Textarea;
@@ -69,7 +70,7 @@ class FarmerLoanResource extends Resource
             ->actions([
                 Action::make('mark_as_paid')
                     ->label('Mark As Paid')
-                    ->visible(fn (FarmerLoan $farmerLoan) => empty($farmerLoan->paid_at))
+                    ->visible(fn (FarmerLoan $farmerLoan, $livewire) => empty($farmerLoan->paid_at) && ($livewire instanceof FarmerLoansRelationManager || $livewire instanceof ListFarmerLoans))
                     ->button()
                     ->size(ActionSize::ExtraSmall)
                     ->requiresConfirmation()
