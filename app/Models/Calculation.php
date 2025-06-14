@@ -11,10 +11,6 @@ class Calculation extends Model
 {
     use HasFactory;
 
-    protected $casts = [
-        'finalized_at' => 'datetime',
-    ];
-
     public function cropSeason(): BelongsTo
     {
         return $this->belongsTo(CropSeason::class);
@@ -28,5 +24,10 @@ class Calculation extends Model
     public function threshings(): HasMany
     {
         return $this->hasMany(Threshing::class);
+    }
+
+    public function loanPayments(): HasMany
+    {
+        return $this->hasMany(LoanPayment::class);
     }
 }

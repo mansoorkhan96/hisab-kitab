@@ -4,7 +4,7 @@ use App\Models\Calculation;
 use App\ValueObjects\CalculationResult;
 use Illuminate\Support\Facades\Route;
 
-Route::redirect('/login', 'admin/login')->name('login');
+Route::redirect('/panel/login', '/login')->name('login');
 
 Route::get('/calculation/print/{calculation}', function (Calculation $calculation) {
     return view('calculation-print', [

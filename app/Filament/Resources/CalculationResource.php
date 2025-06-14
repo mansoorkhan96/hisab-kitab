@@ -7,12 +7,12 @@ use App\Filament\Components\CalculationInfolist;
 use App\Filament\Resources\CalculationResource\Pages;
 use App\Filament\Resources\CalculationResource\Pages\EditCalculation;
 use App\Filament\Resources\CalculationResource\RelationManagers\ThreshingsRelationManager;
-use App\Filament\Widgets\FarmerLoansTableWidget;
+use App\Filament\Resources\FarmerResource\Widgets\LoanWidget;
 use App\Filament\Widgets\LedgersTableWidget;
 use App\Models\Calculation;
 use App\Models\CropSeason;
+use App\Models\Farmer;
 use Filament\Forms;
-use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Livewire;
 use Filament\Forms\Components\Placeholder;
@@ -29,7 +29,6 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Illuminate\Support\HtmlString;
 
 class CalculationResource extends Resource
 {
@@ -93,49 +92,9 @@ class CalculationResource extends Resource
                                     ->prefixIcon('heroicon-m-scale')
                                     ->numeric()
                                     ->live(),
-                                Toggle::make('hide_details')
+                                Toggle::make('show_details')
                                     ->live()
                                     ->dehydrated(false),
-                                Placeholder::make('toggle_finalized_at_placeholder')
-                                    ->label(
-                                        fn (Calculation $calculation) => filled($calculation->finalized_at)
-                                            ? 'Calculation was finalized on: '.$calculation->finalized_at->format('F j, Y')
-                                            : ''
-                                    )
-                                    ->helperText('Finalizing the calculation declares that the future farmer loans should not be added to this calculation.')
-                                    ->key('toggle_finalized_at_placeholder_key')
-                                    ->hintAction(
-                                        Action::make('toggle_finalized_at')
-                                            ->button()
-                                            ->requiresConfirmation(fn (Calculation $calculation) => filled($calculation->finalized_at))
-                                            ->modalDescription(
-                                                fn (Calculation $calculation) => filled($calculation->finalized_at)
-                                                    ? new HtmlString('After reopening this calculation, all of the '.$calculation->farmer->name."'s loans lended after ".$calculation->finalized_at->format('F j, Y').' will be added to this calculation!<br><br> Are you sure you want reopen this calculation?')
-                                                    : '')
-                                            ->label(
-                                                fn (Calculation $calculation) => empty($calculation->finalized_at)
-                                                    ? 'Finalize Calculation'
-                                                    : 'Re-Open Calculation'
-                                            )
-                                            ->color(
-                                                fn (Calculation $calculation) => empty($calculation->finalized_at)
-                                                    ? 'success'
-                                                    : 'warning'
-                                            )
-                                            ->icon(
-                                                fn (Calculation $calculation) => empty($calculation->finalized_at)
-                                                    ? 'heroicon-m-check-badge'
-                                                    : 'heroicon-m-book-open'
-                                            )
-                                            ->visible(fn ($context) => $context !== 'create')
-                                            ->action(function (Calculation $calculation) {
-                                                if (empty($calculation->finalized_at)) {
-                                                    $calculation->update(['finalized_at' => now()]);
-                                                } else {
-                                                    $calculation->update(['finalized_at' => null]);
-                                                }
-                                            })
-                                    ),
                                 Split::make([
                                     Section::make('Calculation')
                                         ->schema([
@@ -158,19 +117,21 @@ class CalculationResource extends Resource
                                             'crop_season_id' => $get('crop_season_id'),
                                             'farmingResourceTypes' => [FarmingResourceType::Fertilizer, FarmingResourceType::Pesticide],
                                             'tableHeading' => 'Dawa & Color',
-                                            'groupsOnly' => $get('hide_details'),
+                                            'groupsOnly' => ! $get('show_details'),
                                         ])->key('dawa-color'),
                                         Livewire::make(LedgersTableWidget::class, fn (Get $get) => [
                                             'farmer_id' => $get('farmer_id'),
                                             'crop_season_id' => $get('crop_season_id'),
                                             'farmingResourceTypes' => [FarmingResourceType::Implement, FarmingResourceType::Seed],
                                             'tableHeading' => 'Harr & Bij',
-                                            'groupsOnly' => $get('hide_details'),
+                                            'groupsOnly' => ! $get('show_details'),
                                         ])->key('harr-bij'),
                                         Livewire::make(
-                                            FarmerLoansTableWidget::class,
-                                            fn (Get $get) => ['farmer_id' => $get('farmer_id')]
-                                        )->key('farmer-loan'),
+                                            LoanWidget::class,
+                                            fn (Get $get) => ['record' => Farmer::find($get('farmer_id'))]
+                                        )
+                                            ->visible(fn (string $context) => $context === 'edit')
+                                            ->key('farmer-loan'),
                                     ]),
                                 ])
                                     ->from('md')

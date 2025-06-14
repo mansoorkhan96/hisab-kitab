@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\FarmerResource\Pages;
 use App\Filament\Resources\FarmerResource\RelationManagers\FarmerLoansRelationManager;
 use App\Filament\Resources\FarmerResource\RelationManagers\LedgersRelationManager;
+use App\Filament\Resources\FarmerResource\RelationManagers\LoanPaymentsRelationManager;
 use App\Models\Farmer;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -52,6 +53,7 @@ class FarmerResource extends Resource
         return [
             LedgersRelationManager::class,
             FarmerLoansRelationManager::class,
+            LoanPaymentsRelationManager::class,
         ];
     }
 

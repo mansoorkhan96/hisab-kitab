@@ -25,4 +25,9 @@ class Farmer extends Model
     {
         return $this->hasMany(FarmerLoan::class);
     }
+
+    public function loanPayments(): HasMany
+    {
+        return $this->hasMany(LoanPayment::class);
+    }
 }

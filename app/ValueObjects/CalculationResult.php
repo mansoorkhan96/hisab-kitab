@@ -8,6 +8,7 @@ use App\Models\Calculation;
 use App\Models\FarmerLoan;
 use App\Models\Ledger;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Number;
 
 readonly class CalculationResult
@@ -34,7 +35,9 @@ readonly class CalculationResult
         public ?float $farmerKudhiAmount,
         public ?float $farmerFinalAmount,
         public float $farmerLoan,
-        public float $farmerProfitLost,
+        public float $farmerProfitLoss,
+        public float $loanPaymentsAmount,
+        public ?Collection $loanPayments,
     ) {}
 
     public function toArray(): array
@@ -100,13 +103,25 @@ readonly class CalculationResult
             $farmerAmount = $farmerFinalAmount = $farmerAmount + $farmerKudhiAmount;
         }
 
-        // Substract Farmer loan
         $farmerLoan = FarmerLoan::query()
-            ->whereNull('paid_at')
             ->where('farmer_id', $calculation->farmer_id)
             ->sum('amount');
 
-        $farmerAmount -= $farmerLoan;
+        $loanPaymentsAmount = $calculation
+            ->loanPayments()
+            ->where('farmer_id', $calculation->farmer_id)
+            ->sum('amount');
+
+        $farmerLoan -= $loanPaymentsAmount;
+
+        // $farmerAmount -= $farmerLoan;
+
+        $loanPayments = $calculation
+            ->loanPayments()
+            ->where('farmer_id', $calculation->farmer_id)
+            ->get();
+
+        $farmerAmount -= $loanPaymentsAmount;
 
         return new self(
             totalWheatSacks: Converter::kgsToSacksString($totalWeightInKgs),
@@ -130,7 +145,9 @@ readonly class CalculationResult
             farmerKudhiAmount: $farmerKudhiAmount,
             farmerFinalAmount: $farmerFinalAmount,
             farmerLoan: $farmerLoan,
-            farmerProfitLost: $farmerAmount,
+            farmerProfitLoss: $farmerAmount,
+            loanPaymentsAmount: $loanPaymentsAmount,
+            loanPayments: $loanPayments,
         );
     }
 }

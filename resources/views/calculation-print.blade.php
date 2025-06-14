@@ -88,7 +88,10 @@
                     <x-slot name="heading">
                         Hisab
                     </x-slot>
-                    @livewire(App\Filament\Components\CalculationInfolist::class, ['calculation' => $calculation])
+                    @livewire(App\Filament\Components\CalculationInfolist::class, [
+                        'calculation' => $calculation,
+                        'printMode' => true,
+                    ])
                 </x-filament::section>
             </div>
 
@@ -114,9 +117,8 @@
                 </div>
 
                 <div class="mt-3">
-                    @livewire(App\Filament\Widgets\FarmerLoansTableWidget::class, [
-                        'farmer_id' => $calculation->farmer_id,
-                        'showActions' => false,
+                    @livewire(App\Filament\Resources\FarmerResource\Widgets\LoanWidget::class, [
+                        'record' => $calculation->farmer,
                     ])
                 </div>
             </div>
