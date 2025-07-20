@@ -2,11 +2,11 @@
 
 namespace App\Filament\Components;
 
-use Filament\Schemas\Schema;
-use Filament\Actions\Action;
-use Filament\Support\Enums\Width;
 use App\Models\Calculation;
 use App\ValueObjects\CalculationResult;
+use Filament\Actions\Action;
+use Filament\Actions\Concerns\InteractsWithActions;
+use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -15,11 +15,16 @@ use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Concerns\InteractsWithInfolists;
 use Filament\Infolists\Contracts\HasInfolists;
+use Filament\Schemas\Schema;
+use Filament\Support\Colors\Color;
+use Filament\Support\Enums\Width;
+use Filament\Support\Icons\Heroicon;
 use Livewire\Attributes\Reactive;
 use Livewire\Component;
 
-class CalculationInfolist extends Component implements HasForms, HasInfolists
+class CalculationInfolist extends Component implements HasActions, HasForms, HasInfolists
 {
+    use InteractsWithActions;
     use InteractsWithForms;
     use InteractsWithInfolists;
 
@@ -123,12 +128,15 @@ class CalculationInfolist extends Component implements HasForms, HasInfolists
                             ->prefix('-')
                             ->money('PKR'),
                     ])
-                    ->helperText('Add loan payments that are deducted from current calculation.')
+                    ->aboveContent('Subtract Farmer Loan from calculation profit.')
                     ->hintActions([
-                        Action::make('add_loan_payment')
-                            ->icon('heroicon-m-plus')
+                        Action::make('subtract_loan')
+                            ->disabled(fn () => $calculation->farmerProfitLoss <= 0)
+                            ->tooltip(fn () => $calculation->farmerProfitLoss <= 0 ? 'Can\'t substract loan, farmer is already in loss' : '')
+                            ->icon(fn () => Heroicon::Minus)
                             ->button()
-                            ->label('Add Loan Payment')
+                            ->color(Color::Red)
+                            ->label('Subtract Loan')
                             ->modalWidth(Width::ScreenSmall)
                             ->schema([
                                 TextInput::make('amount')
@@ -136,15 +144,18 @@ class CalculationInfolist extends Component implements HasForms, HasInfolists
                                     ->columnSpanFull()
                                     ->required()
                                     ->numeric()
-                                    ->minValue(0),
+                                    ->minValue(0)
+                                    ->maxValue(fn () => $calculation->farmerProfitLoss > 0 ? $calculation->farmerProfitLoss : 0),
                                 Textarea::make('notes')
                                     ->label('Notes')
                                     ->columnSpanFull(),
                             ])
-                            ->action(function (array $data) {
+                            ->action(function (array $data, self $livewire) {
                                 $data['farmer_id'] = $this->calculation->farmer_id;
 
                                 $this->calculation->loanPayments()->create($data);
+
+                                $livewire->dispatch('$refresh');
                             }),
                     ]),
                 TextEntry::make('loanPaymentsAmount')

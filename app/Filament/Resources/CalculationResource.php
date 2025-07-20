@@ -2,37 +2,34 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Schemas\Schema;
-use Filament\Schemas\Components\Tabs;
-use Filament\Schemas\Components\Tabs\Tab;
-use Filament\Schemas\Components\Utilities\Set;
-use Filament\Schemas\Components\Utilities\Get;
-use Filament\Schemas\Components\Flex;
-use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Livewire;
-use Filament\Schemas\Components\Group;
-use Filament\Actions\EditAction;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use App\Filament\Resources\CalculationResource\Pages\ListCalculations;
-use App\Filament\Resources\CalculationResource\Pages\CreateCalculation;
 use App\Enums\FarmingResourceType;
 use App\Filament\Components\CalculationInfolist;
-use App\Filament\Resources\CalculationResource\Pages;
+use App\Filament\Resources\CalculationResource\Pages\CreateCalculation;
 use App\Filament\Resources\CalculationResource\Pages\EditCalculation;
+use App\Filament\Resources\CalculationResource\Pages\ListCalculations;
 use App\Filament\Resources\CalculationResource\RelationManagers\ThreshingsRelationManager;
 use App\Filament\Resources\FarmerResource\Widgets\LoanWidget;
 use App\Filament\Widgets\LedgersTableWidget;
 use App\Models\Calculation;
 use App\Models\CropSeason;
 use App\Models\Farmer;
-use Filament\Forms;
-use Filament\Forms\Components\Placeholder;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Components\Flex;
+use Filament\Schemas\Components\Group;
+use Filament\Schemas\Components\Livewire;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -41,7 +38,7 @@ class CalculationResource extends Resource
 {
     protected static ?string $model = Calculation::class;
 
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-calculator';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-calculator';
 
     public static function form(Schema $schema): Schema
     {
@@ -105,8 +102,7 @@ class CalculationResource extends Resource
                                 Flex::make([
                                     Section::make('Calculation')
                                         ->schema([
-                                            Placeholder::make('alert')
-                                                ->disabled()
+                                            TextEntry::make('alert')
                                                 ->label('Please save the form to see the calucation...')
                                                 ->visible(fn (string $context) => $context === 'create'),
                                             Livewire::make(

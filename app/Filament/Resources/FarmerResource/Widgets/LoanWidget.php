@@ -15,6 +15,10 @@ class LoanWidget extends BaseWidget
 
     public array|int|null $columns = 1;
 
+    protected $listeners = [
+        '$refresh' => '$refresh',
+    ];
+
     protected function getStats(): array
     {
         $loanAmount = FarmerLoan::query()
