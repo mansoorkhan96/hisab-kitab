@@ -2,6 +2,20 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Flex;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Livewire;
+use Filament\Schemas\Components\Group;
+use Filament\Actions\EditAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use App\Filament\Resources\CalculationResource\Pages\ListCalculations;
+use App\Filament\Resources\CalculationResource\Pages\CreateCalculation;
 use App\Enums\FarmingResourceType;
 use App\Filament\Components\CalculationInfolist;
 use App\Filament\Resources\CalculationResource\Pages;
@@ -13,17 +27,10 @@ use App\Models\Calculation;
 use App\Models\CropSeason;
 use App\Models\Farmer;
 use Filament\Forms;
-use Filament\Forms\Components\Group;
-use Filament\Forms\Components\Livewire;
 use Filament\Forms\Components\Placeholder;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Split;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Form;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -34,18 +41,18 @@ class CalculationResource extends Resource
 {
     protected static ?string $model = Calculation::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-calculator';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-calculator';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Tabs::make('tabs')
+        return $schema
+            ->components([
+                Tabs::make('tabs')
                     ->contained(true)
                     ->columnSpanFull()
                     ->columns(2)
                     ->schema([
-                        Forms\Components\Tabs\Tab::make('Calculation')
+                        Tab::make('Calculation')
                             ->schema([
                                 Select::make('crop_season_id')
                                     ->live()
@@ -95,7 +102,7 @@ class CalculationResource extends Resource
                                 Toggle::make('show_details')
                                     ->live()
                                     ->dehydrated(false),
-                                Split::make([
+                                Flex::make([
                                     Section::make('Calculation')
                                         ->schema([
                                             Placeholder::make('alert')
@@ -137,7 +144,7 @@ class CalculationResource extends Resource
                                     ->from('md')
                                     ->columnSpanFull(),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Threshors')
+                        Tab::make('Threshors')
                             ->visible(fn (string $context) => $context === 'edit')
                             ->columnSpanFull()
                             ->schema([
@@ -171,12 +178,12 @@ class CalculationResource extends Resource
                     ->default(CropSeason::where('is_current', true)->first()?->id)
                     ->options(CropSeason::all()->pluck('name', 'id')),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -191,9 +198,9 @@ class CalculationResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCalculations::route('/'),
-            'create' => Pages\CreateCalculation::route('/create'),
-            'edit' => Pages\EditCalculation::route('/{record}/edit'),
+            'index' => ListCalculations::route('/'),
+            'create' => CreateCalculation::route('/create'),
+            'edit' => EditCalculation::route('/{record}/edit'),
         ];
     }
 }

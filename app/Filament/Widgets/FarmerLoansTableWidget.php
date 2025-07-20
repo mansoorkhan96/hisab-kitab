@@ -2,11 +2,11 @@
 
 namespace App\Filament\Widgets;
 
+use Filament\Actions\Action;
+use Filament\Schemas\Schema;
 use App\Filament\Resources\FarmerLoanResource;
 use App\Models\FarmerLoan;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
-use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
 use Livewire\Attributes\Reactive;
@@ -29,7 +29,7 @@ class FarmerLoansTableWidget extends BaseWidget
             ->headerActions([
                 Action::make('Add new')
                     ->visible(fn () => $this->showActions)
-                    ->form(fn (Form $form) => FarmerLoanResource::form($form)->columns(2))
+                    ->schema(fn (Schema $schema) => FarmerLoanResource::form($schema)->columns(2))
                     ->action(function (array $data) {
                         $data['farmer_id'] = $this->farmer_id;
 
@@ -38,7 +38,7 @@ class FarmerLoansTableWidget extends BaseWidget
                         Notification::make()->success()->body('Farmer Loan was created!');
                     }),
             ])
-            ->bulkActions([])
+            ->toolbarActions([])
             ->paginated(false);
     }
 }

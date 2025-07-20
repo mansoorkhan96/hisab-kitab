@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\FarmerResource\Pages;
 
+use Filament\Actions\DeleteAction;
 use App\Filament\Resources\FarmerResource;
 use App\Filament\Resources\FarmerResource\Widgets\LoanWidget;
 use Filament\Actions;
@@ -14,7 +15,7 @@ class EditFarmer extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            DeleteAction::make(),
         ];
     }
 

@@ -13,7 +13,7 @@ class LoanWidget extends BaseWidget
 {
     public ?Model $record = null;
 
-    public int $columns = 1;
+    public array|int|null $columns = 1;
 
     protected function getStats(): array
     {

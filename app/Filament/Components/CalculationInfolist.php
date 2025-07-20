@@ -2,19 +2,19 @@
 
 namespace App\Filament\Components;
 
+use Filament\Schemas\Schema;
+use Filament\Actions\Action;
+use Filament\Support\Enums\Width;
 use App\Models\Calculation;
 use App\ValueObjects\CalculationResult;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Infolists\Components\Actions\Action;
 use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Concerns\InteractsWithInfolists;
 use Filament\Infolists\Contracts\HasInfolists;
-use Filament\Infolists\Infolist;
-use Filament\Support\Enums\MaxWidth;
 use Livewire\Attributes\Reactive;
 use Livewire\Component;
 
@@ -28,11 +28,11 @@ class CalculationInfolist extends Component implements HasForms, HasInfolists
 
     public bool $printMode = false;
 
-    public function infolist(Infolist $infolist): Infolist
+    public function infolist(Schema $schema): Schema
     {
         $calculation = CalculationResult::make($this->calculation);
 
-        return $infolist
+        return $schema
             ->state($calculation->toArray())
             ->schema([
                 TextEntry::make('totalWheatSacks')
@@ -129,8 +129,8 @@ class CalculationInfolist extends Component implements HasForms, HasInfolists
                             ->icon('heroicon-m-plus')
                             ->button()
                             ->label('Add Loan Payment')
-                            ->modalWidth(MaxWidth::ScreenSmall)
-                            ->form([
+                            ->modalWidth(Width::ScreenSmall)
+                            ->schema([
                                 TextInput::make('amount')
                                     ->label('Amount')
                                     ->columnSpanFull()

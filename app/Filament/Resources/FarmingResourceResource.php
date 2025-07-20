@@ -2,6 +2,13 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Schemas\Schema;
+use Filament\Actions\EditAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use App\Filament\Resources\FarmingResourceResource\Pages\ListFarmingResources;
+use App\Filament\Resources\FarmingResourceResource\Pages\CreateFarmingResource;
+use App\Filament\Resources\FarmingResourceResource\Pages\EditFarmingResource;
 use App\Enums\FarmingResourceType;
 use App\Enums\QuantityUnit;
 use App\Filament\Resources\FarmingResourceResource\Pages;
@@ -9,7 +16,6 @@ use App\Models\FarmingResource;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ToggleButtons;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -19,12 +25,12 @@ class FarmingResourceResource extends Resource
 {
     protected static ?string $model = FarmingResource::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 TextInput::make('name')
                     // ->unique(ignoreRecord: true) TODO:
                     ->required(),
@@ -56,12 +62,12 @@ class FarmingResourceResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ])
             ->defaultSort('name');
@@ -77,9 +83,9 @@ class FarmingResourceResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListFarmingResources::route('/'),
-            'create' => Pages\CreateFarmingResource::route('/create'),
-            'edit' => Pages\EditFarmingResource::route('/{record}/edit'),
+            'index' => ListFarmingResources::route('/'),
+            'create' => CreateFarmingResource::route('/create'),
+            'edit' => EditFarmingResource::route('/{record}/edit'),
         ];
     }
 }

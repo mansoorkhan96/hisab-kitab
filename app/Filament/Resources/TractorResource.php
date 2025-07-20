@@ -2,11 +2,17 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Schemas\Schema;
+use Filament\Actions\EditAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use App\Filament\Resources\TractorResource\Pages\ListTractors;
+use App\Filament\Resources\TractorResource\Pages\CreateTractor;
+use App\Filament\Resources\TractorResource\Pages\EditTractor;
 use App\Filament\Resources\CalculationResource\RelationManagers\ThreshingsRelationManager;
 use App\Filament\Resources\TractorResource\Pages;
 use App\Models\Tractor;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -16,12 +22,12 @@ class TractorResource extends Resource
 {
     protected static ?string $model = Tractor::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-truck';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-truck';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 TextInput::make('title')
                     ->required()
                     ->columnSpanFull()
@@ -39,12 +45,12 @@ class TractorResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -59,9 +65,9 @@ class TractorResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListTractors::route('/'),
-            'create' => Pages\CreateTractor::route('/create'),
-            'edit' => Pages\EditTractor::route('/{record}/edit'),
+            'index' => ListTractors::route('/'),
+            'create' => CreateTractor::route('/create'),
+            'edit' => EditTractor::route('/{record}/edit'),
         ];
     }
 }

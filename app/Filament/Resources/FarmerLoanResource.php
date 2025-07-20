@@ -2,12 +2,19 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Schemas\Schema;
+use Filament\Actions\EditAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use App\Filament\Resources\FarmerLoanResource\Pages\ListFarmerLoans;
+use App\Filament\Resources\FarmerLoanResource\Pages\CreateFarmerLoan;
+use App\Filament\Resources\FarmerLoanResource\Pages\EditFarmerLoan;
 use App\Filament\Resources\FarmerLoanResource\Pages;
 use App\Filament\Resources\FarmerResource\RelationManagers\FarmerLoansRelationManager;
 use App\Models\FarmerLoan;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\Summarizers\Sum;
@@ -18,12 +25,12 @@ class FarmerLoanResource extends Resource
 {
     protected static ?string $model = FarmerLoan::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 TextInput::make('amount')
                     ->numeric()
                     ->required(),
@@ -49,15 +56,15 @@ class FarmerLoanResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make()
+            ->recordActions([
+                EditAction::make()
                     ->visible(fn ($livewire) => $livewire instanceof FarmerLoansRelationManager),
-                Tables\Actions\DeleteAction::make()
+                DeleteAction::make()
                     ->visible(fn ($livewire) => $livewire instanceof FarmerLoansRelationManager),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -77,9 +84,9 @@ class FarmerLoanResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListFarmerLoans::route('/'),
-            'create' => Pages\CreateFarmerLoan::route('/create'),
-            'edit' => Pages\EditFarmerLoan::route('/{record}/edit'),
+            'index' => ListFarmerLoans::route('/'),
+            'create' => CreateFarmerLoan::route('/create'),
+            'edit' => EditFarmerLoan::route('/{record}/edit'),
         ];
     }
 }

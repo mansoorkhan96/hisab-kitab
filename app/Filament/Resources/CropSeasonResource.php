@@ -2,11 +2,17 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Schemas\Schema;
+use Filament\Actions\EditAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use App\Filament\Resources\CropSeasonResource\Pages\ListCropSeasons;
+use App\Filament\Resources\CropSeasonResource\Pages\CreateCropSeason;
+use App\Filament\Resources\CropSeasonResource\Pages\EditCropSeason;
 use App\Filament\Resources\CropSeasonResource\Pages;
 use App\Models\CropSeason;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -17,12 +23,12 @@ class CropSeasonResource extends Resource
 {
     protected static ?string $model = CropSeason::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-sun';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-sun';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 TextInput::make('name')
                     ->unique(ignoreRecord: true)
                     ->required(),
@@ -46,12 +52,12 @@ class CropSeasonResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ])
             ->defaultSort('name', 'desc');
@@ -67,9 +73,9 @@ class CropSeasonResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCropSeasons::route('/'),
-            'create' => Pages\CreateCropSeason::route('/create'),
-            'edit' => Pages\EditCropSeason::route('/{record}/edit'),
+            'index' => ListCropSeasons::route('/'),
+            'create' => CreateCropSeason::route('/create'),
+            'edit' => EditCropSeason::route('/{record}/edit'),
         ];
     }
 }

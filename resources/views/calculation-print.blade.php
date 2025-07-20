@@ -19,6 +19,7 @@
 
     @vite('resources/css/app.css')
     @filamentStyles()
+
     @filamentScripts()
 
     <style>

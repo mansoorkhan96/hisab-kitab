@@ -2,8 +2,8 @@
 
 namespace App\Filament\Widgets;
 
+use Filament\Actions\Action;
 use App\Models\Ledger;
-use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\TextInputColumn;

@@ -2,12 +2,20 @@
 
 namespace App\Filament\Resources\CalculationResource\RelationManagers;
 
+use Filament\Schemas\Schema;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Actions\CreateAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
 use App\Filament\Resources\TractorResource\Pages\EditTractor;
 use App\Helpers\Converter;
 use App\Models\CropSeason;
 use App\Models\Threshing;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Columns\Summarizers\Sum;
@@ -23,14 +31,14 @@ class ThreshingsRelationManager extends RelationManager
 {
     protected static string $relationship = 'threshings';
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Select::make('tractor_id')
+        return $schema
+            ->components([
+                Select::make('tractor_id')
                     ->relationship('tractor', 'title')
                     ->required(),
-                Forms\Components\TextInput::make('total_wheat_sacks')
+                TextInput::make('total_wheat_sacks')
                     ->label('Batai')
                     ->required()
                     ->numeric()
@@ -46,8 +54,8 @@ class ThreshingsRelationManager extends RelationManager
                 return $query->with('calculation');
             })
             ->columns([
-                Tables\Columns\TextColumn::make('tractor.title'),
-                Tables\Columns\TextColumn::make('total_wheat_sacks')
+                TextColumn::make('tractor.title'),
+                TextColumn::make('total_wheat_sacks')
                     ->label('Batai')
                     ->suffix(' Bori')
                     ->sortable()
@@ -60,7 +68,7 @@ class ThreshingsRelationManager extends RelationManager
                             return Converter::kgsToSacksString($totalBataiInKgs);
                         }),
                     ),
-                Tables\Columns\TextColumn::make('charges')
+                TextColumn::make('charges')
                     ->label('Charges')
                     ->getStateUsing(function (Threshing $record) {
                         $thresherInKgs = $record->total_wheat_sacks * 10;
@@ -76,7 +84,7 @@ class ThreshingsRelationManager extends RelationManager
                             return Converter::kgsToSacksString($thresherInKgs);
                         }),
                     ),
-                Tables\Columns\TextColumn::make('amount')
+                TextColumn::make('amount')
                     ->label('Amount')
                     ->getStateUsing(function (Threshing $record) {
                         $thresherInKgs = $record->total_wheat_sacks * 10;
@@ -118,16 +126,16 @@ class ThreshingsRelationManager extends RelationManager
                     }),
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make()
+                CreateAction::make()
                     ->hidden(fn (self $livewire) => $livewire->pageClass === EditTractor::class),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }

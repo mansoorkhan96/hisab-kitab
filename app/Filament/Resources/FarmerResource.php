@@ -2,13 +2,19 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Schemas\Schema;
+use Filament\Actions\EditAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use App\Filament\Resources\FarmerResource\Pages\ListFarmers;
+use App\Filament\Resources\FarmerResource\Pages\CreateFarmer;
+use App\Filament\Resources\FarmerResource\Pages\EditFarmer;
 use App\Filament\Resources\FarmerResource\Pages;
 use App\Filament\Resources\FarmerResource\RelationManagers\FarmerLoansRelationManager;
 use App\Filament\Resources\FarmerResource\RelationManagers\LedgersRelationManager;
 use App\Filament\Resources\FarmerResource\RelationManagers\LoanPaymentsRelationManager;
 use App\Models\Farmer;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -18,12 +24,12 @@ class FarmerResource extends Resource
 {
     protected static ?string $model = Farmer::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-users';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 TextInput::make('name')->unique(ignoreRecord: true)->required(),
             ]);
     }
@@ -37,12 +43,12 @@ class FarmerResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ])
             ->defaultSort('name');
@@ -60,9 +66,9 @@ class FarmerResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListFarmers::route('/'),
-            'create' => Pages\CreateFarmer::route('/create'),
-            'edit' => Pages\EditFarmer::route('/{record}/edit'),
+            'index' => ListFarmers::route('/'),
+            'create' => CreateFarmer::route('/create'),
+            'edit' => EditFarmer::route('/{record}/edit'),
         ];
     }
 }

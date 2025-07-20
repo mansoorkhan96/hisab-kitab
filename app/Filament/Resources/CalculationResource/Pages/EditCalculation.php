@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\CalculationResource\Pages;
 
+use Filament\Actions\Action;
+use Filament\Actions\DeleteAction;
 use App\Filament\Resources\CalculationResource;
 use App\Models\Calculation;
 use Filament\Actions;
@@ -14,12 +16,12 @@ class EditCalculation extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('save_form')
+            Action::make('save_form')
                 ->label(__('filament-panels::resources/pages/edit-record.form.actions.save.label'))
                 ->action(function (Calculation $record) {
                     $this->save(shouldSendSavedNotification: true);
                 }),
-            Actions\DeleteAction::make(),
+            DeleteAction::make(),
         ];
     }
 }
