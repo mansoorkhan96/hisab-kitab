@@ -6,6 +6,7 @@ namespace App\Models;
 use App\Enums\Role;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -54,7 +55,6 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Tractor::class);
     }
 
-
     public function farmingResources(): HasMany
     {
         return $this->hasMany(FarmingResource::class);
@@ -75,9 +75,13 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(LoanPayment::class);
     }
 
-
     public function canAccessPanel(Panel $panel): bool
     {
         return $this->role === Role::Admin;
+    }
+
+    public function outstandingLoanBalance(): Attribute
+    {
+        return Attribute::get(fn () => $this->loans()->sum('amount') - $this->loanPayments()->sum('amount'));
     }
 }

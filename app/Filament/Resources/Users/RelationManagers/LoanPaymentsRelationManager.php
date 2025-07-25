@@ -29,14 +29,21 @@ class LoanPaymentsRelationManager extends RelationManager
         return $schema
             ->components([
                 Select::make('calculation_id')
-                    ->relationship('calculation', 'id', fn (Builder $query) => $query->where('user_id', $this->getOwnerRecord()->id)->with('cropSeason'))
+                    ->relationship(
+                        'calculation',
+                        'id',
+                        fn (Builder $query) => $query
+                            ->whereBelongsTo($this->getOwnerRecord())
+                            ->with('cropSeason')
+                    )
                     ->getOptionLabelFromRecordUsing(fn (Calculation $calculation) => $calculation->cropSeason->name)
                     ->nullable(),
                 TextInput::make('amount')
                     ->required()
                     ->numeric()
                     ->prefix('PKR')
-                    ->minValue(0),
+                    ->minValue(0)
+                    ->maxValue(fn () => $this->getOwnerRecord()->outstandingLoanBalance),
                 Textarea::make('notes')
                     ->columnSpanFull(),
             ]);
@@ -61,6 +68,7 @@ class LoanPaymentsRelationManager extends RelationManager
             ])
             ->headerActions([
                 CreateAction::make()
+                    ->visible(fn () => $this->getOwnerRecord()->outstandingLoanBalance > 0)
                     ->after(fn (self $livewire) => $livewire->dispatch('$refresh')),
             ])
             ->recordActions([

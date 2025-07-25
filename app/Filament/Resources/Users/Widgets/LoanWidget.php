@@ -2,8 +2,6 @@
 
 namespace App\Filament\Resources\Users\Widgets;
 
-use App\Models\Loan;
-use App\Models\LoanPayment;
 use App\Models\User;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -21,15 +19,7 @@ class LoanWidget extends BaseWidget
 
     protected function getStats(): array
     {
-        $loanAmount = Loan::query()
-            ->whereBelongsTo($this->record)
-            ->sum('amount');
-
-        $loanPayments = LoanPayment::query()
-            ->whereBelongsTo($this->record)
-            ->sum('amount');
-
-        $value = $loanAmount - $loanPayments;
+        $value = $this->record->outstandingLoanBalance;
 
         return [
             Stat::make('Total Loan', Number::currency($value, 'PKR'))

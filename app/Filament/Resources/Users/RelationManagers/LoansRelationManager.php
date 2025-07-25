@@ -2,20 +2,19 @@
 
 namespace App\Filament\Resources\Users\RelationManagers;
 
-use Filament\Schemas\Schema;
-use Filament\Actions\Action;
-use Filament\Notifications\Notification;
-use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Tables\Table;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Forms\Components\TextInput;
+use Filament\Actions\CreateAction;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
 
 class LoansRelationManager extends RelationManager
 {
     protected static string $relationship = 'loans';
 
-    protected static string | \BackedEnum | null $icon = 'heroicon-o-banknotes';
+    protected static string|\BackedEnum|null $icon = 'heroicon-o-banknotes';
 
     public function form(Schema $schema): Schema
     {
@@ -44,23 +43,11 @@ class LoansRelationManager extends RelationManager
                     ->dateTime()
                     ->sortable(),
             ])
-            ->headerActions([$this->getCreateAction()])
-            ->emptyStateActions([$this->getCreateAction()])
+            ->headerActions([
+                CreateAction::make()
+                    ->label('Add Loan')
+                    ->after(fn (self $livewire) => $livewire->dispatch('$refresh')),
+            ])
             ->defaultSort('created_at', 'desc');
-    }
-
-    protected function getCreateAction(): Action
-    {
-        return Action::make('Add new')
-            ->schema(
-                fn (Schema $schema) => $this
-                    ->form($schema)
-                    ->columns(2)
-            )
-            ->action(function (array $data) {
-                $this->ownerRecord->loans()->create($data);
-
-                Notification::make()->success()->body('Loan was created!');
-            });
     }
 }

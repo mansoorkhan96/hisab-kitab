@@ -1,6 +1,5 @@
 # TODO:
 
-- Once loan payment is added refresh stats
 - Loan payment max amount should be less than loan amount
 - Fertiliser expenses/record
 - Ledger should belong to tractor
