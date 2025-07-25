@@ -3,6 +3,7 @@
 namespace App\Filament\Components;
 
 use App\Models\Calculation;
+use App\Models\LoanPayment;
 use App\ValueObjects\CalculationResult;
 use Filament\Actions\Action;
 use Filament\Actions\Concerns\InteractsWithActions;
@@ -122,11 +123,22 @@ class CalculationInfolist extends Component implements HasActions, HasForms, Has
                     ->hidden(fn () => $this->printMode)
                     ->schema([
                         TextEntry::make('amount')
-                            ->hiddenLabel()
+                            ->label(fn (LoanPayment $record) => $record->notes)
                             ->color('danger')
-                            ->helperText(fn ($record) => $record->notes)
                             ->prefix('-')
-                            ->money('PKR'),
+                            ->money('PKR')
+                            ->hintActions([
+                                Action::make('delete')
+                                    ->requiresConfirmation()
+                                    ->iconButton()
+                                    ->icon(Heroicon::OutlinedTrash)
+                                    ->color('danger')
+                                    ->action(function (LoanPayment $record) {
+                                        $record->delete();
+
+                                        $this->dispatch('$refresh');
+                                    }),
+                            ]),
                     ])
                     ->aboveContent('Subtract Farmer Loan from calculation profit.')
                     ->hintActions([

@@ -60,7 +60,8 @@ class LoanPaymentsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                CreateAction::make(),
+                CreateAction::make()
+                    ->after(fn (self $livewire) => $livewire->dispatch('$refresh')),
             ])
             ->recordActions([
                 EditAction::make(),
