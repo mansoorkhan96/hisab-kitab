@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Components\CalculationInfolist;
 use App\Filament\Resources\CalculationResource\Pages\EditCalculation;
+use App\Filament\Widgets\LoanWidget;
 use Filament\Actions\CreateAction;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -73,7 +74,9 @@ class AdminPanelProvider extends PanelProvider
             $action->icon(Heroicon::OutlinedPlusCircle);
         });
 
+        // Need to register these otherwise these dont work in print view
         Livewire::component('app.filament.components.calculation-infolist', CalculationInfolist::class);
+        Livewire::component('app.filament.widgets.loan-widget', LoanWidget::class);
 
         // TODO: remove?
         FilamentView::registerRenderHook(

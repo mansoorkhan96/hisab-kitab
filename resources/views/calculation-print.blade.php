@@ -118,7 +118,7 @@
                 </div>
 
                 <div class="mt-3">
-                    @livewire(App\Filament\Resources\Users\Widgets\LoanWidget::class, [
+                    @livewire(App\Filament\Widgets\LoanWidget::class, [
                         'record' => $calculation->user,
                     ])
                 </div>
