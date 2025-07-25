@@ -31,10 +31,12 @@ class LoanPaymentsRelationManager extends RelationManager
                 Select::make('calculation_id')
                     ->relationship('calculation', 'id', fn (Builder $query) => $query->where('user_id', $this->getOwnerRecord()->id)->with('cropSeason'))
                     ->getOptionLabelFromRecordUsing(fn (Calculation $calculation) => $calculation->cropSeason->name)
-                    ->required(),
+                    ->nullable(),
                 TextInput::make('amount')
                     ->required()
-                    ->maxLength(255),
+                    ->numeric()
+                    ->prefix('PKR')
+                    ->minValue(0),
                 Textarea::make('notes')
                     ->columnSpanFull(),
             ]);
