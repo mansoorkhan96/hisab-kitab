@@ -19,7 +19,6 @@ use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Flex;
 use Filament\Schemas\Components\Group;
@@ -102,9 +101,6 @@ class CalculationResource extends Resource
                                 Flex::make([
                                     Section::make('Calculation')
                                         ->schema([
-                                            TextEntry::make('alert')
-                                                ->label('Please save the form to see the calucation...')
-                                                ->visible(fn (string $context) => $context === 'create'),
                                             Livewire::make(
                                                 CalculationInfolist::class,
                                                 fn (EditCalculation $livewire) => [
@@ -137,6 +133,7 @@ class CalculationResource extends Resource
                                             ->key('farmer-loan'),
                                     ]),
                                 ])
+                                    ->visible(fn (string $context) => $context === 'edit')
                                     ->from('md')
                                     ->columnSpanFull(),
                             ]),
