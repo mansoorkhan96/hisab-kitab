@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Components\CalculationInfolist;
 use App\Filament\Resources\CalculationResource\Pages\EditCalculation;
+use Filament\Actions\CreateAction;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -12,6 +13,7 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Support\Facades\FilamentView;
+use Filament\Support\Icons\Heroicon;
 use Filament\View\PanelsRenderHook;
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
@@ -67,6 +69,10 @@ class AdminPanelProvider extends PanelProvider
 
     public function boot()
     {
+        CreateAction::configureUsing(function (CreateAction $action) {
+            $action->icon(Heroicon::OutlinedPlusCircle);
+        });
+
         Livewire::component('app.filament.components.calculation-infolist', CalculationInfolist::class);
 
         // TODO: remove?
