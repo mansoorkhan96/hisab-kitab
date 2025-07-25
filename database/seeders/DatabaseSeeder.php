@@ -6,7 +6,6 @@ namespace Database\Seeders;
 
 use App\Enums\FarmingResourceType;
 use App\Enums\QuantityUnit;
-use App\Enums\Role;
 use App\Models\Calculation;
 use App\Models\CropSeason;
 use App\Models\Loan;
@@ -61,7 +60,6 @@ class DatabaseSeeder extends Seeder
     {
         $farmer = User::factory()
             ->farmer()
-            ->for($this->user, 'addedBy')
             ->create(['name' => 'Sadam Lighari']);
 
         collect([
@@ -117,7 +115,6 @@ class DatabaseSeeder extends Seeder
     {
         $ashraf = User::factory()
             ->farmer()
-            ->for($this->user, 'addedBy')
             ->create(['name' => 'Ashraf Rind']);
 
         collect([
