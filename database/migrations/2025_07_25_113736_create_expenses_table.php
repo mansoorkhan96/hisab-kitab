@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('expenses', function (Blueprint $table) {
             $table->id();
             $table->nullableMorphs('expensable');
+            $table->foreignId('crop_season_id')->constrained();
             $table->string('title');
             $table->decimal('amount', 10, 2);
             $table->text('details')->nullable();
