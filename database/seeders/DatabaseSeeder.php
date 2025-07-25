@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Enums\FarmingResourceType;
 use App\Enums\QuantityUnit;
+use App\Enums\Role;
 use App\Models\Calculation;
 use App\Models\CropSeason;
 use App\Models\Farmer;
@@ -30,7 +31,7 @@ class DatabaseSeeder extends Seeder
 
     public function run(): void
     {
-        $this->user = User::factory()->create([
+        $this->user = User::factory()->admin()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
