@@ -12,7 +12,11 @@ use App\Filament\Resources\TractorResource\Pages\EditTractor;
 use App\Filament\Resources\CalculationResource\RelationManagers\ThreshingsRelationManager;
 use App\Filament\Resources\TractorResource\Pages;
 use App\Models\Tractor;
+use App\Models\User;
+use App\Enums\Role;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Illuminate\Database\Eloquent\Builder;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -30,8 +34,13 @@ class TractorResource extends Resource
             ->components([
                 TextInput::make('title')
                     ->required()
-                    ->columnSpanFull()
                     ->maxLength(255),
+                Select::make('user_id')
+                    ->label('Driver')
+                    ->relationship('user', 'name', fn (Builder $query) => $query->where('role', Role::Driver))
+                    ->required()
+                    ->searchable()
+                    ->preload(),
             ]);
     }
 
@@ -40,6 +49,9 @@ class TractorResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('title')
+                    ->searchable(),
+                TextColumn::make('user.name')
+                    ->label('Driver')
                     ->searchable(),
             ])
             ->filters([

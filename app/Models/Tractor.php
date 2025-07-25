@@ -11,6 +11,11 @@ class Tractor extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'title',
+        'user_id',
+    ];
+
     public static function booted(): void
     {
         static::creating(function (Tractor $tractor) {

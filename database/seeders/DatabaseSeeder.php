@@ -8,9 +8,9 @@ use App\Enums\FarmingResourceType;
 use App\Enums\QuantityUnit;
 use App\Models\Calculation;
 use App\Models\CropSeason;
-use App\Models\Loan;
 use App\Models\FarmingResource;
 use App\Models\Ledger;
+use App\Models\Loan;
 use App\Models\Tractor;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -35,12 +35,12 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->tractorA = Tractor::factory()
-            ->for($this->user)
-            ->create(['title' => 'Driver: A']);
+            ->for(User::factory()->driver()->create(['name' => 'Driver A']))
+            ->create(['title' => 'Tractor A']);
 
         $this->tractorB = Tractor::factory()
-            ->for($this->user)
-            ->create(['title' => 'Driver: B']);
+            ->for(User::factory()->driver()->create(['name' => 'Driver B']))
+            ->create(['title' => 'Tractor B']);
 
         $this->farmingResources = $this->seedFarmingResources($this->user);
 
