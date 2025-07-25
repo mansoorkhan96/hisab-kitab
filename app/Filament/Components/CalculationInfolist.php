@@ -132,7 +132,7 @@ class CalculationInfolist extends Component implements HasActions, HasForms, Has
                     ->hintActions([
                         Action::make('subtract_loan')
                             ->disabled(fn () => $calculation->farmerProfitLoss <= 0)
-                            ->tooltip(fn () => $calculation->farmerProfitLoss <= 0 ? 'Can\'t substract loan, farmer is already in loss.' : '')
+                            ->tooltip(fn () => $calculation->farmerProfitLoss <= 0 ? 'Can\'t substract loan from this calculation, farmer is already in loss. ' : '')
                             ->icon(fn () => Heroicon::Minus)
                             ->button()
                             ->color(Color::Red)

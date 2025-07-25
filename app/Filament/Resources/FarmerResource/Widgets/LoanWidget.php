@@ -32,7 +32,10 @@ class LoanWidget extends BaseWidget
         $value = $loanAmount - $loanPayments;
 
         return [
-            Stat::make('Total Loan', Number::currency($value, 'PKR')),
+            Stat::make('Farmer Total Loan', Number::currency($value, 'PKR'))
+                ->extraAttributes([
+                    'class' => 'farmer-total-loan '.($value > 0 ? 'text-success' : 'text-danger'),
+                ]),
         ];
     }
 
