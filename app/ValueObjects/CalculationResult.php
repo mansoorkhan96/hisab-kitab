@@ -5,7 +5,7 @@ namespace App\ValueObjects;
 use App\Enums\FarmingResourceType;
 use App\Helpers\Converter;
 use App\Models\Calculation;
-use App\Models\FarmerLoan;
+use App\Models\Loan;
 use App\Models\Ledger;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -71,7 +71,7 @@ readonly class CalculationResult
 
         // Dawa & color
         $fertilizerExpenseAmount = Ledger::query()
-            ->where('farmer_id', $calculation->farmer_id)
+            ->where('user_id', $calculation->user_id)
             ->where('crop_season_id', $calculation->crop_season_id)
             ->whereHas('farmingResource', fn (Builder $query) => $query->whereIn('type', [FarmingResourceType::Fertilizer, FarmingResourceType::Pesticide]))
             ->sum('amount');
@@ -84,7 +84,7 @@ readonly class CalculationResult
 
         // Harr & Bij
         $implementAndSeedExpenseAmount = Ledger::query()
-            ->where('farmer_id', $calculation->farmer_id)
+            ->where('user_id', $calculation->user_id)
             ->where('crop_season_id', $calculation->crop_season_id)
             ->whereHas('farmingResource', fn (Builder $query) => $query->whereIn('type', [FarmingResourceType::Implement, FarmingResourceType::Seed]))
             ->sum('amount');
@@ -103,13 +103,13 @@ readonly class CalculationResult
             $farmerAmount = $farmerFinalAmount = $farmerAmount + $farmerKudhiAmount;
         }
 
-        $farmerLoan = FarmerLoan::query()
-            ->where('farmer_id', $calculation->farmer_id)
+        $farmerLoan = Loan::query()
+            ->where('user_id', $calculation->user_id)
             ->sum('amount');
 
         $loanPaymentsAmount = $calculation
             ->loanPayments()
-            ->where('farmer_id', $calculation->farmer_id)
+            ->where('user_id', $calculation->user_id)
             ->sum('amount');
 
         $farmerLoan -= $loanPaymentsAmount;
@@ -118,7 +118,7 @@ readonly class CalculationResult
 
         $loanPayments = $calculation
             ->loanPayments()
-            ->where('farmer_id', $calculation->farmer_id)
+            ->where('user_id', $calculation->user_id)
             ->get();
 
         $farmerAmount -= $loanPaymentsAmount;

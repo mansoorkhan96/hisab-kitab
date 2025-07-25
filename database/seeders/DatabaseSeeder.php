@@ -9,8 +9,7 @@ use App\Enums\QuantityUnit;
 use App\Enums\Role;
 use App\Models\Calculation;
 use App\Models\CropSeason;
-use App\Models\Farmer;
-use App\Models\FarmerLoan;
+use App\Models\Loan;
 use App\Models\FarmingResource;
 use App\Models\Ledger;
 use App\Models\Tractor;
@@ -60,8 +59,9 @@ class DatabaseSeeder extends Seeder
 
     public function seedSadamLighari()
     {
-        $farmer = Farmer::factory()
-            ->for($this->user)
+        $farmer = User::factory()
+            ->farmer()
+            ->for($this->user, 'addedBy')
             ->create(['name' => 'Sadam Lighari']);
 
         collect([
@@ -88,7 +88,7 @@ class DatabaseSeeder extends Seeder
             ['purpose' => 'Derran ji mazoori', 'amount' => 11_500],
             ['purpose' => 'Zameendar watan khanyal', 'amount' => 2500],
         ])->each(
-            fn (array $loan) => FarmerLoan::factory()
+            fn (array $loan) => Loan::factory()
                 ->for($farmer)
                 ->create($loan)
         );
@@ -115,8 +115,9 @@ class DatabaseSeeder extends Seeder
 
     public function seedAshrafRind()
     {
-        $ashraf = Farmer::factory()
-            ->for($this->user)
+        $ashraf = User::factory()
+            ->farmer()
+            ->for($this->user, 'addedBy')
             ->create(['name' => 'Ashraf Rind']);
 
         collect([
@@ -140,7 +141,7 @@ class DatabaseSeeder extends Seeder
             ['purpose' => 'Derran ji mazoori', 'amount' => 19_000],
             ['purpose' => '4 Borion Wheat', 'amount' => 21_000],
         ])->each(
-            fn (array $loan) => FarmerLoan::factory()
+            fn (array $loan) => Loan::factory()
                 ->for($ashraf)
                 ->create($loan)
         );

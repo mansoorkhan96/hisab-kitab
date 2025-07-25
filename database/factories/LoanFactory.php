@@ -6,9 +6,9 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Farmer>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Loan>
  */
-class FarmerFactory extends Factory
+class LoanFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,7 +19,8 @@ class FarmerFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'name' => fake()->name,
+            'amount' => random_int(1000, 10_000),
+            'purpose' => fake()->sentence,
         ];
     }
 }

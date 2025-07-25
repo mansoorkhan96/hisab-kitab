@@ -7,6 +7,7 @@ use App\Enums\Role;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -26,6 +27,7 @@ class User extends Authenticatable implements FilamentUser
         'email',
         'password',
         'role',
+        'added_by_user_id',
     ];
 
     /**
@@ -54,14 +56,35 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Tractor::class);
     }
 
-    public function farmers(): HasMany
-    {
-        return $this->hasMany(Farmer::class);
-    }
 
     public function farmingResources(): HasMany
     {
         return $this->hasMany(FarmingResource::class);
+    }
+
+    public function ledgers(): HasMany
+    {
+        return $this->hasMany(Ledger::class);
+    }
+
+    public function loans(): HasMany
+    {
+        return $this->hasMany(Loan::class);
+    }
+
+    public function loanPayments(): HasMany
+    {
+        return $this->hasMany(LoanPayment::class);
+    }
+
+    public function addedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'added_by_user_id');
+    }
+
+    public function addedUsers(): HasMany
+    {
+        return $this->hasMany(User::class, 'added_by_user_id');
     }
 
     public function canAccessPanel(Panel $panel): bool

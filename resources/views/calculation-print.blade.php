@@ -15,7 +15,7 @@
         http-equiv="X-UA-Compatible"
         content="ie=edge"
     >
-    <title>{{ $calculation->farmer->name }} | {{ $calculation->cropseason->name }}</title>
+    <title>{{ $calculation->user->name }} | {{ $calculation->cropseason->name }}</title>
 
     @vite('resources/css/app.css')
     @filamentStyles()
@@ -77,7 +77,7 @@
         <!-- Grid -->
         <div class="mb-3 items-center justify-center border-b border-gray-200 pb-2">
             <h2 class="text-center text-lg font-semibold text-gray-700">
-                {{ $calculation->farmer->name }} | {{ $calculation->cropseason->name }}
+                {{ $calculation->user->name }} | {{ $calculation->cropseason->name }}
             </h2>
         </div>
         <!-- End Grid -->
@@ -99,7 +99,7 @@
             <div>
                 <div>
                     @livewire(App\Filament\Widgets\LedgersTableWidget::class, [
-                        'farmer_id' => $calculation->farmer_id,
+                        'user_id' => $calculation->user_id,
                         'crop_season_id' => $calculation->crop_season_id,
                         'farmingResourceTypes' => [FarmingResourceType::Fertilizer, FarmingResourceType::Pesticide],
                         'tableHeading' => 'Dawa & Color',
@@ -109,7 +109,7 @@
 
                 <div class="mt-3">
                     @livewire(App\Filament\Widgets\LedgersTableWidget::class, [
-                        'farmer_id' => $calculation->farmer_id,
+                        'user_id' => $calculation->user_id,
                         'crop_season_id' => $calculation->crop_season_id,
                         'farmingResourceTypes' => [FarmingResourceType::Implement, FarmingResourceType::Seed],
                         'tableHeading' => 'Harr & Bij',
@@ -118,8 +118,8 @@
                 </div>
 
                 <div class="mt-3">
-                    @livewire(App\Filament\Resources\FarmerResource\Widgets\LoanWidget::class, [
-                        'record' => $calculation->farmer,
+                    @livewire(App\Filament\Resources\Users\Widgets\LoanWidget::class, [
+                        'user' => $calculation->user,
                     ])
                 </div>
             </div>

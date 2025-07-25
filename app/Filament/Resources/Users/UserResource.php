@@ -5,6 +5,9 @@ namespace App\Filament\Resources\Users;
 use App\Filament\Resources\Users\Pages\CreateUser;
 use App\Filament\Resources\Users\Pages\EditUser;
 use App\Filament\Resources\Users\Pages\ListUsers;
+use App\Filament\Resources\Users\RelationManagers\LedgersRelationManager;
+use App\Filament\Resources\Users\RelationManagers\LoansRelationManager;
+use App\Filament\Resources\Users\RelationManagers\LoanPaymentsRelationManager;
 use App\Filament\Resources\Users\Schemas\UserForm;
 use App\Filament\Resources\Users\Tables\UsersTable;
 use App\Models\User;
@@ -33,7 +36,9 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            LedgersRelationManager::class,
+            LoansRelationManager::class,
+            LoanPaymentsRelationManager::class,
         ];
     }
 

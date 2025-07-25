@@ -8,11 +8,11 @@ use App\Filament\Resources\CalculationResource\Pages\CreateCalculation;
 use App\Filament\Resources\CalculationResource\Pages\EditCalculation;
 use App\Filament\Resources\CalculationResource\Pages\ListCalculations;
 use App\Filament\Resources\CalculationResource\RelationManagers\ThreshingsRelationManager;
-use App\Filament\Resources\FarmerResource\Widgets\LoanWidget;
+use App\Filament\Resources\Users\Widgets\LoanWidget;
 use App\Filament\Widgets\LedgersTableWidget;
 use App\Models\Calculation;
 use App\Models\CropSeason;
-use App\Models\Farmer;
+use App\Models\User;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -72,9 +72,9 @@ class CalculationResource extends Resource
                                     })
                                     ->preload()
                                     ->required(),
-                                Select::make('farmer_id')
+                                Select::make('user_id')
                                     ->live()
-                                    ->relationship('farmer', 'name')
+                                    ->relationship('user', 'name')
                                     ->preload()
                                     ->required(),
                                 TextInput::make('wheat_rate')
@@ -116,14 +116,14 @@ class CalculationResource extends Resource
                                         ]),
                                     Group::make([
                                         Livewire::make(LedgersTableWidget::class, fn (Get $get) => [
-                                            'farmer_id' => $get('farmer_id'),
+                                            'user_id' => $get('user_id'),
                                             'crop_season_id' => $get('crop_season_id'),
                                             'farmingResourceTypes' => [FarmingResourceType::Fertilizer, FarmingResourceType::Pesticide],
                                             'tableHeading' => 'Dawa & Color',
                                             'groupsOnly' => ! $get('show_details'),
                                         ])->key('dawa-color'),
                                         Livewire::make(LedgersTableWidget::class, fn (Get $get) => [
-                                            'farmer_id' => $get('farmer_id'),
+                                            'user_id' => $get('user_id'),
                                             'crop_season_id' => $get('crop_season_id'),
                                             'farmingResourceTypes' => [FarmingResourceType::Implement, FarmingResourceType::Seed],
                                             'tableHeading' => 'Harr & Bij',
@@ -131,7 +131,7 @@ class CalculationResource extends Resource
                                         ])->key('harr-bij'),
                                         Livewire::make(
                                             LoanWidget::class,
-                                            fn (Get $get) => ['record' => Farmer::find($get('farmer_id'))]
+                                            fn (Get $get) => ['record' => User::find($get('user_id'))]
                                         )
                                             ->visible(fn (string $context) => $context === 'edit')
                                             ->key('farmer-loan'),
@@ -160,7 +160,7 @@ class CalculationResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('farmer.name')
+                TextColumn::make('user.name')
                     ->searchable(),
                 TextColumn::make('cropSeason.name')
                     ->searchable(),

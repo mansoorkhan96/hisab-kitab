@@ -10,9 +10,9 @@ class LoanPayment extends Model
 {
     use HasFactory;
 
-    public function farmer(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(Farmer::class);
+        return $this->belongsTo(User::class);
     }
 
     public function calculation(): BelongsTo

@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Filament\Resources\FarmerResource\Widgets;
+namespace App\Filament\Resources\Users\Widgets;
 
-use App\Models\FarmerLoan;
+use App\Models\Loan;
 use App\Models\LoanPayment;
+use App\Models\User;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Number;
 
 class LoanWidget extends BaseWidget
 {
-    public ?Model $record = null;
+    public ?User $record = null;
 
     public array|int|null $columns = 1;
 
@@ -21,7 +21,7 @@ class LoanWidget extends BaseWidget
 
     protected function getStats(): array
     {
-        $loanAmount = FarmerLoan::query()
+        $loanAmount = Loan::query()
             ->whereBelongsTo($this->record)
             ->sum('amount');
 
@@ -32,9 +32,9 @@ class LoanWidget extends BaseWidget
         $value = $loanAmount - $loanPayments;
 
         return [
-            Stat::make('Farmer Total Loan', Number::currency($value, 'PKR'))
+            Stat::make('Total Loan', Number::currency($value, 'PKR'))
                 ->extraAttributes([
-                    'class' => 'farmer-total-loan '.($value > 0 ? 'text-success' : 'text-danger'),
+                    'class' => 'user-total-loan '.($value > 0 ? 'text-success' : 'text-danger'),
                 ]),
         ];
     }

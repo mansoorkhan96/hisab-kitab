@@ -25,9 +25,9 @@ class Ledger extends Model
         return $this->belongsTo(CropSeason::class);
     }
 
-    public function farmer(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(Farmer::class);
+        return $this->belongsTo(User::class);
     }
 
     public function farmingResource(): BelongsTo

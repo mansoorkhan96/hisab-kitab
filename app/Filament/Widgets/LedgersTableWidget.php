@@ -2,8 +2,8 @@
 
 namespace App\Filament\Widgets;
 
-use Filament\Actions\Action;
 use App\Models\Ledger;
+use Filament\Actions\Action;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\TextInputColumn;
@@ -18,7 +18,7 @@ class LedgersTableWidget extends BaseWidget
     protected static bool $isDiscovered = false;
 
     #[Reactive]
-    public $farmer_id;
+    public $user_id;
 
     #[Reactive]
     public $crop_season_id;
@@ -36,7 +36,7 @@ class LedgersTableWidget extends BaseWidget
             ->heading($this->tableHeading)
             ->query(
                 Ledger::query()
-                    ->where('farmer_id', $this->farmer_id)
+                    ->where('user_id', $this->user_id)
                     ->where('crop_season_id', $this->crop_season_id)
                     ->when(
                         filled($this->farmingResourceTypes),

@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class FarmerLoan extends Model
+class Loan extends Model
 {
     use HasFactory;
 
-    public function farmer(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(Farmer::class);
+        return $this->belongsTo(User::class);
     }
 }

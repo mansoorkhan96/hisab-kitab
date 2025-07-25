@@ -151,7 +151,7 @@ class CalculationInfolist extends Component implements HasActions, HasForms, Has
                                     ->columnSpanFull(),
                             ])
                             ->action(function (array $data, self $livewire) {
-                                $data['farmer_id'] = $this->calculation->farmer_id;
+                                $data['user_id'] = $this->calculation->user_id;
 
                                 $this->calculation->loanPayments()->create($data);
 

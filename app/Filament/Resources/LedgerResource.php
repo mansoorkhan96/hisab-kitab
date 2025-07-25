@@ -2,23 +2,21 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Schemas\Schema;
-use Filament\Schemas\Components\Utilities\Set;
-use Filament\Schemas\Components\Utilities\Get;
-use Filament\Actions\EditAction;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use App\Filament\Resources\LedgerResource\Pages\ListLedgers;
 use App\Filament\Resources\LedgerResource\Pages\CreateLedger;
 use App\Filament\Resources\LedgerResource\Pages\EditLedger;
-use App\Filament\Resources\LedgerResource\Pages;
+use App\Filament\Resources\LedgerResource\Pages\ListLedgers;
 use App\Models\CropSeason;
 use App\Models\FarmingResource;
 use App\Models\Ledger;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\TextInputColumn;
@@ -30,7 +28,7 @@ class LedgerResource extends Resource
 {
     protected static ?string $model = Ledger::class;
 
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Schema $schema): Schema
     {
@@ -47,7 +45,7 @@ class LedgerResource extends Resource
                         ->id
                 )
                 ->required(),
-            // Select::make('farmer_id')
+            // Select::make('user_id')
             //     ->relationship('farmer', 'name')
             //     ->searchable()
             //     ->preload()

@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\CropSeason;
-use App\Models\Farmer;
+use App\Models\User;
 use App\Models\FarmingResource;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('ledgers', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(CropSeason::class)->constrained();
-            $table->foreignIdFor(Farmer::class)->constrained();
+            $table->foreignIdFor(User::class)->constrained();
             $table->foreignIdFor(FarmingResource::class)->constrained();
             $table->decimal('quantity', 10, 2);
             $table->decimal('rate', 10, 2)->nullable();

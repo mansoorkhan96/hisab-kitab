@@ -4,7 +4,6 @@ namespace App\Providers\Filament;
 
 use App\Filament\Components\CalculationInfolist;
 use App\Filament\Resources\CalculationResource\Pages\EditCalculation;
-use App\Filament\Resources\FarmerResource\Pages\EditFarmer;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -74,12 +73,12 @@ class AdminPanelProvider extends PanelProvider
         FilamentView::registerRenderHook(
             PanelsRenderHook::PAGE_START,
             fn () => new HtmlString('<div class="ledgers-table">'),
-            scopes: [EditFarmer::class, EditCalculation::class],
+            scopes: [EditCalculation::class],
         );
         FilamentView::registerRenderHook(
             PanelsRenderHook::PAGE_END,
             fn () => new HtmlString('</div>'),
-            scopes: [EditFarmer::class, EditCalculation::class],
+            scopes: [EditCalculation::class],
         );
     }
 }

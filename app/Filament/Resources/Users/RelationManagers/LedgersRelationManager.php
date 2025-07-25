@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\FarmerResource\RelationManagers;
+namespace App\Filament\Resources\Users\RelationManagers;
 
 use Filament\Schemas\Schema;
 use Filament\Actions\Action;
