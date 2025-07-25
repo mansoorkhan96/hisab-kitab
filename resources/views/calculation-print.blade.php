@@ -119,7 +119,7 @@
 
                 <div class="mt-3">
                     @livewire(App\Filament\Resources\Users\Widgets\LoanWidget::class, [
-                        'user' => $calculation->user,
+                        'record' => $calculation->user,
                     ])
                 </div>
             </div>
