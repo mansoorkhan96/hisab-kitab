@@ -10,15 +10,13 @@ use App\Filament\Resources\TractorResource\Pages\ListTractors;
 use App\Filament\Resources\TractorResource\Pages\CreateTractor;
 use App\Filament\Resources\TractorResource\Pages\EditTractor;
 use App\Filament\Resources\CalculationResource\RelationManagers\ThreshingsRelationManager;
-use App\Filament\Resources\TractorResource\Pages;
+use App\Filament\Resources\TractorResource\RelationManagers\ExpensesRelationManager;
 use App\Models\Tractor;
-use App\Models\User;
 use App\Enums\Role;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Resources\Resource;
-use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -71,6 +69,7 @@ class TractorResource extends Resource
     {
         return [
             ThreshingsRelationManager::class,
+            ExpensesRelationManager::class,
         ];
     }
 
