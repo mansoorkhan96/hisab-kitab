@@ -16,7 +16,8 @@ return new class extends Migration
             $table->nullableMorphs('expensable');
             $table->foreignId('crop_season_id')->constrained();
             $table->string('title');
-            $table->decimal('amount', 10, 2);
+            $table->decimal('amount', 10, 2)->nullable();
+            $table->decimal('quantity', 10, 2)->nullable();
             $table->text('details')->nullable();
             $table->date('date');
             $table->timestamps();
