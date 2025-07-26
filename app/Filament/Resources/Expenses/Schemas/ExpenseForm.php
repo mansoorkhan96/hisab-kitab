@@ -22,12 +22,12 @@ class ExpenseForm
                     ->default(CropSeason::where('is_current', true)->first()?->id)
                     ->preload()
                     ->required(),
-                MorphToSelect::make('expensable')
-                    ->live()
-                    ->types([
-                        MorphToSelect\Type::make(Tractor::class)
-                            ->titleAttribute('title'),
-                    ]),
+                // MorphToSelect::make('expensable')
+                //     ->live()
+                //     ->types([
+                //         MorphToSelect\Type::make(Tractor::class)
+                //             ->titleAttribute('title'),
+                //     ]),
                 TextInput::make('title')
                     ->required()
                     ->maxLength(255),
