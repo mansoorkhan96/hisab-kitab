@@ -2,19 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Schemas\Schema;
-use Filament\Actions\EditAction;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use App\Filament\Resources\CropSeasonResource\Pages\ListCropSeasons;
 use App\Filament\Resources\CropSeasonResource\Pages\CreateCropSeason;
 use App\Filament\Resources\CropSeasonResource\Pages\EditCropSeason;
-use App\Filament\Resources\CropSeasonResource\Pages;
+use App\Filament\Resources\CropSeasonResource\Pages\ListCropSeasons;
 use App\Models\CropSeason;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
@@ -23,13 +21,13 @@ class CropSeasonResource extends Resource
 {
     protected static ?string $model = CropSeason::class;
 
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-sun';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-sun';
 
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->components([
-                TextInput::make('name')
+                TextInput::make('title')
                     ->unique(ignoreRecord: true)
                     ->required(),
                 Toggle::make('is_current')
@@ -46,7 +44,7 @@ class CropSeasonResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->searchable(),
+                TextColumn::make('title')->searchable(),
                 ToggleColumn::make('is_current'),
             ])
             ->filters([
@@ -60,7 +58,7 @@ class CropSeasonResource extends Resource
                     DeleteBulkAction::make(),
                 ]),
             ])
-            ->defaultSort('name', 'desc');
+            ->defaultSort('title', 'desc');
     }
 
     public static function getRelations(): array

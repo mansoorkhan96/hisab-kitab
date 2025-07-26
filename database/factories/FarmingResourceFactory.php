@@ -21,7 +21,7 @@ class FarmingResourceFactory extends Factory
     {
         return [
             // 'user_id' => User::factory(),
-            'name' => fake()->word(),
+            'title' => fake()->word(),
             'type' => fake()->randomElement(FarmingResourceType::cases()),
             'quantity_unit' => fake()->randomElement(QuantityUnit::cases()),
         ];

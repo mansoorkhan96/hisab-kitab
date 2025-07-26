@@ -34,7 +34,7 @@ class LedgerResource extends Resource
     {
         return $schema->components([
             Select::make('crop_season_id')
-                ->relationship('cropSeason', 'name')
+                ->relationship('cropSeason', 'title')
                 ->searchable()
                 ->preload()
                 ->default(
@@ -51,7 +51,7 @@ class LedgerResource extends Resource
             //     ->preload()
             //     ->required(),
             Select::make('farming_resource_id')
-                ->relationship('farmingResource', 'name')
+                ->relationship('farmingResource', 'title')
                 ->live()
                 ->afterStateUpdated(function (Select $component, Set $set, Get $get) {
                     if (empty($get('rate'))) {
@@ -99,10 +99,11 @@ class LedgerResource extends Resource
                     ->summarize(Sum::make()->label('Total')->money('PKR')),
             ])
             ->filters([
+                // TODO: use relationship()
                 SelectFilter::make('crop_season_id')
                     ->label('Crop Season')
                     ->default(CropSeason::where('is_current', true)->first()?->id)
-                    ->options(CropSeason::all()->pluck('name', 'id')),
+                    ->options(CropSeason::all()->pluck('title', 'id')),
             ])
             ->recordActions([
                 EditAction::make(),

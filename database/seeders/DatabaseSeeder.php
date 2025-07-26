@@ -48,7 +48,7 @@ class DatabaseSeeder extends Seeder
             ->for($this->user)
             ->recycle($this->user)
             ->create([
-                'name' => 'Season-'.now()->year,
+                'title' => 'Season-'.now()->year,
                 'is_current' => true,
             ]);
 
@@ -76,7 +76,7 @@ class DatabaseSeeder extends Seeder
             fn (array $ledger) => Ledger::factory()
                 ->for($this->cropSeason)
                 ->for($farmer)
-                ->for($this->farmingResources->where('name', $ledger['farming_resource'])->first())
+                ->for($this->farmingResources->where('title', $ledger['farming_resource'])->first())
                 ->create(['quantity' => $ledger['quantity'], 'rate' => $ledger['rate']])
         );
 
@@ -129,7 +129,7 @@ class DatabaseSeeder extends Seeder
             fn (array $ledger) => Ledger::factory()
                 ->for($this->cropSeason)
                 ->for($ashraf)
-                ->for($this->farmingResources->where('name', $ledger['farming_resource'])->first())
+                ->for($this->farmingResources->where('title', $ledger['farming_resource'])->first())
                 ->create(['quantity' => $ledger['quantity'], 'rate' => $ledger['rate']])
         );
 
@@ -163,13 +163,13 @@ class DatabaseSeeder extends Seeder
         return FarmingResource::factory()->for($user)->createMany([
             // Fertilizer
             [
-                'name' => 'DAP',
+                'title' => 'DAP',
                 'type' => FarmingResourceType::Fertilizer,
                 'quantity_unit' => QuantityUnit::Sack,
                 'rate' => random_int(3000, 6000),
             ],
             [
-                'name' => 'Urea',
+                'title' => 'Urea',
                 'type' => FarmingResourceType::Fertilizer,
                 'quantity_unit' => QuantityUnit::Sack,
                 'rate' => random_int(3000, 6000),
@@ -177,19 +177,19 @@ class DatabaseSeeder extends Seeder
 
             // Pesticide
             [
-                'name' => 'Palaas',
+                'title' => 'Palaas',
                 'type' => FarmingResourceType::Pesticide,
                 'quantity_unit' => QuantityUnit::Bottle,
                 'rate' => random_int(3000, 6000),
             ],
             [
-                'name' => 'Sanga',
+                'title' => 'Sanga',
                 'type' => FarmingResourceType::Pesticide,
                 'quantity_unit' => QuantityUnit::Bottle,
                 'rate' => random_int(3000, 6000),
             ],
             [
-                'name' => 'Lambda',
+                'title' => 'Lambda',
                 'type' => FarmingResourceType::Pesticide,
                 'quantity_unit' => QuantityUnit::Bottle,
                 'rate' => random_int(3000, 6000),
@@ -197,7 +197,7 @@ class DatabaseSeeder extends Seeder
 
             // Seed
             [
-                'name' => 'Bijj',
+                'title' => 'Bijj',
                 'type' => FarmingResourceType::Seed,
                 'quantity_unit' => QuantityUnit::Sack,
                 'rate' => random_int(3000, 6000),
@@ -205,31 +205,31 @@ class DatabaseSeeder extends Seeder
 
             // Implement
             [
-                'name' => 'Raja',
+                'title' => 'Raja',
                 'type' => FarmingResourceType::Implement,
                 'quantity_unit' => QuantityUnit::Hour,
                 'rate' => random_int(3000, 6000),
             ],
             [
-                'name' => 'Kean',
+                'title' => 'Kean',
                 'type' => FarmingResourceType::Implement,
                 'quantity_unit' => QuantityUnit::Hour,
                 'rate' => random_int(3000, 6000),
             ],
             [
-                'name' => 'Cultivator',
+                'title' => 'Cultivator',
                 'type' => FarmingResourceType::Implement,
                 'quantity_unit' => QuantityUnit::Acre,
                 'rate' => random_int(3000, 6000),
             ],
             [
-                'name' => 'Gobil',
+                'title' => 'Gobil',
                 'type' => FarmingResourceType::Implement,
                 'quantity_unit' => QuantityUnit::Acre,
                 'rate' => random_int(3000, 6000),
             ],
             [
-                'name' => 'Banna',
+                'title' => 'Banna',
                 'type' => FarmingResourceType::Implement,
                 'quantity_unit' => QuantityUnit::Acre,
                 'rate' => random_int(3000, 6000),

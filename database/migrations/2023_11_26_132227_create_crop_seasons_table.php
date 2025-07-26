@@ -12,7 +12,7 @@ return new class extends Migration
         Schema::create('crop_seasons', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained();
-            $table->string('name');
+            $table->string('title');
             $table->boolean('is_current')->default(false);
             $table->unsignedInteger('wheat_rate')->nullable();
             $table->unsignedInteger('wheat_straw_rate')->nullable();

@@ -52,7 +52,7 @@ class CalculationResource extends Resource
                             ->schema([
                                 Select::make('crop_season_id')
                                     ->live()
-                                    ->relationship('cropSeason', 'name')
+                                    ->relationship('cropSeason', 'title')
                                     ->default(CropSeason::where('is_current', true)->first()?->id)
                                     ->afterStateUpdated(function (Set $set, Get $get, $state) {
                                         if (empty($state)) {
@@ -166,10 +166,11 @@ class CalculationResource extends Resource
                 // amount red/green
             ])
             ->filters([
+                // TODO: use relationship()
                 SelectFilter::make('crop_season_id')
                     ->label('Crop Season')
                     ->default(CropSeason::where('is_current', true)->first()?->id)
-                    ->options(CropSeason::all()->pluck('name', 'id')),
+                    ->options(CropSeason::all()->pluck('title', 'id')),
             ])
             ->recordActions([
                 EditAction::make(),

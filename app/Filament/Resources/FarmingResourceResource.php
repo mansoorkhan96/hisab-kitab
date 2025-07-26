@@ -2,22 +2,20 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Schemas\Schema;
-use Filament\Actions\EditAction;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use App\Filament\Resources\FarmingResourceResource\Pages\ListFarmingResources;
-use App\Filament\Resources\FarmingResourceResource\Pages\CreateFarmingResource;
-use App\Filament\Resources\FarmingResourceResource\Pages\EditFarmingResource;
 use App\Enums\FarmingResourceType;
 use App\Enums\QuantityUnit;
-use App\Filament\Resources\FarmingResourceResource\Pages;
+use App\Filament\Resources\FarmingResourceResource\Pages\CreateFarmingResource;
+use App\Filament\Resources\FarmingResourceResource\Pages\EditFarmingResource;
+use App\Filament\Resources\FarmingResourceResource\Pages\ListFarmingResources;
 use App\Models\FarmingResource;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ToggleButtons;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -25,13 +23,13 @@ class FarmingResourceResource extends Resource
 {
     protected static ?string $model = FarmingResource::class;
 
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->components([
-                TextInput::make('name')
+                TextInput::make('title')
                     // ->unique(ignoreRecord: true) TODO:
                     ->required(),
                 Select::make('type')
@@ -53,7 +51,7 @@ class FarmingResourceResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->searchable(),
+                TextColumn::make('title')->searchable(),
                 TextColumn::make('type')->searchable(),
                 TextColumn::make('quantity_unit')->searchable(),
                 TextColumn::make('rate')
@@ -70,7 +68,7 @@ class FarmingResourceResource extends Resource
                     DeleteBulkAction::make(),
                 ]),
             ])
-            ->defaultSort('name');
+            ->defaultSort('title');
     }
 
     public static function getRelations(): array

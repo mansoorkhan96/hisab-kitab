@@ -2,24 +2,22 @@
 
 namespace App\Filament\Resources\CalculationResource\RelationManagers;
 
-use Filament\Schemas\Schema;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Actions\CreateAction;
-use Filament\Actions\EditAction;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
 use App\Filament\Resources\TractorResource\Pages\EditTractor;
 use App\Helpers\Converter;
 use App\Models\CropSeason;
 use App\Models\Threshing;
-use Filament\Forms;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Tables;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\Summarizers\Summarizer;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -112,9 +110,10 @@ class ThreshingsRelationManager extends RelationManager
                     ),
             ])
             ->filters([
+                // TODO: use relationship()
                 SelectFilter::make('calculation.crop_season_id')
                     ->label('Crop Season')
-                    ->options(CropSeason::all()->pluck('name', 'id'))
+                    ->options(CropSeason::all()->pluck('title', 'id'))
                     ->default(CropSeason::where('is_current', true)->first()?->id)
                     ->query(function (EloquentBuilder $query, $data) {
                         return $query
