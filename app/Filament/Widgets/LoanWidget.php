@@ -13,6 +13,8 @@ class LoanWidget extends BaseWidget
 
     public array|int|null $columns = 1;
 
+    protected static bool $isDiscovered = false;
+
     protected $listeners = [
         '$refresh' => '$refresh',
     ];
