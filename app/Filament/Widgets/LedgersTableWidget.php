@@ -57,7 +57,7 @@ class LedgersTableWidget extends BaseWidget
                     }),
             ])
             ->columns([
-                TextColumn::make('farmingResource.name')
+                TextColumn::make('farmingResource.title')
                     ->label('Item'),
                 TextColumn::make('quantity')
                     ->numeric()
@@ -70,11 +70,11 @@ class LedgersTableWidget extends BaseWidget
                     ->summarize(Sum::make()->label('Total')->money('PKR')),
             ])
             ->groups([
-                Group::make('farmingResource.name')
+                Group::make('farmingResource.title')
                     ->titlePrefixedWithLabel(false),
             ])
             ->groupsOnly($this->groupsOnly)
-            ->defaultGroup('farmingResource.name')
+            ->defaultGroup('farmingResource.title')
             ->paginated(false);
     }
 }

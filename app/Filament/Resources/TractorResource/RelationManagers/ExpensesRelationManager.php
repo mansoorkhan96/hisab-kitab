@@ -3,21 +3,21 @@
 namespace App\Filament\Resources\TractorResource\RelationManagers;
 
 use App\Models\CropSeason;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
+use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Filament\Actions\CreateAction;
-use Filament\Actions\EditAction;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Tables\Columns\Summarizers\Sum;
 
 class ExpensesRelationManager extends RelationManager
 {
@@ -28,7 +28,7 @@ class ExpensesRelationManager extends RelationManager
         return $schema
             ->components([
                 Select::make('crop_season_id')
-                    ->relationship('cropSeason', 'name')
+                    ->relationship('cropSeason', 'title')
                     ->default(CropSeason::where('is_current', true)->first()?->id)
                     ->preload()
                     ->required(),
@@ -45,6 +45,7 @@ class ExpensesRelationManager extends RelationManager
                     ->required()
                     ->default(now()),
                 Textarea::make('details')
+                    ->columnSpanFull()
                     ->rows(3)
                     ->maxLength(1000),
             ]);
@@ -55,7 +56,7 @@ class ExpensesRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('title')
             ->columns([
-                TextColumn::make('cropSeason.name')
+                TextColumn::make('cropSeason.title')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('title')
@@ -78,14 +79,16 @@ class ExpensesRelationManager extends RelationManager
                         if (strlen($state) <= $column->getCharacterLimit()) {
                             return null;
                         }
+
                         return $state;
                     }),
             ])
             ->filters([
+                // TODO: use relationship()
                 SelectFilter::make('crop_season_id')
                     ->label('Crop Season')
                     ->default(CropSeason::where('is_current', true)->first()?->id)
-                    ->options(CropSeason::all()->pluck('name', 'id')),
+                    ->options(CropSeason::all()->pluck('title', 'id')),
             ])
             ->headerActions([
                 CreateAction::make(),

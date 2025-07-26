@@ -54,7 +54,7 @@ class LoanPaymentsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('amount')
             ->columns([
-                TextColumn::make('calculation.cropSeason.name')
+                TextColumn::make('calculation.cropSeason.title')
                     ->label('Calculation'),
                 TextColumn::make('amount')
                     ->label('Amount')

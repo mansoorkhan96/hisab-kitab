@@ -76,17 +76,17 @@ class LedgerResource extends Resource
     {
         return $table
             ->groups([
-                Group::make('farmingResource.name')
+                Group::make('farmingResource.title')
                     ->titlePrefixedWithLabel(false),
             ])
-            ->defaultGroup('farmingResource.name')
+            ->defaultGroup('farmingResource.title')
             ->columns([
-                TextColumn::make('cropSeason.name')
+                TextColumn::make('cropSeason.title')
                     ->searchable(), // TODO: HIde and make it filter and default to current
-                TextColumn::make('farmer.name')
+                TextColumn::make('user.name')
                     ->visible((request()->routeIs('filament.admin.resources.ledgers.index')))
                     ->searchable(),
-                TextColumn::make('farmingResource.name')
+                TextColumn::make('farmingResource.title')
                     ->searchable()
                     ->suffix(fn (Ledger $record) => ' ('.$record->farmingResource->type->name.')'),
                 TextColumn::make('quantity')

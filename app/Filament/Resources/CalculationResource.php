@@ -159,7 +159,7 @@ class CalculationResource extends Resource
             ->columns([
                 TextColumn::make('user.name')
                     ->searchable(),
-                TextColumn::make('cropSeason.name')
+                TextColumn::make('cropSeason.title')
                     ->searchable(),
                 // TODO:
                 // status (loss/profit) red/green
