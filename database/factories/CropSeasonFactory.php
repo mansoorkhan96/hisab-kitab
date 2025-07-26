@@ -19,7 +19,7 @@ class CropSeasonFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'name' => fake()->word,
+            'title' => fake()->word,
         ];
     }
 }
