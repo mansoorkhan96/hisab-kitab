@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\FarmingResourceResource\Pages;
 
-use Filament\Actions\DeleteAction;
 use App\Filament\Resources\FarmingResourceResource;
-use Filament\Actions;
+use App\Filament\Widgets\ResourceStockOverview;
+use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditFarmingResource extends EditRecord
@@ -15,6 +15,15 @@ class EditFarmingResource extends EditRecord
     {
         return [
             DeleteAction::make(),
+        ];
+    }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            ResourceStockOverview::make([
+                'farmingResource' => $this->getRecord(),
+            ]),
         ];
     }
 }
