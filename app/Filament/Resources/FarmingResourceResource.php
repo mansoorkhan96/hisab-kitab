@@ -7,6 +7,7 @@ use App\Enums\QuantityUnit;
 use App\Filament\Resources\FarmingResourceResource\Pages\CreateFarmingResource;
 use App\Filament\Resources\FarmingResourceResource\Pages\EditFarmingResource;
 use App\Filament\Resources\FarmingResourceResource\Pages\ListFarmingResources;
+use App\Filament\Resources\FarmingResourceResource\RelationManagers\ResourceStocksRelationManager;
 use App\Models\FarmingResource;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -74,7 +75,7 @@ class FarmingResourceResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ResourceStocksRelationManager::class,
         ];
     }
 
