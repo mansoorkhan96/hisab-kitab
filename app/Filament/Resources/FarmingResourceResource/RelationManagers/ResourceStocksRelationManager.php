@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\FarmingResourceResource\RelationManagers;
 
+use App\Enums\FarmingResourceType;
 use App\Models\CropSeason;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
@@ -17,10 +18,16 @@ use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class ResourceStocksRelationManager extends RelationManager
 {
     protected static string $relationship = 'resourceStocks';
+
+    public static function canViewForRecord(Model $ownerRecord, string $pageClass): bool
+    {
+        return $ownerRecord->type !== FarmingResourceType::Implement;
+    }
 
     public function form(Schema $schema): Schema
     {
