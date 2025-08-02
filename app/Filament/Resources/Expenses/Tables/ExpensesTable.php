@@ -15,7 +15,7 @@ class ExpensesTable
     public static function configure(Table $table): Table
     {
         return $table
-            ->defaultSort('date', 'desc')
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 TextColumn::make('cropSeason.title')
                     ->searchable()
