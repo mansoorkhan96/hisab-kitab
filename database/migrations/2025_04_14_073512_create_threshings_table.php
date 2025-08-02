@@ -15,6 +15,9 @@ return new class extends Migration
             $table->foreignIdFor(Calculation::class)->constrained();
             $table->foreignIdFor(Tractor::class)->constrained();
             $table->decimal('total_wheat_sacks', 12, 2);
+            $table
+                ->decimal('threshing_charges_in_sacks', 10, 2)
+                ->storedAs('(total_wheat_sacks * 10) / 100');
             $table->timestamps();
         });
     }
