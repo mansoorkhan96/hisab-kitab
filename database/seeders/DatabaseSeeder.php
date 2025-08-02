@@ -50,6 +50,7 @@ class DatabaseSeeder extends Seeder
             ->create([
                 'title' => 'Season-'.now()->year,
                 'is_current' => true,
+                'wheat_rate' => 9_700,
             ]);
 
         $this->seedAshrafRind();
@@ -96,7 +97,6 @@ class DatabaseSeeder extends Seeder
             ->for($this->cropSeason)
             ->create([
                 'kudhi_in_kgs' => 1,
-                'wheat_rate' => 9_700,
                 'wheat_straw_rate' => 458.1673306773,
             ]);
 
@@ -148,7 +148,6 @@ class DatabaseSeeder extends Seeder
             ->for($this->cropSeason)
             ->create([
                 'kudhi_in_kgs' => 0,
-                'wheat_rate' => 5250,
                 'wheat_straw_rate' => 310,
             ]);
 

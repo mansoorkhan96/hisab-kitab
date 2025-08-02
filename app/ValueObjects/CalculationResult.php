@@ -5,8 +5,8 @@ namespace App\ValueObjects;
 use App\Enums\FarmingResourceType;
 use App\Helpers\Converter;
 use App\Models\Calculation;
-use App\Models\Loan;
 use App\Models\Ledger;
+use App\Models\Loan;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Number;
@@ -47,6 +47,8 @@ readonly class CalculationResult
 
     public static function make(Calculation $calculation): self
     {
+        $cropSeason = $calculation->cropSeason;
+
         $sacks = $calculation->threshings()->sum('total_wheat_sacks');
         $totalWeightInKgs = $sacks * 100;
         $totalSacks = $totalWeightInKgs / 100;
@@ -61,7 +63,7 @@ readonly class CalculationResult
         $remainingWeightInKgs -= ($calculation->kamdari_in_kgs);
 
         // Total amount
-        $sackAmount = ($remainingWeightInKgs / 100) * $calculation->wheat_rate;
+        $sackAmount = ($remainingWeightInKgs / 100) * $cropSeason->wheat_rate;
 
         // Buh amount
         $buhAmount = ($sacks * 2.5) * $calculation->wheat_straw_rate;
@@ -99,7 +101,7 @@ readonly class CalculationResult
         $farmerFinalAmount = null;
 
         if ($calculation->kudhi_in_kgs && $calculation->kudhi_in_kgs > 0) {
-            $farmerKudhiAmount = ($calculation->kudhi_in_kgs / 100) * $calculation->wheat_rate;
+            $farmerKudhiAmount = ($calculation->kudhi_in_kgs / 100) * $cropSeason->wheat_rate;
             $farmerAmount = $farmerFinalAmount = $farmerAmount + $farmerKudhiAmount;
         }
 

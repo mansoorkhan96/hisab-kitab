@@ -29,10 +29,10 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Utilities\Get;
-use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class CalculationResource extends Resource
 {
@@ -53,33 +53,17 @@ class CalculationResource extends Resource
                             ->schema([
                                 CropSeasonSelect::make()
                                     ->live()
-                                    ->afterStateUpdated(function (Set $set, Get $get, $state) {
-                                        if (empty($state)) {
-                                            return;
-                                        }
-
-                                        $cropSeason = CropSeason::find($state);
-
-                                        if (empty($get('wheat_rate'))) {
-                                            $set('wheat_rate', $cropSeason?->wheat_rate);
-                                        }
-
-                                        if (empty($get('wheat_straw_rate'))) {
-                                            $set('wheat_straw_rate', $cropSeason?->wheat_straw_rate);
-                                        }
-                                    }),
+                                    ->relationship(
+                                        'cropSeason',
+                                        'title',
+                                        fn (Builder $query) => $query->whereNotNull('wheat_rate')
+                                    )
+                                    ->helperText('Set Wheat Rate to Crop Season to calculate'),
                                 Select::make('user_id')
                                     ->live()
                                     ->relationship('user', 'name')
                                     ->preload()
                                     ->required(),
-                                TextInput::make('wheat_rate')
-                                    ->live()
-                                    ->required()
-                                    ->default(fn () => CropSeason::current()->wheat_rate)
-                                    ->minValue(0)
-                                    ->prefixIcon('heroicon-m-banknotes')
-                                    ->numeric(),
                                 TextInput::make('kudhi_in_kgs')
                                     ->label('Kudhi (KGs)')
                                     ->prefixIcon('heroicon-m-scale')
