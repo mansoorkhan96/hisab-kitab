@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignIdFor(Tractor::class)->nullable()->constrained();
             $table->decimal('quantity', 10, 2);
             $table->decimal('rate', 10, 2)->nullable();
-            $table->decimal('amount', 10, 2)->virtualAs('quantity * rate');
+            $table->decimal('amount', 10, 2)->storedAs('quantity * rate');
             $table->timestamps();
         });
     }
