@@ -13,13 +13,7 @@ class CropSeasonSelect
             ->relationship('cropSeason', 'title')
             ->searchable()
             ->preload()
-            ->default(
-                CropSeason::query()
-                    ->where('user_id', auth()->id())
-                    ->where('is_current', true)
-                    ->first()
-                    ->id
-            )
+            ->default(CropSeason::current()->getKey())
             ->required();
     }
 }

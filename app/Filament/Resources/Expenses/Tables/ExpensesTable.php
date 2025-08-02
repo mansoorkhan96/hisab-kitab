@@ -2,13 +2,12 @@
 
 namespace App\Filament\Resources\Expenses\Tables;
 
-use App\Models\CropSeason;
+use App\Filament\Tables\Filters\CropSeasonFilter;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class ExpensesTable
@@ -50,11 +49,7 @@ class ExpensesTable
                     }),
             ])
             ->filters([
-                // TODO: use relationship()
-                SelectFilter::make('crop_season_id')
-                    ->label('Crop Season')
-                    ->default(CropSeason::where('is_current', true)->first()?->id)
-                    ->options(CropSeason::all()->pluck('title', 'id')),
+                CropSeasonFilter::make(),
             ])
             ->recordActions([
                 EditAction::make(),

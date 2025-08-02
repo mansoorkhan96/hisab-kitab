@@ -3,21 +3,19 @@
 namespace App\Filament\Resources\FarmingResourceResource\RelationManagers;
 
 use App\Enums\FarmingResourceType;
-use App\Models\CropSeason;
+use App\Filament\Schemas\Components\CropSeasonSelect;
+use App\Filament\Tables\Filters\CropSeasonFilter;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\DatePicker;
-use App\Filament\Schemas\Components\CropSeasonSelect;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 
@@ -84,10 +82,7 @@ class ResourceStocksRelationManager extends RelationManager
                     ->toggleable(),
             ])
             ->filters([
-                SelectFilter::make('crop_season_id')
-                    ->label('Crop Season')
-                    ->default(CropSeason::where('is_current', true)->first()?->id)
-                    ->options(CropSeason::all()->pluck('title', 'id')),
+                CropSeasonFilter::make(),
             ])
             ->headerActions([
                 CreateAction::make(),

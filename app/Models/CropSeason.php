@@ -32,4 +32,12 @@ class CropSeason extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public static function current(): self
+    {
+        return self::query()
+            ->where('is_current', true)
+            ->where('user_id', auth()->id())
+            ->first();
+    }
 }

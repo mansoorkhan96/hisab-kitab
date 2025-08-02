@@ -8,6 +8,8 @@ use App\Filament\Resources\CalculationResource\Pages\CreateCalculation;
 use App\Filament\Resources\CalculationResource\Pages\EditCalculation;
 use App\Filament\Resources\CalculationResource\Pages\ListCalculations;
 use App\Filament\Resources\CalculationResource\RelationManagers\ThreshingsRelationManager;
+use App\Filament\Schemas\Components\CropSeasonSelect;
+use App\Filament\Tables\Filters\CropSeasonFilter;
 use App\Filament\Widgets\LedgersTableWidget;
 use App\Filament\Widgets\LoanWidget;
 use App\Models\Calculation;
@@ -16,7 +18,6 @@ use App\Models\User;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use App\Filament\Schemas\Components\CropSeasonSelect;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -31,7 +32,6 @@ use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class CalculationResource extends Resource
@@ -163,11 +163,7 @@ class CalculationResource extends Resource
                 // amount red/green
             ])
             ->filters([
-                // TODO: use relationship()
-                SelectFilter::make('crop_season_id')
-                    ->label('Crop Season')
-                    ->default(CropSeason::where('is_current', true)->first()?->id)
-                    ->options(CropSeason::all()->pluck('title', 'id')),
+                CropSeasonFilter::make(),
             ])
             ->recordActions([
                 EditAction::make(),

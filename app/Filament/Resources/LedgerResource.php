@@ -5,13 +5,13 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\LedgerResource\Pages\CreateLedger;
 use App\Filament\Resources\LedgerResource\Pages\EditLedger;
 use App\Filament\Resources\LedgerResource\Pages\ListLedgers;
-use App\Models\CropSeason;
+use App\Filament\Schemas\Components\CropSeasonSelect;
+use App\Filament\Tables\Filters\CropSeasonFilter;
 use App\Models\FarmingResource;
 use App\Models\Ledger;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use App\Filament\Schemas\Components\CropSeasonSelect;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
@@ -21,7 +21,6 @@ use Filament\Schemas\Schema;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\TextInputColumn;
-use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 
@@ -89,11 +88,7 @@ class LedgerResource extends Resource
                     ->summarize(Sum::make()->label('Total')->money('PKR')),
             ])
             ->filters([
-                // TODO: use relationship()
-                SelectFilter::make('crop_season_id')
-                    ->label('Crop Season')
-                    ->default(CropSeason::where('is_current', true)->first()?->id)
-                    ->options(CropSeason::all()->pluck('title', 'id')),
+                CropSeasonFilter::make(),
             ])
             ->recordActions([
                 EditAction::make(),
