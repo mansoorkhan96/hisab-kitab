@@ -2,18 +2,19 @@
 
 namespace App\Filament\Resources\Users\RelationManagers;
 
-use Filament\Schemas\Schema;
-use Filament\Actions\Action;
 use App\Filament\Resources\LedgerResource;
+use App\Models\Tractor;
+use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Schemas\Schema;
 use Filament\Tables\Table;
 
 class LedgersRelationManager extends RelationManager
 {
     protected static string $relationship = 'ledgers';
 
-    protected static string | \BackedEnum | null $icon = 'heroicon-o-book-open';
+    protected static string|\BackedEnum|null $icon = 'heroicon-o-book-open';
 
     public function form(Schema $schema): Schema
     {
@@ -31,6 +32,7 @@ class LedgersRelationManager extends RelationManager
     protected function getCreateAction(): Action
     {
         return Action::make('Add new')
+            ->hidden(fn (self $livewire) => $livewire->getOwnerRecord() instanceof Tractor)
             ->schema(
                 fn (Schema $schema) => $this
                     ->form($schema)
