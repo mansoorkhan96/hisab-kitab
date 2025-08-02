@@ -98,7 +98,8 @@ class CalculationResource extends Resource
                                     ->live(),
                                 Toggle::make('show_details')
                                     ->live()
-                                    ->dehydrated(false),
+                                    ->dehydrated(false)
+                                    ->visible(fn (string $operation) => $operation === 'edit'),
                                 Flex::make([
                                     Section::make('Calculation')
                                         ->schema([
