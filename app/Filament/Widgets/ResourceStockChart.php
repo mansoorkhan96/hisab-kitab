@@ -10,9 +10,9 @@ use Filament\Widgets\ChartWidget;
 
 class ResourceStockChart extends ChartWidget
 {
-    // protected static ?string $heading = 'Resource Stock Overview';
+    protected int|string|array $columnSpan = 'full';
 
-    // protected static ?string $description = 'Available stock (green) and consumed stock (red) stacked by resource';
+    protected ?string $maxHeight = '300px';
 
     protected function getType(): string
     {
