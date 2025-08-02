@@ -76,6 +76,8 @@ class CalculationResource extends Resource
                                 TextInput::make('wheat_rate')
                                     ->live()
                                     ->required()
+                                    ->default(fn () => CropSeason::current()->wheat_rate)
+                                    ->minValue(0)
                                     ->prefixIcon('heroicon-m-banknotes')
                                     ->numeric(),
                                 TextInput::make('kudhi_in_kgs')
@@ -85,6 +87,8 @@ class CalculationResource extends Resource
                                     ->numeric(),
                                 TextInput::make('wheat_straw_rate')
                                     ->live()
+                                    ->minValue(0)
+                                    ->default(fn () => CropSeason::current()->wheat_straw_rate)
                                     ->prefixIcon('heroicon-m-banknotes')
                                     ->numeric(),
                                 TextInput::make('kamdari_in_kgs')
