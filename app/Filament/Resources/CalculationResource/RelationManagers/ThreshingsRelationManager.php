@@ -72,14 +72,16 @@ class ThreshingsRelationManager extends RelationManager
                 TextColumn::make('amount')
                     ->label('Amount')
                     ->getStateUsing(function (Threshing $record) {
-                        return $record->threshing_charges_in_sacks * $record->calculation->wheat_rate;
+                        $cropSeason = $record->calculation->cropSeason;
+
+                        return $record->threshing_charges_in_sacks * $cropSeason->wheat_rate;
                     })
                     ->money('PKR')
                     ->summarize(Summarizer::make()
                         ->label('Total Amount')
-                        ->visible(fn (HasTable $livewire) => filled(Arr::get($livewire->getTableFilterState('calculation.crop_season_id'), 'value')))
+                        ->visible(fn (HasTable $livewire) => filled(Arr::get($livewire->getTableFilterState('calculation.cropSeason'), 'value')))
                         ->using(function (Builder $query, HasTable $livewire) {
-                            $cropSeasonId = Arr::get($livewire->getTableFilterState('calculation.crop_season_id'), 'value');
+                            $cropSeasonId = Arr::get($livewire->getTableFilterState('calculation.cropSeason'), 'value');
 
                             $cropSeason = CropSeason::find($cropSeasonId);
 
