@@ -9,6 +9,7 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\DatePicker;
+use App\Filament\Schemas\Components\CropSeasonSelect;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -27,11 +28,7 @@ class ExpensesRelationManager extends RelationManager
     {
         return $schema
             ->components([
-                Select::make('crop_season_id')
-                    ->relationship('cropSeason', 'title')
-                    ->default(CropSeason::where('is_current', true)->first()?->id)
-                    ->preload()
-                    ->required(),
+                CropSeasonSelect::make(),
                 TextInput::make('title')
                     ->required()
                     ->maxLength(255),

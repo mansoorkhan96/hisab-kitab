@@ -16,6 +16,7 @@ use App\Models\User;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use App\Filament\Schemas\Components\CropSeasonSelect;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -50,10 +51,8 @@ class CalculationResource extends Resource
                     ->schema([
                         Tab::make('Calculation')
                             ->schema([
-                                Select::make('crop_season_id')
+                                CropSeasonSelect::make()
                                     ->live()
-                                    ->relationship('cropSeason', 'title')
-                                    ->default(CropSeason::where('is_current', true)->first()?->id)
                                     ->afterStateUpdated(function (Set $set, Get $get, $state) {
                                         if (empty($state)) {
                                             return;
@@ -68,9 +67,7 @@ class CalculationResource extends Resource
                                         if (empty($get('wheat_straw_rate'))) {
                                             $set('wheat_straw_rate', $cropSeason?->wheat_straw_rate);
                                         }
-                                    })
-                                    ->preload()
-                                    ->required(),
+                                    }),
                                 Select::make('user_id')
                                     ->live()
                                     ->relationship('user', 'name')

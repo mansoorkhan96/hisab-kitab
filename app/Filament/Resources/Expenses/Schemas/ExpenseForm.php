@@ -6,6 +6,7 @@ use App\Models\CropSeason;
 use App\Models\Tractor;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\MorphToSelect;
+use App\Filament\Schemas\Components\CropSeasonSelect;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -17,11 +18,7 @@ class ExpenseForm
     {
         return $schema
             ->components([
-                Select::make('crop_season_id')
-                    ->relationship('cropSeason', 'title')
-                    ->default(CropSeason::where('is_current', true)->first()?->id)
-                    ->preload()
-                    ->required(),
+                CropSeasonSelect::make(),
                 // MorphToSelect::make('expensable')
                 //     ->live()
                 //     ->types([

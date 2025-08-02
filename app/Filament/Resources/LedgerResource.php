@@ -11,6 +11,7 @@ use App\Models\Ledger;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use App\Filament\Schemas\Components\CropSeasonSelect;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
@@ -33,18 +34,7 @@ class LedgerResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            Select::make('crop_season_id')
-                ->relationship('cropSeason', 'title')
-                ->searchable()
-                ->preload()
-                ->default(
-                    CropSeason::query()
-                        ->where('user_id', auth()->id())
-                        ->where('is_current', true)
-                        ->first()
-                        ->id
-                )
-                ->required(),
+            CropSeasonSelect::make(),
             // Select::make('user_id')
             //     ->relationship('farmer', 'name')
             //     ->searchable()
