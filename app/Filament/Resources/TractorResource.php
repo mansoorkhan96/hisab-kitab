@@ -2,29 +2,30 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Schemas\Schema;
-use Filament\Actions\EditAction;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use App\Filament\Resources\TractorResource\Pages\ListTractors;
+use App\Enums\Role;
+use App\Filament\Resources\CalculationResource\RelationManagers\ThreshingsRelationManager;
 use App\Filament\Resources\TractorResource\Pages\CreateTractor;
 use App\Filament\Resources\TractorResource\Pages\EditTractor;
-use App\Filament\Resources\CalculationResource\RelationManagers\ThreshingsRelationManager;
+use App\Filament\Resources\TractorResource\Pages\ListTractors;
 use App\Filament\Resources\TractorResource\RelationManagers\ExpensesRelationManager;
+use App\Filament\Resources\Users\RelationManagers\LedgersRelationManager;
 use App\Models\Tractor;
-use App\Enums\Role;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Illuminate\Database\Eloquent\Builder;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class TractorResource extends Resource
 {
     protected static ?string $model = Tractor::class;
 
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-truck';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-truck';
 
     public static function form(Schema $schema): Schema
     {
@@ -68,6 +69,7 @@ class TractorResource extends Resource
     public static function getRelations(): array
     {
         return [
+            LedgersRelationManager::class,
             ThreshingsRelationManager::class,
             ExpensesRelationManager::class,
         ];

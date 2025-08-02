@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\CropSeason;
-use App\Models\User;
 use App\Models\FarmingResource;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -23,6 +23,7 @@ class LedgerFactory extends Factory
             'crop_season_id' => CropSeason::factory(),
             'user_id' => User::factory(),
             'farming_resource_id' => FarmingResource::factory(),
+            'tractor_id' => null,
             'quantity' => random_int(1, 3),
             'rate' => null,
         ];

@@ -12,6 +12,7 @@ class CropSeasonFilter
         return SelectFilter::make('cropSeason')
             ->label('Crop Season')
             ->relationship('cropSeason', 'title')
-            ->default(CropSeason::current()->getKey());
+            ->default(CropSeason::current()->getKey())
+            ->selectablePlaceholder(false);
     }
 }

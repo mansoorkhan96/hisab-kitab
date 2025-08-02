@@ -2,13 +2,16 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\FarmingResourceType;
 use App\Filament\Resources\LedgerResource\Pages\CreateLedger;
 use App\Filament\Resources\LedgerResource\Pages\EditLedger;
 use App\Filament\Resources\LedgerResource\Pages\ListLedgers;
+use App\Filament\Resources\Users\RelationManagers\LedgersRelationManager;
 use App\Filament\Schemas\Components\CropSeasonSelect;
 use App\Filament\Tables\Filters\CropSeasonFilter;
 use App\Models\FarmingResource;
 use App\Models\Ledger;
+use App\Models\User;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -50,6 +53,17 @@ class LedgerResource extends Resource
                 ->searchable()
                 ->preload()
                 ->required(),
+            Select::make('tractor_id')
+                ->live()
+                ->visible(function (Get $get) {
+                    $farmingResource = FarmingResource::find($get('farming_resource_id'));
+
+                    return $farmingResource?->type === FarmingResourceType::Implement;
+                })
+                ->relationship('tractor', 'title')
+                ->searchable()
+                ->preload()
+                ->required(),
             TextInput::make('quantity')
                 ->default(1)
                 ->numeric()
@@ -64,20 +78,22 @@ class LedgerResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->groups([
-                Group::make('farmingResource.title')
-                    ->titlePrefixedWithLabel(false),
-            ])
-            ->defaultGroup('farmingResource.title')
+            ->defaultSort('created_at', 'desc')
+            // ->groups([
+            //     Group::make('farmingResource.title')
+            //         ->titlePrefixedWithLabel(false),
+            // ])
+            // ->defaultGroup('farmingResource.title')
             ->columns([
-                TextColumn::make('cropSeason.title')
-                    ->searchable(), // TODO: HIde and make it filter and default to current
                 TextColumn::make('user.name')
-                    ->visible((request()->routeIs('filament.admin.resources.ledgers.index')))
+                    ->label('Farmer')
+                    ->hidden(fn ($livewire) => $livewire instanceof LedgersRelationManager && $livewire->getOwnerRecord() instanceof User)
                     ->searchable(),
                 TextColumn::make('farmingResource.title')
                     ->searchable()
                     ->suffix(fn (Ledger $record) => ' ('.$record->farmingResource->type->name.')'),
+                TextColumn::make('tractor.title')
+                    ->searchable(),
                 TextColumn::make('quantity')
                     ->suffix(fn (Ledger $record) => $record->quantity_with_unit)
                     ->numeric()

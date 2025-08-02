@@ -40,4 +40,9 @@ class Tractor extends Model
     {
         return $this->morphMany(Expense::class, 'expensable');
     }
+
+    public function ledgers(): HasMany
+    {
+        return $this->hasMany(Ledger::class);
+    }
 }

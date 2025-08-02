@@ -35,6 +35,11 @@ class Ledger extends Model
         return $this->belongsTo(FarmingResource::class);
     }
 
+    public function tractor(): BelongsTo
+    {
+        return $this->belongsTo(Tractor::class);
+    }
+
     public function quantityWithUnit(): Attribute
     {
         return Attribute::get(
