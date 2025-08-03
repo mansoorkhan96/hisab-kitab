@@ -23,8 +23,7 @@ class UserForm
                     ->email()
                     ->required(),
                 TextInput::make('password')
-                    ->password()
-                    ->required(),
+                    ->password(),
             ]);
     }
 }

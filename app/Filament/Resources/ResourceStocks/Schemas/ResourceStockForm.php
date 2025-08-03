@@ -33,7 +33,6 @@ class ResourceStockForm
                     ->numeric()
                     ->minValue(0),
                 TextInput::make('amount')
-                    ->required()
                     ->numeric()
                     ->minValue(0)
                     ->prefix('PKR'),
