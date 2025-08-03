@@ -2,12 +2,8 @@
 
 namespace App\Filament\Resources\Expenses\Schemas;
 
-use App\Models\CropSeason;
-use App\Models\Tractor;
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\MorphToSelect;
 use App\Filament\Schemas\Components\CropSeasonSelect;
-use Filament\Forms\Components\Select;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
@@ -19,12 +15,6 @@ class ExpenseForm
         return $schema
             ->components([
                 CropSeasonSelect::make(),
-                // MorphToSelect::make('expensable')
-                //     ->live()
-                //     ->types([
-                //         MorphToSelect\Type::make(Tractor::class)
-                //             ->titleAttribute('title'),
-                //     ]),
                 TextInput::make('title')
                     ->required()
                     ->maxLength(255),

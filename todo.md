@@ -1,7 +1,6 @@
 # TODO:
 
-- Expense should not be related to farming resource
-- Make expense and relation manager reusable
+- Delete ledger resource and only keep relation manager
 - Tractor can have other work or profit/income source, like transporting
 - Add Teams, to support multiple landlords in single production app
 - Tracktor income, expense and profit stats widgets

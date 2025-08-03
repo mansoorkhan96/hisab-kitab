@@ -7,6 +7,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -22,6 +23,7 @@ class ExpensesTable
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('expensable.title')
+                    ->hidden(fn ($livewire) => $livewire instanceof RelationManager)
                     ->sortable(),
                 TextColumn::make('title')
                     ->searchable()
@@ -33,21 +35,13 @@ class ExpensesTable
                         ->label('Total')
                         ->money('PKR')
                     ),
-                // TextColumn::make('quantity')
-                //     ->sortable(),
                 TextColumn::make('date')
                     ->date()
                     ->sortable(),
                 TextColumn::make('details')
                     ->limit(50)
-                    ->tooltip(function (TextColumn $column): ?string {
-                        $state = $column->getState();
-                        if (strlen($state) <= $column->getCharacterLimit()) {
-                            return null;
-                        }
-
-                        return $state;
-                    }),
+                    ->html()
+                    ->wrap(),
             ])
             ->filters([
                 CropSeasonFilter::make(),
