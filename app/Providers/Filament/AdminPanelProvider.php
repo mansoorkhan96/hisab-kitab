@@ -37,10 +37,11 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('/')
+            ->profile(isSimple: false)
             ->login()
             ->registration(Register::class)
-            ->profile()
             ->sidebarFullyCollapsibleOnDesktop()
+            ->spa()
             ->colors([
                 'primary' => Color::Teal,
             ])
