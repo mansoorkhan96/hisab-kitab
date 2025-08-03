@@ -41,7 +41,8 @@ class ResourceStocksTable
                     ->date()
                     ->sortable(),
                 TextColumn::make('supplier')
-                    ->searchable(),
+                    ->searchable()
+                    ->wrap(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

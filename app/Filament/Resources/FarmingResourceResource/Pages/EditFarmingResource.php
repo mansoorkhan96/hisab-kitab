@@ -4,7 +4,6 @@ namespace App\Filament\Resources\FarmingResourceResource\Pages;
 
 use App\Filament\Resources\FarmingResourceResource;
 use App\Filament\Widgets\ResourceStockOverview;
-use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditFarmingResource extends EditRecord
@@ -14,7 +13,7 @@ class EditFarmingResource extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            DeleteAction::make(),
+            // ,
         ];
     }
 

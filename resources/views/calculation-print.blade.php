@@ -15,7 +15,7 @@
         http-equiv="X-UA-Compatible"
         content="ie=edge"
     >
-    <title>{{ $calculation->user->name }} | {{ $calculation->cropseason->name }}</title>
+    <title>{{ $calculation->user->name }} | {{ $calculation->cropseason->title }}</title>
 
     @vite('resources/css/app.css')
     @filamentStyles()
@@ -77,7 +77,7 @@
         <!-- Grid -->
         <div class="mb-3 items-center justify-center border-b border-gray-200 pb-2">
             <h2 class="text-center text-lg font-semibold text-gray-700">
-                {{ $calculation->user->name }} | {{ $calculation->cropseason->name }}
+                {{ $calculation->user->name }} | {{ $calculation->cropseason->title }}
             </h2>
         </div>
         <!-- End Grid -->

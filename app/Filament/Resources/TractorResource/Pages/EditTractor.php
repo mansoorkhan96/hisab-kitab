@@ -4,7 +4,6 @@ namespace App\Filament\Resources\TractorResource\Pages;
 
 use App\Filament\Resources\TractorResource;
 use App\Filament\Widgets\TractorStatsWidget;
-use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditTractor extends EditRecord
@@ -14,7 +13,7 @@ class EditTractor extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            DeleteAction::make(),
+            // ,
         ];
     }
 
