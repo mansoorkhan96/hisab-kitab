@@ -4,8 +4,8 @@ namespace App\Filament\Resources\Calculations\Schemas;
 
 use App\Enums\FarmingResourceType;
 use App\Filament\Components\CalculationInfolist;
-use App\Filament\Resources\CalculationResource\Pages\EditCalculation;
-use App\Filament\Resources\CalculationResource\RelationManagers\ThreshingsRelationManager;
+use App\Filament\Resources\Calculations\Pages\EditCalculation;
+use App\Filament\Resources\Calculations\RelationManagers\ThreshingsRelationManager;
 use App\Filament\Schemas\Components\CropSeasonSelect;
 use App\Filament\Widgets\LedgersTableWidget;
 use App\Filament\Widgets\LoanWidget;

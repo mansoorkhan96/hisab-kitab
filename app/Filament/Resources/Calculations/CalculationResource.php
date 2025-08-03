@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\Calculations;
 
-use App\Filament\Resources\CalculationResource\Pages\CreateCalculation;
-use App\Filament\Resources\CalculationResource\Pages\EditCalculation;
-use App\Filament\Resources\CalculationResource\Pages\ListCalculations;
+use App\Filament\Resources\Calculations\Pages\CreateCalculation;
+use App\Filament\Resources\Calculations\Pages\EditCalculation;
+use App\Filament\Resources\Calculations\Pages\ListCalculations;
 use App\Filament\Resources\Calculations\Schemas\CalculationForm;
 use App\Filament\Resources\Calculations\Tables\CalculationTable;
 use App\Models\Calculation;

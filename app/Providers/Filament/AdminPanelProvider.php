@@ -4,7 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Components\CalculationInfolist;
 use App\Filament\Pages\Auth\Register;
-use App\Filament\Resources\CalculationResource\Pages\EditCalculation;
+use App\Filament\Resources\Calculations\Pages\EditCalculation;
 use App\Filament\Widgets\LoanWidget;
 use Filament\Actions\CreateAction;
 use Filament\Http\Middleware\Authenticate;

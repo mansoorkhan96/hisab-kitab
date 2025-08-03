@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\CalculationResource\Pages;
+namespace App\Filament\Resources\Calculations\Pages;
 
 use App\Filament\Resources\Calculations\CalculationResource;
-use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateCalculation extends CreateRecord

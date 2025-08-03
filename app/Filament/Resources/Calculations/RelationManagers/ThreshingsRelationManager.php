@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\CalculationResource\RelationManagers;
+namespace App\Filament\Resources\Calculations\RelationManagers;
 
 use App\Filament\Resources\TractorResource\Pages\EditTractor;
 use App\Filament\Tables\Filters\CropSeasonFilter;

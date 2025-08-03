@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\CalculationResource\Pages;
+namespace App\Filament\Resources\Calculations\Pages;
 
 use App\Filament\Resources\Calculations\CalculationResource;
 use App\Models\Calculation;

@@ -3,7 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Enums\Role;
-use App\Filament\Resources\CalculationResource\RelationManagers\ThreshingsRelationManager;
+use App\Filament\Resources\Calculations\RelationManagers\ThreshingsRelationManager;
 use App\Filament\Resources\TractorResource\Pages\CreateTractor;
 use App\Filament\Resources\TractorResource\Pages\EditTractor;
 use App\Filament\Resources\TractorResource\Pages\ListTractors;

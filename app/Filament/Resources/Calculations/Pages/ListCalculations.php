@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Filament\Resources\CalculationResource\Pages;
+namespace App\Filament\Resources\Calculations\Pages;
 
-use Filament\Actions\CreateAction;
 use App\Filament\Resources\Calculations\CalculationResource;
-use Filament\Actions;
+use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
 class ListCalculations extends ListRecords
