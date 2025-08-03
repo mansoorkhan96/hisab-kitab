@@ -55,11 +55,19 @@ class TractorStatsWidget extends BaseWidget
 
         return [
             Stat::make('Total Expenses', 'PKR '.number_format($totalExpenses, 2))
-                ->color('danger'),
+                ->extraAttributes([
+                    'class' => '[&_.fi-wi-stats-overview-stat-value]:text-(--danger-500)',
+                ]),
             Stat::make('Total Revenue', 'PKR '.number_format($totalRevenue, 2))
-                ->color('success'),
+                ->extraAttributes([
+                    'class' => '[&_.fi-wi-stats-overview-stat-value]:text-(--primary-500)',
+                ]),
             Stat::make('Net Income', 'PKR '.number_format($netIncome, 2))
-                ->color($netIncome >= 0 ? 'success' : 'danger'),
+                ->extraAttributes([
+                    'class' => $netIncome > 0
+                        ? '[&_.fi-wi-stats-overview-stat-value]:text-(--success-500)'
+                        : '[&_.fi-wi-stats-overview-stat-value]:text-(--danger-500)',
+                ]),
         ];
     }
 }

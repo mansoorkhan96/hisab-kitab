@@ -26,7 +26,9 @@ class LoanWidget extends BaseWidget
         return [
             Stat::make('Total Loan', Number::currency($value, 'PKR'))
                 ->extraAttributes([
-                    'class' => 'user-total-loan '.($value > 0 ? 'text-success' : 'text-danger'),
+                    'class' => $value > 0 ?
+                        '[&_.fi-wi-stats-overview-stat-value]:text-(--danger-500)' :
+                        '[&_.fi-wi-stats-overview-stat-value]:text-(--success-500)',
                 ]),
         ];
     }

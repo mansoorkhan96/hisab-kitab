@@ -19,6 +19,7 @@ use Filament\Support\Icons\Heroicon;
 use Filament\View\PanelsRenderHook;
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
+use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -42,6 +43,7 @@ class AdminPanelProvider extends PanelProvider
             ->registration(Register::class)
             ->sidebarFullyCollapsibleOnDesktop()
             ->spa()
+            ->viteTheme('resources/css/filament/admin/theme.css')
             ->colors([
                 'primary' => Color::Teal,
             ])
@@ -76,6 +78,13 @@ class AdminPanelProvider extends PanelProvider
         CreateAction::configureUsing(function (CreateAction $action) {
             $action->icon(Heroicon::OutlinedPlusCircle);
         });
+
+        // TODO: not working
+        // Stat::configureUsing(function (Stat $stat) {
+        //     if (filled($stat->getColor())) {
+        //         dd($stat->getColor());
+        //     }
+        // });
 
         // Need to register these otherwise these dont work in print view
         Livewire::component('app.filament.components.calculation-infolist', CalculationInfolist::class);
