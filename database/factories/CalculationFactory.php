@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\CropSeason;
+use App\Models\Team;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,8 @@ class CalculationFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'crop_season_id' => CropSeason::factory(),
+            'team_id' => Team::factory(),
         ];
     }
 }

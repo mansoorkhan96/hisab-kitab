@@ -2,22 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToTeam;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ResourceStock extends Model
 {
+    use BelongsToTeam;
     use HasFactory;
-
-    protected $fillable = [
-        'crop_season_id',
-        'farming_resource_id',
-        'quantity',
-        'amount',
-        'date',
-        'supplier',
-    ];
 
     protected $casts = [
         'date' => 'date',

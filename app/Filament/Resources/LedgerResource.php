@@ -37,11 +37,6 @@ class LedgerResource extends Resource
     {
         return $schema->components([
             CropSeasonSelect::make(),
-            // Select::make('user_id')
-            //     ->relationship('farmer', 'name')
-            //     ->searchable()
-            //     ->preload()
-            //     ->required(),
             Select::make('farming_resource_id')
                 ->relationship('farmingResource', 'title')
                 ->live()

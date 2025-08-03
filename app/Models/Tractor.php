@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToTeam;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,21 +11,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Tractor extends Model
 {
-    use HasFactory;
-
-    protected $fillable = [
-        'title',
-        'user_id',
-    ];
-
-    public static function booted(): void
-    {
-        static::creating(function (Tractor $tractor) {
-            if (empty($tractor->user_id)) {
-                $tractor->user_id = auth()->id();
-            }
-        });
-    }
+    use BelongsToTeam, HasFactory;
 
     public function user(): BelongsTo
     {

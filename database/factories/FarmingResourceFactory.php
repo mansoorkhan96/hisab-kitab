@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use App\Enums\FarmingResourceType;
 use App\Enums\QuantityUnit;
-use App\Models\User;
+use App\Models\Team;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,10 +20,10 @@ class FarmingResourceFactory extends Factory
     public function definition(): array
     {
         return [
-            // 'user_id' => User::factory(),
             'title' => fake()->word(),
             'type' => fake()->randomElement(FarmingResourceType::cases()),
             'quantity_unit' => fake()->randomElement(QuantityUnit::cases()),
+            'team_id' => Team::factory(),
         ];
     }
 }

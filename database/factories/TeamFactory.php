@@ -2,13 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\Team;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CropSeason>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Team>
  */
-class CropSeasonFactory extends Factory
+class TeamFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,8 +17,8 @@ class CropSeasonFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => fake()->word,
-            'team_id' => Team::factory(),
+            'name' => fake()->company(),
+            'description' => fake()->sentence(),
         ];
     }
 }

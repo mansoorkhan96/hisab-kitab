@@ -8,6 +8,7 @@ use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -27,6 +28,7 @@ class User extends Authenticatable implements FilamentUser
         'email',
         'password',
         'role',
+        'team_id',
     ];
 
     /**
@@ -50,16 +52,6 @@ class User extends Authenticatable implements FilamentUser
         'role' => Role::class,
     ];
 
-    public function tractors(): HasMany
-    {
-        return $this->hasMany(Tractor::class);
-    }
-
-    public function farmingResources(): HasMany
-    {
-        return $this->hasMany(FarmingResource::class);
-    }
-
     public function ledgers(): HasMany
     {
         return $this->hasMany(Ledger::class);
@@ -78,6 +70,11 @@ class User extends Authenticatable implements FilamentUser
     public function canAccessPanel(Panel $panel): bool
     {
         return $this->role === Role::Admin;
+    }
+
+    public function team(): BelongsTo
+    {
+        return $this->belongsTo(Team::class);
     }
 
     public function outstandingLoanBalance(): Attribute

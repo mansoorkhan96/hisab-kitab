@@ -14,7 +14,6 @@ use App\Filament\Widgets\LedgersTableWidget;
 use App\Filament\Widgets\LoanWidget;
 use App\Models\Calculation;
 use App\Models\CropSeason;
-use App\Models\User;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -60,6 +59,7 @@ class CalculationResource extends Resource
                                     )
                                     ->helperText('Set Wheat Rate to Crop Season to calculate'),
                                 Select::make('user_id')
+                                    ->label('Farmer')
                                     ->live()
                                     ->relationship('user', 'name')
                                     ->preload()
@@ -89,23 +89,23 @@ class CalculationResource extends Resource
                                         ->schema([
                                             Livewire::make(
                                                 CalculationInfolist::class,
-                                                fn (EditCalculation $livewire) => [
-                                                    'calculation' => $livewire->getRecord(),
+                                                fn (Calculation $calculation) => [
+                                                    'calculation' => $calculation,
                                                 ]
                                             )
                                                 ->key('Calculation-Infolist')
                                                 ->visible(fn (string $context) => $context === 'edit'),
                                         ]),
                                     Group::make([
-                                        Livewire::make(LedgersTableWidget::class, fn (Get $get) => [
-                                            'user_id' => $get('user_id'),
+                                        Livewire::make(LedgersTableWidget::class, fn (EditCalculation $livewire, Get $get) => [
+                                            'user_id' => $livewire->getRecord()->user_id,
                                             'crop_season_id' => $get('crop_season_id'),
                                             'farmingResourceTypes' => [FarmingResourceType::Fertilizer, FarmingResourceType::Pesticide],
                                             'tableHeading' => 'Dawa & Color',
                                             'groupsOnly' => ! $get('show_details'),
                                         ])->key('dawa-color'),
-                                        Livewire::make(LedgersTableWidget::class, fn (Get $get) => [
-                                            'user_id' => $get('user_id'),
+                                        Livewire::make(LedgersTableWidget::class, fn (EditCalculation $livewire, Get $get) => [
+                                            'user_id' => $livewire->getRecord()->user_id,
                                             'crop_season_id' => $get('crop_season_id'),
                                             'farmingResourceTypes' => [FarmingResourceType::Implement, FarmingResourceType::Seed],
                                             'tableHeading' => 'Harr & Bij',
@@ -113,7 +113,7 @@ class CalculationResource extends Resource
                                         ])->key('harr-bij'),
                                         Livewire::make(
                                             LoanWidget::class,
-                                            fn (Get $get) => ['record' => User::find($get('user_id'))]
+                                            fn (EditCalculation $livewire) => ['record' => $livewire->getRecord()->user]
                                         )
                                             ->visible(fn (string $context) => $context === 'edit')
                                             ->key('farmer-loan'),
@@ -144,6 +144,7 @@ class CalculationResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('user.name')
+                    ->label('Farmer')
                     ->searchable(),
                 TextColumn::make('cropSeason.title')
                     ->searchable(),

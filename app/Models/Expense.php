@@ -2,21 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToTeam;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Expense extends Model
 {
-    protected $fillable = [
-        'crop_season_id',
-        'title',
-        'amount',
-        'details',
-        'date',
-        'expensable_type',
-        'expensable_id',
-    ];
+    use BelongsToTeam;
 
     protected $casts = [
         'date' => 'date',

@@ -33,7 +33,6 @@ class ResourceStockChart extends ChartWidget
         }
 
         $farmingResources = FarmingResource::query()
-            ->where('user_id', auth()->id())
             ->where('type', '!=', FarmingResourceType::Implement)
             ->withWhereHas('resourceStocks', fn ($query) => $query->whereBelongsTo($currentSeason))
             ->get();

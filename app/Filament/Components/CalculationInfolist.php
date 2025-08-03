@@ -20,7 +20,6 @@ use Filament\Schemas\Schema;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
-use Livewire\Attributes\Reactive;
 use Livewire\Component;
 
 class CalculationInfolist extends Component implements HasActions, HasForms, HasInfolists
@@ -29,7 +28,10 @@ class CalculationInfolist extends Component implements HasActions, HasForms, Has
     use InteractsWithForms;
     use InteractsWithInfolists;
 
-    #[Reactive]
+    protected $listeners = [
+        '$refresh' => '$refresh',
+    ];
+
     public Calculation $calculation;
 
     public bool $printMode = false;

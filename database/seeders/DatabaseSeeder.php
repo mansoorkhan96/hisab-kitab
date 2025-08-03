@@ -11,6 +11,7 @@ use App\Models\CropSeason;
 use App\Models\FarmingResource;
 use App\Models\Ledger;
 use App\Models\Loan;
+use App\Models\Team;
 use App\Models\Tractor;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -18,6 +19,8 @@ use Illuminate\Database\Seeder;
 class DatabaseSeeder extends Seeder
 {
     public $user;
+
+    public Team $team;
 
     public Tractor $tractorA;
 
@@ -29,28 +32,36 @@ class DatabaseSeeder extends Seeder
 
     public function run(): void
     {
+        // Create the default team
+        $this->team = Team::factory()->create([
+            'name' => 'Default Team',
+            'description' => 'Default team for the application',
+        ]);
+
         $this->user = User::factory()->admin()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'team_id' => $this->team->id,
         ]);
 
         $this->tractorA = Tractor::factory()
-            ->for(User::factory()->driver()->create(['name' => 'Driver A']))
+            ->for($this->team)
+            ->for(User::factory()->for($this->team)->driver())
             ->create(['title' => 'Tractor A']);
 
         $this->tractorB = Tractor::factory()
-            ->for(User::factory()->driver()->create(['name' => 'Driver B']))
+            ->for($this->team)
+            ->for(User::factory()->for($this->team)->driver())
             ->create(['title' => 'Tractor B']);
 
-        $this->farmingResources = $this->seedFarmingResources($this->user);
+        $this->farmingResources = $this->seedFarmingResources();
 
         $this->cropSeason = CropSeason::factory()
-            ->for($this->user)
-            ->recycle($this->user)
             ->create([
                 'title' => 'Season-'.now()->year,
                 'is_current' => true,
                 'wheat_rate' => 9_700,
+                'team_id' => $this->team->id,
             ]);
 
         $this->seedAshrafRind();
@@ -61,6 +72,7 @@ class DatabaseSeeder extends Seeder
     {
         $farmer = User::factory()
             ->farmer()
+            ->for($this->team)
             ->create(['name' => 'Sadam Lighari']);
 
         collect([
@@ -98,6 +110,7 @@ class DatabaseSeeder extends Seeder
             ->create([
                 'kudhi_in_kgs' => 1,
                 'wheat_straw_rate' => 458.1673306773,
+                'team_id' => $this->team->id,
             ]);
 
         $calculation->threshings()->create([
@@ -115,6 +128,7 @@ class DatabaseSeeder extends Seeder
     {
         $ashraf = User::factory()
             ->farmer()
+            ->for($this->team)
             ->create(['name' => 'Ashraf Rind']);
 
         collect([
@@ -149,6 +163,7 @@ class DatabaseSeeder extends Seeder
             ->create([
                 'kudhi_in_kgs' => 0,
                 'wheat_straw_rate' => 310,
+                'team_id' => $this->team->id,
             ]);
 
         $calculation->threshings()->create([
@@ -157,9 +172,9 @@ class DatabaseSeeder extends Seeder
         ]);
     }
 
-    public function seedFarmingResources(User $user)
+    public function seedFarmingResources()
     {
-        return FarmingResource::factory()->for($user)->createMany([
+        return FarmingResource::factory()->for($this->team)->createMany([
             // Fertilizer
             [
                 'title' => 'DAP',

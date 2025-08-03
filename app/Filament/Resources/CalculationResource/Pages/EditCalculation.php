@@ -23,8 +23,16 @@ class EditCalculation extends EditRecord
                 ->label(__('filament-panels::resources/pages/edit-record.form.actions.save.label'))
                 ->action(function (Calculation $record) {
                     $this->save(shouldSendSavedNotification: true);
+
+                    $this->dispatch('$refresh');
                 }),
             DeleteAction::make(),
         ];
+    }
+
+    protected function getSaveFormAction(): Action
+    {
+        return parent::getSaveFormAction()
+            ->after(fn () => $this->dispatch('$refresh'));
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\CropSeason;
+use App\Models\Team;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -12,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('calculations', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(Team::class)->constrained();
             $table->foreignIdFor(CropSeason::class)->constrained();
             $table->foreignIdFor(User::class)->constrained();
             $table->decimal('kudhi_in_kgs', 12, 2)->nullable()->default(0); // TODO: rename
