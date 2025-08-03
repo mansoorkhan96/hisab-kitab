@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\CropSeasonResource\Pages;
+namespace App\Filament\Resources\CropSeasons\Pages;
 
-use App\Filament\Resources\CropSeasonResource;
+use App\Filament\Resources\CropSeasons\CropSeasonResource;
 use Filament\Resources\Pages\EditRecord;
 
 class EditCropSeason extends EditRecord

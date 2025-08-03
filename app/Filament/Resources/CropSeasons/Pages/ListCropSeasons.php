@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Filament\Resources\CropSeasonResource\Pages;
+namespace App\Filament\Resources\CropSeasons\Pages;
 
+use App\Filament\Resources\CropSeasons\CropSeasonResource;
 use Filament\Actions\CreateAction;
-use App\Filament\Resources\CropSeasonResource;
-use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
 class ListCropSeasons extends ListRecords
