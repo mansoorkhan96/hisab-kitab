@@ -1,26 +1,19 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Resources\Calculations\Schemas;
 
 use App\Enums\FarmingResourceType;
 use App\Filament\Components\CalculationInfolist;
-use App\Filament\Resources\CalculationResource\Pages\CreateCalculation;
 use App\Filament\Resources\CalculationResource\Pages\EditCalculation;
-use App\Filament\Resources\CalculationResource\Pages\ListCalculations;
 use App\Filament\Resources\CalculationResource\RelationManagers\ThreshingsRelationManager;
 use App\Filament\Schemas\Components\CropSeasonSelect;
-use App\Filament\Tables\Filters\CropSeasonFilter;
 use App\Filament\Widgets\LedgersTableWidget;
 use App\Filament\Widgets\LoanWidget;
 use App\Models\Calculation;
 use App\Models\CropSeason;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Resources\Resource;
 use Filament\Schemas\Components\Flex;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Livewire;
@@ -29,17 +22,11 @@ use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
-class CalculationResource extends Resource
+class CalculationForm
 {
-    protected static ?string $model = Calculation::class;
-
-    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-calculator';
-
-    public static function form(Schema $schema): Schema
+    public static function configure(Schema $schema): Schema
     {
         return $schema
             ->components([
@@ -137,47 +124,5 @@ class CalculationResource extends Resource
                     ]),
 
             ]);
-    }
-
-    public static function table(Table $table): Table
-    {
-        return $table
-            ->columns([
-                TextColumn::make('user.name')
-                    ->label('Farmer')
-                    ->searchable(),
-                TextColumn::make('cropSeason.title')
-                    ->searchable(),
-                // TODO:
-                // status (loss/profit) red/green
-                // amount red/green
-            ])
-            ->filters([
-                CropSeasonFilter::make(),
-            ])
-            ->recordActions([
-                EditAction::make(),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
-            ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => ListCalculations::route('/'),
-            'create' => CreateCalculation::route('/create'),
-            'edit' => EditCalculation::route('/{record}/edit'),
-        ];
     }
 }

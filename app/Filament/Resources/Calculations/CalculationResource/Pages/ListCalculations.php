@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\CalculationResource\Pages;
 
 use Filament\Actions\CreateAction;
-use App\Filament\Resources\CalculationResource;
+use App\Filament\Resources\Calculations\CalculationResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 

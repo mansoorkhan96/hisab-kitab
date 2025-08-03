@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\CalculationResource\Pages;
 
-use App\Filament\Resources\CalculationResource;
+use App\Filament\Resources\Calculations\CalculationResource;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
