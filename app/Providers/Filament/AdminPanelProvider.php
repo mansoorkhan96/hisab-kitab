@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Components\CalculationInfolist;
+use App\Filament\Pages\Auth\Register;
 use App\Filament\Resources\CalculationResource\Pages\EditCalculation;
 use App\Filament\Widgets\LoanWidget;
 use Filament\Actions\CreateAction;
@@ -37,6 +38,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('/')
             ->login()
+            ->registration(Register::class)
             ->profile()
             ->sidebarFullyCollapsibleOnDesktop()
             ->colors([

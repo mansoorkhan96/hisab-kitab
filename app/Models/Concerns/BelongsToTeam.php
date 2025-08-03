@@ -2,8 +2,8 @@
 
 namespace App\Models\Concerns;
 
-use App\Models\Scopes\CurrentTeamScope;
 use App\Models\Team;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Log;
@@ -14,19 +14,23 @@ trait BelongsToTeam
     {
         static::creating(function ($model) {
             if (empty($model->team_id)) {
-                $teamId = auth()->user()?->team_id ?? 1; // Default to team 1 as requested
+                $teamId = auth()->user()->team_id;
 
                 if ($teamId) {
                     $model->team_id = $teamId;
                 } else {
-                    Log::error('CurrentTeamScope: No team_id found for user '.auth()->id());
+                    Log::error('No team_id found for user '.auth()->id());
 
-                    throw new ModelNotFoundException('CurrentTeamScope: No team_id set in the session, user, or database.');
+                    throw new ModelNotFoundException('No team_id set in user.');
                 }
             }
         });
 
-        static::addGlobalScope(new CurrentTeamScope);
+        static::addGlobalScope('team', function (Builder $query) {
+            if (auth()->hasUser()) {
+                $query->whereBelongsTo(auth()->user()->team);
+            }
+        });
     }
 
     public function team(): BelongsTo

@@ -4,17 +4,18 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\Role;
+use App\Models\Concerns\BelongsToTeam;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable implements FilamentUser
 {
+    use BelongsToTeam;
     use HasFactory;
     use Notifiable;
 
@@ -70,11 +71,6 @@ class User extends Authenticatable implements FilamentUser
     public function canAccessPanel(Panel $panel): bool
     {
         return $this->role === Role::Admin;
-    }
-
-    public function team(): BelongsTo
-    {
-        return $this->belongsTo(Team::class);
     }
 
     public function outstandingLoanBalance(): Attribute

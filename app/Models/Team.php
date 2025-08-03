@@ -14,4 +14,9 @@ class Team extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    public function cropSeasons(): HasMany
+    {
+        return $this->hasMany(CropSeason::class);
+    }
 }
