@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\TractorResource\Pages;
 
 use App\Filament\Resources\TractorResource;
-use App\Filament\Widgets\TractorStatsWidget;
+use App\Filament\Resources\TractorResource\Widgets\TractorStatsWidget;
 use Filament\Resources\Pages\EditRecord;
 
 class EditTractor extends EditRecord

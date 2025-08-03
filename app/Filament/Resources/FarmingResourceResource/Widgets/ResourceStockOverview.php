@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Widgets;
+namespace App\Filament\Resources\FarmingResourceResource\Widgets;
 
 use App\Enums\FarmingResourceType;
 use App\Models\CropSeason;

@@ -2,7 +2,7 @@
 
 - Move resource widgets under resources
 - Individual Crop Season stats
-- Overall profit/loss stats widgets on dashboard for current crop season (similar to above, pass id)
+- Stats widget on dashboard for current crop season (similar to above, pass id)
 
 ## Good to have:
 

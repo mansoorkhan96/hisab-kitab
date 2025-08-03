@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\FarmingResourceResource\Pages;
 
 use App\Filament\Resources\FarmingResourceResource;
-use App\Filament\Widgets\ResourceStockOverview;
+use App\Filament\Resources\FarmingResourceResource\Widgets\ResourceStockOverview;
 use Filament\Resources\Pages\EditRecord;
 
 class EditFarmingResource extends EditRecord
