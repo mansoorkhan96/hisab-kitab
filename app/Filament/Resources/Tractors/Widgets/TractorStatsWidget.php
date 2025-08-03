@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\TractorResource\Widgets;
+namespace App\Filament\Resources\Tractors\Widgets;
 
 use App\Models\CropSeason;
 use App\Models\Tractor;

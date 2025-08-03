@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\TractorResource\Pages;
+namespace App\Filament\Resources\Tractors\Pages;
 
-use App\Filament\Resources\TractorResource;
-use Filament\Actions;
+use App\Filament\Resources\Tractors\TractorResource;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateTractor extends CreateRecord

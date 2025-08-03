@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\TractorResource\RelationManagers;
+namespace App\Filament\Resources\Tractors\RelationManagers;
 
 use App\Filament\Resources\Expenses\Schemas\ExpenseForm;
 use App\Filament\Resources\Expenses\Tables\ExpensesTable;

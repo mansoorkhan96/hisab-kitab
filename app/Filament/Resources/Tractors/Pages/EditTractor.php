@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Filament\Resources\TractorResource\Pages;
+namespace App\Filament\Resources\Tractors\Pages;
 
-use App\Filament\Resources\TractorResource;
-use App\Filament\Resources\TractorResource\Widgets\TractorStatsWidget;
+use App\Filament\Resources\Tractors\TractorResource;
+use App\Filament\Resources\Tractors\Widgets\TractorStatsWidget;
 use Filament\Resources\Pages\EditRecord;
 
 class EditTractor extends EditRecord

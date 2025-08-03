@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Filament\Resources\TractorResource\Pages;
+namespace App\Filament\Resources\Tractors\Pages;
 
+use App\Filament\Resources\Tractors\TractorResource;
 use Filament\Actions\CreateAction;
-use App\Filament\Resources\TractorResource;
-use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
 class ListTractors extends ListRecords
