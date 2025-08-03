@@ -1,6 +1,5 @@
 # TODO:
 
-- Move resource widgets under resources
 - Individual Crop Season stats
 - Stats widget on dashboard for current crop season (similar to above, pass id)
 
