@@ -6,6 +6,7 @@ use App\Filament\Tables\Filters\CropSeasonFilter;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -20,9 +21,20 @@ class CalculationTable
                     ->searchable(),
                 TextColumn::make('cropSeason.title')
                     ->searchable(),
-                // TODO:
-                // status (loss/profit) red/green
-                // amount red/green
+                TextColumn::make('landlord_net_income')
+                    ->label('Landlord Net Income')
+                    ->money('PKR')
+                    ->searchable()
+                    ->sortable()
+                    ->color(fn ($state) => $state < 0 ? 'danger' : 'success')
+                    ->summarize(Sum::make()->label('Total')->money('PKR')),
+                TextColumn::make('farmer_profit_loss')
+                    ->label('Farmer Profit/Loss')
+                    ->money('PKR')
+                    ->searchable()
+                    ->sortable()
+                    ->color(fn ($state) => $state < 0 ? 'danger' : 'success')
+                    ->summarize(Sum::make()->label('Total')->money('PKR')),
             ])
             ->filters([
                 CropSeasonFilter::make(),
