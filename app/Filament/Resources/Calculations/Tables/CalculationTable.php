@@ -33,8 +33,7 @@ class CalculationTable
                     ->money('PKR')
                     ->searchable()
                     ->sortable()
-                    ->color(fn ($state) => $state < 0 ? 'danger' : 'success')
-                    ->summarize(Sum::make()->label('Total')->money('PKR')),
+                    ->color(fn ($state) => $state < 0 ? 'danger' : 'success'),
             ])
             ->filters([
                 CropSeasonFilter::make(),
