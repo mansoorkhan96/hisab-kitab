@@ -4,7 +4,7 @@ namespace App\Filament\Components;
 
 use App\Models\Calculation;
 use App\Models\LoanPayment;
-use App\ValueObjects\CalculationResult;
+use App\ValueObjects\WheatCropCalculationReport;
 use Filament\Actions\Action;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
@@ -38,7 +38,7 @@ class CalculationInfolist extends Component implements HasActions, HasForms, Has
 
     public function infolist(Schema $schema): Schema
     {
-        $calculation = CalculationResult::make($this->calculation);
+        $calculation = WheatCropCalculationReport::make($this->calculation);
 
         return $schema
             ->state($calculation->toArray())

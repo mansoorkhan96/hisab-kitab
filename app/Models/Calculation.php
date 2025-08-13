@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Models\Concerns\BelongsToTeam;
-use App\ValueObjects\CalculationResult;
+use App\ValueObjects\WheatCropCalculationReport;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -16,7 +16,7 @@ class Calculation extends Model
     protected static function booted()
     {
         static::saving(function (Calculation $calculation) {
-            $result = CalculationResult::make($calculation);
+            $result = WheatCropCalculationReport::make($calculation);
 
             $calculation->landlord_amount = $result->landlordAmount;
             $calculation->landlord_net_income = $result->landlordAmount + $result->machineAmount;

@@ -12,3 +12,5 @@
 
 - Add closing date back
 - Cotton picking section
+
+- Add calculation for cotton crop

@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Number;
 
-readonly class CalculationResult
+readonly class WheatCropCalculationReport
 {
     public function __construct(
         public string $totalWheatSacks,
