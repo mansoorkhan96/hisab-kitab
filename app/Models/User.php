@@ -68,6 +68,16 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(LoanPayment::class);
     }
 
+    public function cottonPickingRounds(): HasMany
+    {
+        return $this->hasMany(CottonPickingRound::class);
+    }
+
+    public function calculations(): HasMany
+    {
+        return $this->hasMany(Calculation::class);
+    }
+
     public function canAccessPanel(Panel $panel): bool
     {
         return $this->role === Role::Admin;

@@ -44,4 +44,10 @@ class Calculation extends Model
     {
         return $this->hasMany(LoanPayment::class);
     }
+
+    public function cottonPickingRounds(): HasMany
+    {
+        return $this->hasMany(CottonPickingRound::class, 'crop_season_id', 'crop_season_id')
+            ->where('user_id', $this->user_id);
+    }
 }

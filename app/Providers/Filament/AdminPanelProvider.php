@@ -16,6 +16,7 @@ use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Support\Facades\FilamentView;
 use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Table;
 use Filament\View\PanelsRenderHook;
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
@@ -77,6 +78,12 @@ class AdminPanelProvider extends PanelProvider
     {
         CreateAction::configureUsing(function (CreateAction $action) {
             $action->icon(Heroicon::OutlinedPlusCircle);
+        });
+
+        Table::configureUsing(function (Table $table) {
+            $table
+                ->defaultKeySort(false)
+                ->defaultSort('created_at', 'desc');
         });
 
         // TODO: not working
