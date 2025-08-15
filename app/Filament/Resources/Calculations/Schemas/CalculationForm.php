@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\Calculations\Schemas;
 
+use App\Enums\CropType;
 use App\Enums\FarmingResourceType;
+use App\Filament\Components\CottonCalculationInfolist;
 use App\Filament\Components\WheatCalculationInfolist;
 use App\Filament\Resources\Calculations\Pages\EditCalculation;
 use App\Filament\Resources\Calculations\RelationManagers\ThreshingsRelationManager;
@@ -14,6 +16,7 @@ use App\Models\CropSeason;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\ToggleButtons;
 use Filament\Schemas\Components\Flex;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Livewire;
@@ -22,6 +25,7 @@ use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Database\Eloquent\Builder;
 
 class CalculationForm
@@ -51,20 +55,37 @@ class CalculationForm
                                     ->relationship('user', 'name')
                                     ->preload()
                                     ->required(),
+                                ToggleButtons::make('crop_type')
+                                    ->label('Crop Type')
+                                    ->live()
+                                    ->inline()
+                                    ->options(CropType::class)
+                                    ->required(),
                                 TextInput::make('kudhi_in_kgs')
                                     ->label('Kudhi (KGs)')
+                                    ->visible(fn (Get $get) => $get('crop_type') === CropType::Wheat->value)
                                     ->prefixIcon('heroicon-m-scale')
                                     ->live()
                                     ->numeric(),
                                 TextInput::make('wheat_straw_rate')
+                                    ->label('Wheat Straw Rate')
+                                    ->visible(fn (Get $get) => $get('crop_type') === CropType::Wheat->value)
                                     ->live()
                                     ->minValue(0)
                                     ->default(fn () => CropSeason::current()->wheat_straw_rate)
                                     ->prefixIcon('heroicon-m-banknotes')
                                     ->numeric(),
-                                TextInput::make('kamdari_in_kgs')
-                                    ->label('Kamdari (KGs)')
-                                    ->prefixIcon('heroicon-m-scale')
+                                TextInput::make('kamdari')
+                                    ->label(
+                                        fn (Get $get) => $get('crop_type') === CropType::Wheat->value
+                                            ? 'Kamdari (KGs)'
+                                            : 'Kamdari (PKR)'
+                                    )
+                                    ->prefixIcon(
+                                        fn (Get $get) => $get('crop_type') === CropType::Wheat->value
+                                            ? Heroicon::OutlinedScale
+                                            : Heroicon::OutlinedBanknotes
+                                    )
                                     ->numeric()
                                     ->live(),
                                 Toggle::make('show_details')
@@ -75,7 +96,9 @@ class CalculationForm
                                     Section::make('Calculation')
                                         ->schema([
                                             Livewire::make(
-                                                WheatCalculationInfolist::class,
+                                                fn (Calculation $calculation) => $calculation->crop_type === CropType::Wheat
+                                                    ? WheatCalculationInfolist::class
+                                                    : CottonCalculationInfolist::class,
                                                 fn (Calculation $calculation) => [
                                                     'calculation' => $calculation,
                                                 ]
@@ -111,7 +134,7 @@ class CalculationForm
                                     ->columnSpanFull(),
                             ]),
                         Tab::make('Threshors')
-                            ->visible(fn (string $context) => $context === 'edit')
+                            ->visible(fn (string $context, ?Calculation $calculation) => $context === 'edit' && $calculation->crop_type === CropType::Wheat)
                             ->columnSpanFull()
                             ->schema([
                                 Livewire::make(ThreshingsRelationManager::class, fn (EditCalculation $livewire) => [

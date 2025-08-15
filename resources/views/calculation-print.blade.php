@@ -89,7 +89,13 @@
                     <x-slot name="heading">
                         Hisab
                     </x-slot>
-                    @livewire(App\Filament\Components\WheatCalculationInfolist::class, [
+                    @php
+                        $infolist = $calculation->crop_type === App\Enums\CropType::Wheat->value
+                            ? App\Filament\Components\WheatCalculationInfolist::class
+                            : App\Filament\Components\CottonCalculationInfolist::class;
+                    @endphp
+
+                    @livewire($infolist, [
                         'calculation' => $calculation,
                         'printMode' => true,
                     ])

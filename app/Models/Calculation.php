@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\CropType;
 use App\Models\Concerns\BelongsToTeam;
+use App\ValueObjects\CottonCropCalculationReport;
 use App\ValueObjects\WheatCropCalculationReport;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,10 +15,17 @@ class Calculation extends Model
 {
     use BelongsToTeam, HasFactory;
 
+    protected $casts = [
+        'crop_type' => CropType::class,
+    ];
+
     protected static function booted()
     {
         static::saving(function (Calculation $calculation) {
-            $result = WheatCropCalculationReport::make($calculation);
+            $result = match ($calculation->crop_type) {
+                CropType::Wheat => WheatCropCalculationReport::make($calculation),
+                CropType::Cotton => CottonCropCalculationReport::make($calculation),
+            };
 
             $calculation->landlord_revenue = $result->landlordRevenue;
             $calculation->landlord_net_income = $result->landlordRevenue + $result->machineAmount;

@@ -4,7 +4,7 @@ namespace App\Filament\Components;
 
 use App\Models\Calculation;
 use App\Models\LoanPayment;
-use App\ValueObjects\WheatCropCalculationReport;
+use App\ValueObjects\CottonCropCalculationReport;
 use Filament\Actions\Action;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
@@ -22,7 +22,7 @@ use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
 use Livewire\Component;
 
-class WheatCalculationInfolist extends Component implements HasActions, HasForms, HasInfolists
+class CottonCalculationInfolist extends Component implements HasActions, HasForms, HasInfolists
 {
     use InteractsWithActions;
     use InteractsWithForms;
@@ -38,41 +38,34 @@ class WheatCalculationInfolist extends Component implements HasActions, HasForms
 
     public function infolist(Schema $schema): Schema
     {
-        $calculation = WheatCropCalculationReport::make($this->calculation);
+        $calculation = CottonCropCalculationReport::make($this->calculation);
 
         return $schema
             ->state($calculation->toArray())
             ->schema([
-                TextEntry::make('totalWheatSacks')
-                    ->label('Batai')
-                    ->inlineLabel(),
-                TextEntry::make('thresher')
-                    ->prefix('-')
-                    ->color('danger')
-                    ->helperText('Baqi: '.$calculation->remainingAfterThresher)
-                    ->inlineLabel(),
-                TextEntry::make('kudhi')
-                    ->prefix('-')
-                    ->color('danger')
-                    ->helperText('Baqi: '.$calculation->remainingAfterKudhi)
-                    ->inlineLabel(),
-                TextEntry::make('kamdari')
-                    ->visible($this->calculation->kamdari && $this->calculation->kamdari > 0)
-                    ->prefix('-')
-                    ->color('danger')
-                    ->helperText('Baqi: '.$calculation->remainingAfterKamdari)
-                    ->inlineLabel(),
-                TextEntry::make('sackAmount')
-                    ->label('Ann Amount')
-                    ->color('success')
-                    ->money('PKR')
-                    ->inlineLabel(),
-                TextEntry::make('buhAmount')
-                    ->color('success')
-                    ->money('PKR')
+                TextEntry::make('totalCottonKgs')
+                    ->label('Total Cotton')
                     ->inlineLabel(),
                 TextEntry::make('grossRevenue')
                     ->label('Gross Revenue')
+                    ->color('success')
+                    ->money('PKR')
+                    ->inlineLabel(),
+                TextEntry::make('labourCost')
+                    ->label('Labour Cost')
+                    ->prefix('-')
+                    ->helperText('Remaining: '.$calculation->amountAfterLabourCost)
+                    ->color('danger')
+                    ->money('PKR')
+                    ->inlineLabel(),
+                TextEntry::make('kamdariAmount')
+                    ->label('Kamdari')
+                    ->prefix('-')
+                    ->color('danger')
+                    ->money('PKR')
+                    ->inlineLabel(),
+                TextEntry::make('revenue')
+                    ->label('Revenue')
                     ->color('success')
                     ->money('PKR')
                     ->inlineLabel(),
@@ -81,41 +74,34 @@ class WheatCalculationInfolist extends Component implements HasActions, HasForms
                     ->prefix('-')
                     ->color('danger')
                     ->money('PKR')
-                    ->helperText('Remaning: '.$calculation->remainingAfterFertilizerExpenseAmount)
+                    ->helperText('Remaining: '.$calculation->remainingAfterFertilizerExpenseAmount)
                     ->inlineLabel(),
+                // TextEntry::make('kamdariAmount')
+                //     ->label('Kamdari')
+                //     ->color('red')
+                //     ->money('PKR')
+                //     // ->helperText('Remaining: '.$calculation->remainingKamdariAmount)
+                //     ->inlineLabel(),
                 TextEntry::make('machineAmount')
                     ->label('Machine Amt')
                     ->color('info')
                     ->money('PKR')
-                    ->helperText('Remaning: '.$calculation->remainingAfterMachineAmount)
+                    ->helperText('Remaining: '.$calculation->remainingAfterMachineAmount)
                     ->inlineLabel(),
                 TextEntry::make('implementAndSeedExpenseAmount')
                     ->label('Harr & Bijj')
                     ->prefix('-')
                     ->color('danger')
                     ->money('PKR')
-                    ->helperText('Remaning: '.$calculation->remainingAfterImplementAndSeedExpenseAmount)
+                    ->helperText('Remaining: '.$calculation->remainingAfterImplementAndSeedExpenseAmount)
                     ->inlineLabel(),
                 TextEntry::make('landlordRevenue')
                     ->label('Landlord Amt')
                     ->color(fn ($state) => $state > 0 ? 'success' : 'danger')
                     ->money('PKR')
                     ->inlineLabel(),
-                TextEntry::make('farmerBaseRevenue')
-                    ->label('Farmer Amt')
-                    ->color(fn ($state) => $state > 0 ? 'success' : 'danger')
-                    ->money('PKR')
-                    ->inlineLabel(),
-                TextEntry::make('farmerKudhiAmount')
-                    ->label('Kudhi Amount')
-                    ->visible($this->calculation->kudhi_in_kgs && $this->calculation->kudhi_in_kgs > 0)
-                    ->prefix('+')
-                    ->color('success')
-                    ->money('PKR')
-                    ->inlineLabel(),
                 TextEntry::make('farmerGrossRevenue')
-                    ->label('Farmer Total')
-                    ->visible($this->calculation->kudhi_in_kgs && $this->calculation->kudhi_in_kgs > 0)
+                    ->label('Farmer Amt')
                     ->color(fn ($state) => $state > 0 ? 'success' : 'danger')
                     ->money('PKR')
                     ->inlineLabel(),
@@ -146,7 +132,7 @@ class WheatCalculationInfolist extends Component implements HasActions, HasForms
                     ->hintActions([
                         Action::make('subtract_loan')
                             ->disabled(fn () => $calculation->farmerRevenue <= 0)
-                            ->tooltip(fn () => $calculation->farmerRevenue <= 0 ? 'Can\'t substract loan from this calculation, farmer is already in loss. ' : '')
+                            ->tooltip(fn () => $calculation->farmerRevenue <= 0 ? 'Can\'t subtract loan from this calculation, farmer is already in loss. ' : '')
                             ->icon(fn () => Heroicon::Minus)
                             ->button()
                             ->color(Color::Red)

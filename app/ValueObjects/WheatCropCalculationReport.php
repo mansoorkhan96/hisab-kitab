@@ -46,10 +46,10 @@ class WheatCropCalculationReport extends AbastractCalculationReport
 
     public static function make(Calculation $calculation): self
     {
-        $wheatData = self::calculateWheatDistribution($calculation);
+        $wheatData = self::calculateWheatData($calculation);
         $amounts = self::calculateAmounts($calculation, $wheatData);
         $expenses = self::calculateExpenses($calculation);
-        $profitData = self::calculateProfitDistribution($amounts, $expenses);
+        $profitData = self::calculateProfitDistribution($amounts['grossRevenue'], $expenses);
         $loanData = self::calculateLoanData($calculation);
 
         // Farmer gets additional benefit from kudhi if any
@@ -59,7 +59,7 @@ class WheatCropCalculationReport extends AbastractCalculationReport
             $farmerKudhiAmount = ($calculation->kudhi_in_kgs / 100) * $calculation->cropSeason->wheat_rate;
         }
 
-        $farmerGrossRevenue = $profitData['farmerBaseRevenue'] + $farmerKudhiAmount;
+        $farmerGrossRevenue = $profitData['farmerRevenue'] + $farmerKudhiAmount;
 
         return new self(
             totalWheatSacks: Converter::kgsToSacksString($wheatData['totalWeightInKgs']),
@@ -67,7 +67,7 @@ class WheatCropCalculationReport extends AbastractCalculationReport
             remainingAfterThresher: Converter::kgsToSacksString($wheatData['remainingAfterThresher']),
             kudhi: $calculation->kudhi_in_kgs.' KGs',
             remainingAfterKudhi: Converter::kgsToSacksString($wheatData['remainingAfterKudhi']),
-            kamdari: $calculation->kamdari_in_kgs.' KGs',
+            kamdari: $calculation->kamdari.' KGs',
             remainingAfterKamdari: Converter::kgsToSacksString($wheatData['netWheatWeight']),
             sackAmount: $amounts['sackAmount'],
             buhAmount: $amounts['buhAmount'],
@@ -79,7 +79,7 @@ class WheatCropCalculationReport extends AbastractCalculationReport
             implementAndSeedExpenseAmount: $expenses['implementAndSeedExpenseAmount'],
             remainingAfterImplementAndSeedExpenseAmount: Number::currency($profitData['netProfit'], 'PKR'),
             landlordRevenue: $profitData['landlordRevenue'],
-            farmerBaseRevenue: $profitData['farmerBaseRevenue'],
+            farmerBaseRevenue: $profitData['farmerRevenue'],
             farmerKudhiAmount: $farmerKudhiAmount,
             farmerGrossRevenue: $farmerGrossRevenue,
             farmerRevenue: $farmerGrossRevenue - $loanData['loanPaymentsAmount'],
@@ -93,7 +93,7 @@ class WheatCropCalculationReport extends AbastractCalculationReport
      *
      * Process: Total harvest → Thresher fee (10%) → Kudhi deduction → Kamdari deduction
      */
-    private static function calculateWheatDistribution(Calculation $calculation): array
+    private static function calculateWheatData(Calculation $calculation): array
     {
         $totalSacks = $calculation->threshings()->sum('total_wheat_sacks');
         $totalWeightInKgs = $totalSacks * 100; // Convert sacks to kg (1 sack = 100kg)
@@ -104,7 +104,7 @@ class WheatCropCalculationReport extends AbastractCalculationReport
 
         // Deduct traditional payments: kudhi (village tax) and kamdari (labor share)
         $remainingAfterKudhi = $remainingAfterThresher - $calculation->kudhi_in_kgs;
-        $netWheatWeight = $remainingAfterKudhi - $calculation->kamdari_in_kgs;
+        $netWheatWeight = $remainingAfterKudhi - $calculation->kamdari;
 
         return [
             'totalWeightInKgs' => $totalWeightInKgs,

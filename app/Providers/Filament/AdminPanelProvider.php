@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Components\CottonCalculationInfolist;
 use App\Filament\Components\WheatCalculationInfolist;
 use App\Filament\Pages\Auth\Register;
 use App\Filament\Resources\Calculations\Pages\EditCalculation;
@@ -95,6 +96,7 @@ class AdminPanelProvider extends PanelProvider
 
         // Need to register these otherwise these dont work in print view
         Livewire::component('app.filament.components.calculation-infolist', WheatCalculationInfolist::class);
+        Livewire::component('app.filament.components.cotton-calculation-infolist', CottonCalculationInfolist::class);
         Livewire::component('app.filament.widgets.loan-widget', LoanWidget::class);
 
         // TODO: remove?

@@ -16,8 +16,9 @@ return new class extends Migration
             $table->foreignIdFor(Team::class)->constrained();
             $table->foreignIdFor(CropSeason::class)->constrained();
             $table->foreignIdFor(User::class)->constrained();
+            $table->string('crop_type');
             $table->decimal('kudhi_in_kgs', 12, 2)->nullable()->default(0); // TODO: rename
-            $table->decimal('kamdari_in_kgs', 12, 2)->nullable()->default(0); // TODO: rename
+            $table->decimal('kamdari', 12, 2)->nullable()->default(0); // TODO: rename
             $table->unsignedInteger('wheat_straw_rate')->nullable();
             $table->decimal('landlord_revenue', 12, 2)->nullable();
             $table->decimal('net_income', 12, 2)->nullable();

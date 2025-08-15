@@ -64,10 +64,10 @@ abstract class AbastractCalculationReport
         ];
     }
 
-    public static function calculateProfitDistribution(array $amounts, array $expenses): array
+    public static function calculateProfitDistribution(float|int $revenue, array $expenses): array
     {
         // Deduct fertilizer/pesticide costs first
-        $afterFertilizerAmount = $amounts['grossRevenue'] - $expenses['fertilizerExpenseAmount'];
+        $afterFertilizerAmount = $revenue - $expenses['fertilizerExpenseAmount'];
 
         // Machine costs are 1/3 of remaining amount (traditional calculation)
         $machineAmount = round($afterFertilizerAmount / 3);
@@ -85,7 +85,7 @@ abstract class AbastractCalculationReport
             'afterMachineAmount' => $afterMachineAmount,
             'netProfit' => $netProfit,
             'landlordRevenue' => $baseProfitShare,
-            'farmerBaseRevenue' => $baseProfitShare,
+            'farmerRevenue' => $baseProfitShare,
         ];
     }
 

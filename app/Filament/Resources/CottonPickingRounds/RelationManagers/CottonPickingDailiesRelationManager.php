@@ -145,7 +145,7 @@ class CottonPickingDailiesRelationManager extends RelationManager
                     })
                     ->summarize(
                         Summarizer::make()
-                            ->label('Total')
+                            ->label('')
                             ->using(function (Builder $query) use ($date) {
                                 $kgsPicked = CottonPickingDaily::query()
                                     ->whereBelongsTo($this->getOwnerRecord())

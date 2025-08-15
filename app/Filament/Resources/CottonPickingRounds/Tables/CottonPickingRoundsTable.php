@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\CottonPickingRounds\Tables;
 
 use App\Filament\Tables\Filters\CropSeasonFilter;
+use App\Helpers\Converter;
+use App\Models\CottonPickingRound;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Grouping\Group;
@@ -20,6 +22,12 @@ class CottonPickingRoundsTable
                 //     ->sortable(),
                 TextColumn::make('title')
                     ->searchable(),
+                TextColumn::make('Total Weight')
+                    ->getStateUsing(function (CottonPickingRound $record) {
+                        $kgsPicked = $record->cottonPickingDailies()->sum('kgs_picked');
+
+                        return Converter::kgsToMunnString($kgsPicked);
+                    }),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

@@ -1,5 +1,7 @@
 # TODO:
 
+Make some edit classes to just view page
+move threshar to mnage rlation page
 
 ## Good to have:
 
