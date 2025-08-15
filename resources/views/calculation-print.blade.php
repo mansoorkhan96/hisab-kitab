@@ -89,7 +89,7 @@
                     <x-slot name="heading">
                         Hisab
                     </x-slot>
-                    @livewire(App\Filament\Components\CalculationInfolist::class, [
+                    @livewire(App\Filament\Components\WheatCalculationInfolist::class, [
                         'calculation' => $calculation,
                         'printMode' => true,
                     ])

@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\Calculations\Schemas;
 
 use App\Enums\FarmingResourceType;
-use App\Filament\Components\CalculationInfolist;
+use App\Filament\Components\WheatCalculationInfolist;
 use App\Filament\Resources\Calculations\Pages\EditCalculation;
 use App\Filament\Resources\Calculations\RelationManagers\ThreshingsRelationManager;
 use App\Filament\Schemas\Components\CropSeasonSelect;
@@ -75,7 +75,7 @@ class CalculationForm
                                     Section::make('Calculation')
                                         ->schema([
                                             Livewire::make(
-                                                CalculationInfolist::class,
+                                                WheatCalculationInfolist::class,
                                                 fn (Calculation $calculation) => [
                                                     'calculation' => $calculation,
                                                 ]

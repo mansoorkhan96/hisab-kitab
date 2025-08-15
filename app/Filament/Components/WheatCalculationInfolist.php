@@ -22,7 +22,7 @@ use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
 use Livewire\Component;
 
-class CalculationInfolist extends Component implements HasActions, HasForms, HasInfolists
+class WheatCalculationInfolist extends Component implements HasActions, HasForms, HasInfolists
 {
     use InteractsWithActions;
     use InteractsWithForms;
@@ -71,8 +71,8 @@ class CalculationInfolist extends Component implements HasActions, HasForms, Has
                     ->color('success')
                     ->money('PKR')
                     ->inlineLabel(),
-                TextEntry::make('amount')
-                    ->label('Total Amount')
+                TextEntry::make('grossRevenue')
+                    ->label('Gross Revenue')
                     ->color('success')
                     ->money('PKR')
                     ->inlineLabel(),
@@ -96,12 +96,12 @@ class CalculationInfolist extends Component implements HasActions, HasForms, Has
                     ->money('PKR')
                     ->helperText('Remaning: '.$calculation->remainingAfterImplementAndSeedExpenseAmount)
                     ->inlineLabel(),
-                TextEntry::make('landlordAmount')
+                TextEntry::make('landlordRevenue')
                     ->label('Landlord Amt')
                     ->color(fn ($state) => $state > 0 ? 'success' : 'danger')
                     ->money('PKR')
                     ->inlineLabel(),
-                TextEntry::make('farmerAmount')
+                TextEntry::make('farmerBaseRevenue')
                     ->label('Farmer Amt')
                     ->color(fn ($state) => $state > 0 ? 'success' : 'danger')
                     ->money('PKR')
@@ -113,7 +113,7 @@ class CalculationInfolist extends Component implements HasActions, HasForms, Has
                     ->color('success')
                     ->money('PKR')
                     ->inlineLabel(),
-                TextEntry::make('farmerFinalAmount')
+                TextEntry::make('farmerGrossRevenue')
                     ->label('Farmer Total')
                     ->visible($this->calculation->kudhi_in_kgs && $this->calculation->kudhi_in_kgs > 0)
                     ->color(fn ($state) => $state > 0 ? 'success' : 'danger')
@@ -145,8 +145,8 @@ class CalculationInfolist extends Component implements HasActions, HasForms, Has
                     ->aboveContent('Subtract Farmer Loan from calculation profit.')
                     ->hintActions([
                         Action::make('subtract_loan')
-                            ->disabled(fn () => $calculation->farmerProfitLoss <= 0)
-                            ->tooltip(fn () => $calculation->farmerProfitLoss <= 0 ? 'Can\'t substract loan from this calculation, farmer is already in loss. ' : '')
+                            ->disabled(fn () => $calculation->farmerRevenue <= 0)
+                            ->tooltip(fn () => $calculation->farmerRevenue <= 0 ? 'Can\'t substract loan from this calculation, farmer is already in loss. ' : '')
                             ->icon(fn () => Heroicon::Minus)
                             ->button()
                             ->color(Color::Red)
@@ -159,7 +159,7 @@ class CalculationInfolist extends Component implements HasActions, HasForms, Has
                                     ->required()
                                     ->numeric()
                                     ->minValue(0)
-                                    ->maxValue(fn () => $calculation->farmerProfitLoss > 0 ? $calculation->farmerProfitLoss : 0),
+                                    ->maxValue(fn () => $calculation->farmerRevenue > 0 ? $calculation->farmerRevenue : 0),
                                 Textarea::make('notes')
                                     ->label('Notes')
                                     ->columnSpanFull(),
@@ -179,12 +179,8 @@ class CalculationInfolist extends Component implements HasActions, HasForms, Has
                     ->color('danger')
                     ->money('PKR')
                     ->inlineLabel(),
-                // TextEntry::make('farmerLoan')
-                //     ->color('warning')
-                //     ->money('PKR')
-                //     ->inlineLabel(),
-                TextEntry::make('farmerProfitLoss')
-                    ->label('Farmer Total')
+                TextEntry::make('farmerRevenue')
+                    ->label('Farmer Revenue')
                     // ->label(fn ($state) => $state > 0 ? 'Farmer Profit' : 'Farmer Debt')
                     // ->color(fn ($state) => $state > 0 ? 'success' : 'danger')
                     ->money('PKR')

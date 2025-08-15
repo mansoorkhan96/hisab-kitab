@@ -18,10 +18,10 @@ class Calculation extends Model
         static::saving(function (Calculation $calculation) {
             $result = WheatCropCalculationReport::make($calculation);
 
-            $calculation->landlord_amount = $result->landlordAmount;
-            $calculation->landlord_net_income = $result->landlordAmount + $result->machineAmount;
-            $calculation->farmer_amount = $result->farmerAmount;
-            $calculation->farmer_profit_loss = $result->farmerProfitLoss;
+            $calculation->landlord_revenue = $result->landlordRevenue;
+            $calculation->landlord_net_income = $result->landlordRevenue + $result->machineAmount;
+            $calculation->farmer_gross_revenue = $result->farmerGrossRevenue;
+            $calculation->farmer_revenue = $result->farmerRevenue;
         });
     }
 

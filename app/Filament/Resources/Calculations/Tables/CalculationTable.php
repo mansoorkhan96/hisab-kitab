@@ -28,7 +28,7 @@ class CalculationTable
                     ->sortable()
                     ->color(fn ($state) => $state < 0 ? 'danger' : 'success')
                     ->summarize(Sum::make()->label('Total')->money('PKR')),
-                TextColumn::make('farmer_profit_loss')
+                TextColumn::make('farmer_revenue')
                     ->label('Farmer Profit/Loss')
                     ->money('PKR')
                     ->searchable()
