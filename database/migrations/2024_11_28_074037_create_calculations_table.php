@@ -21,7 +21,7 @@ return new class extends Migration
             $table->decimal('kamdari', 12, 2)->nullable()->default(0); // TODO: rename
             $table->unsignedInteger('wheat_straw_rate')->nullable();
             $table->decimal('landlord_revenue', 12, 2)->nullable();
-            $table->decimal('net_income', 12, 2)->nullable();
+            $table->decimal('landlord_net_income', 12, 2)->nullable();
             $table->decimal('farmer_gross_revenue', 12, 2)->nullable();
             $table->decimal('farmer_revenue', 12, 2)->nullable();
             $table->timestamps();

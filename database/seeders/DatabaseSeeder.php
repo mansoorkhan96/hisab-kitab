@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Enums\CropType;
 use App\Enums\FarmingResourceType;
 use App\Enums\QuantityUnit;
 use App\Models\Calculation;
@@ -58,7 +59,7 @@ class DatabaseSeeder extends Seeder
 
         $this->cropSeason = CropSeason::factory()
             ->create([
-                'title' => 'Season-'.now()->year,
+                'title' => 'Season-' . now()->year,
                 'is_current' => true,
                 'wheat_rate' => 9_700,
                 'team_id' => $this->team->id,
@@ -111,6 +112,7 @@ class DatabaseSeeder extends Seeder
                 'kudhi_in_kgs' => 1,
                 'wheat_straw_rate' => 458.1673306773,
                 'team_id' => $this->team->id,
+                'crop_type' => CropType::Wheat,
             ]);
 
         $calculation->threshings()->create([
@@ -164,6 +166,7 @@ class DatabaseSeeder extends Seeder
                 'kudhi_in_kgs' => 0,
                 'wheat_straw_rate' => 310,
                 'team_id' => $this->team->id,
+                'crop_type' => CropType::Wheat,
             ]);
 
         $calculation->threshings()->create([
