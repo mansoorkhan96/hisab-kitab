@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources\CottonPickingRounds\RelationManagers;
 
+use App\Filament\Resources\Labourers\LabourerResource;
 use App\Helpers\Converter;
 use App\Models\CottonPickingDaily;
 use App\Models\Labourer;
+use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\DatePicker;
@@ -14,6 +16,7 @@ use Filament\Forms\Components\Repeater\TableColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Schemas\Components\Text;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\FontWeight;
@@ -98,7 +101,21 @@ class CottonPickingDailiesRelationManager extends RelationManager
                     ])
                     ->addable(false)
                     ->deletable(false)
-                    ->reorderable(false),
+                    ->reorderable(false)
+                    ->belowContent(function (): ?array {
+                        if (Labourer::query()->exists()) {
+                            return null;
+                        }
+
+                        return [
+                            Text::make('No labourers found. Add labourers first.')
+                                ->color('danger'),
+                            Action::make('addLabourers')
+                                ->label('Add Labourers')
+                                ->button()
+                                ->url(LabourerResource::getUrl('create')),
+                        ];
+                    }),
             ]);
     }
 
@@ -209,6 +226,8 @@ class CottonPickingDailiesRelationManager extends RelationManager
 
     public function getCreateAction(): CreateAction
     {
+        $hasNoLabourers = fn (): bool => Labourer::query()->doesntExist();
+
         return CreateAction::make()
             ->label('Create Daily')
             ->modalHeading('Create Daily')
@@ -223,6 +242,8 @@ class CottonPickingDailiesRelationManager extends RelationManager
                         'kgs_picked' => 0,
                     ]),
             ])
+            ->modalSubmitAction(fn (Action $action) => $action->disabled($hasNoLabourers()))
+            ->createAnotherAction(fn (Action $action) => $action->disabled($hasNoLabourers()))
             ->before($this->beforeSavingForm(...))
             ->action(function (array $data) {
                 $cottonPickingDaily = array_map(fn ($labourer) => [
