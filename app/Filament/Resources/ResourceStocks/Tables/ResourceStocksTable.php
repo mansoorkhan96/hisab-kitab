@@ -26,16 +26,18 @@ class ResourceStocksTable
                 TextColumn::make('quantity')
                     ->numeric(2)
                     ->sortable()
-                    ->summarize(Sum::make()
-                        ->label('Total')
-                        ->numeric(2)
+                    ->summarize(
+                        Sum::make()
+                            ->label('Total')
+                            ->numeric(2)
                     ),
                 TextColumn::make('amount')
                     ->money('PKR')
                     ->sortable()
-                    ->summarize(Sum::make()
-                        ->label('Total')
-                        ->money('PKR')
+                    ->summarize(
+                        Sum::make()
+                            ->label('Total')
+                            ->money('PKR')
                     ),
                 TextColumn::make('date')
                     ->date()

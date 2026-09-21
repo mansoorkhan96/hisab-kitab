@@ -9,7 +9,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CropSeason extends Model
 {
-    use BelongsToTeam, HasFactory, SoftDeletes;
+    use BelongsToTeam;
+    use HasFactory;
+    use SoftDeletes;
 
     protected $casts = [
         'is_current' => 'boolean',

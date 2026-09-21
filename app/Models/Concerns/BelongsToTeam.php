@@ -19,7 +19,7 @@ trait BelongsToTeam
                 if ($teamId) {
                     $model->team_id = $teamId;
                 } else {
-                    Log::error('No team_id found for user '.auth()->id());
+                    Log::error('No team_id found for user ' . auth()->id());
 
                     throw new ModelNotFoundException('No team_id set in user.');
                 }

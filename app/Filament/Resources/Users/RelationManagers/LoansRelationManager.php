@@ -14,7 +14,7 @@ class LoansRelationManager extends RelationManager
 {
     protected static string $relationship = 'loans';
 
-    protected static string|\BackedEnum|null $icon = 'heroicon-o-banknotes';
+    protected static string | \BackedEnum | null $icon = 'heroicon-o-banknotes';
 
     public function form(Schema $schema): Schema
     {

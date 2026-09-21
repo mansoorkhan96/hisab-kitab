@@ -13,7 +13,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Calculation extends Model
 {
-    use BelongsToTeam, HasFactory;
+    use BelongsToTeam;
+    use HasFactory;
 
     protected $casts = [
         'crop_type' => CropType::class,
@@ -23,12 +24,17 @@ class Calculation extends Model
     {
         static::saving(function (Calculation $calculation) {
             $result = match ($calculation->crop_type) {
-                CropType::Wheat => WheatCropCalculationReport::make($calculation),
-                CropType::Cotton => CottonCropCalculationReport::make($calculation),
+                CropType::Wheat => WheatCropCalculationReport::make(
+                    $calculation,
+                ),
+                CropType::Cotton => CottonCropCalculationReport::make(
+                    $calculation,
+                ),
             };
 
             $calculation->landlord_revenue = $result->landlordRevenue;
-            $calculation->landlord_net_income = $result->landlordRevenue + $result->machineAmount;
+            $calculation->landlord_net_income =
+                $result->landlordRevenue + $result->machineAmount;
             $calculation->farmer_gross_revenue = $result->farmerGrossRevenue;
             $calculation->farmer_revenue = $result->farmerRevenue;
         });
@@ -56,7 +62,10 @@ class Calculation extends Model
 
     public function cottonPickingRounds(): HasMany
     {
-        return $this->hasMany(CottonPickingRound::class, 'crop_season_id', 'crop_season_id')
-            ->where('user_id', $this->user_id);
+        return $this->hasMany(
+            CottonPickingRound::class,
+            'crop_season_id',
+            'crop_season_id',
+        )->where('user_id', $this->user_id);
     }
 }

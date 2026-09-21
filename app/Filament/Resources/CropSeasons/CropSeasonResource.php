@@ -16,7 +16,7 @@ class CropSeasonResource extends Resource
 {
     protected static ?string $model = CropSeason::class;
 
-    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-sun';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-sun';
 
     public static function form(Schema $schema): Schema
     {

@@ -12,7 +12,7 @@ class ResourceStockChart extends ChartWidget
 {
     protected ?string $heading = 'Resource Stock';
 
-    protected int|string|array $columnSpan = 'full';
+    protected int | string | array $columnSpan = 'full';
 
     protected ?string $maxHeight = '300px';
 

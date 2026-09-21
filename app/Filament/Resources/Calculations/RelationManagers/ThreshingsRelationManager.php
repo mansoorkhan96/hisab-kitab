@@ -58,16 +58,18 @@ class ThreshingsRelationManager extends RelationManager
                     ->label('Batai')
                     ->suffix(' Bori')
                     ->sortable()
-                    ->summarize(Sum::make()
-                        ->label('Total Batai')
-                        ->suffix(' Bori'),
+                    ->summarize(
+                        Sum::make()
+                            ->label('Total Batai')
+                            ->suffix(' Bori'),
                     ),
                 TextColumn::make('threshing_charges_in_sacks')
                     ->label('Charges')
                     ->suffix(' Bori')
-                    ->summarize(Sum::make()
-                        ->label('Total Charges')
-                        ->suffix(' Bori'),
+                    ->summarize(
+                        Sum::make()
+                            ->label('Total Charges')
+                            ->suffix(' Bori'),
                     ),
                 TextColumn::make('amount')
                     ->label('Amount')
@@ -77,22 +79,23 @@ class ThreshingsRelationManager extends RelationManager
                         return $record->threshing_charges_in_sacks * $cropSeason->wheat_rate;
                     })
                     ->money('PKR')
-                    ->summarize(Summarizer::make()
-                        ->label('Total Amount')
-                        ->visible(fn (HasTable $livewire) => filled(Arr::get($livewire->getTableFilterState('calculation.cropSeason'), 'value')))
-                        ->using(function (Builder $query, HasTable $livewire) {
-                            $cropSeasonId = Arr::get($livewire->getTableFilterState('calculation.cropSeason'), 'value');
+                    ->summarize(
+                        Summarizer::make()
+                            ->label('Total Amount')
+                            ->visible(fn (HasTable $livewire) => filled(Arr::get($livewire->getTableFilterState('calculation.cropSeason'), 'value')))
+                            ->using(function (Builder $query, HasTable $livewire) {
+                                $cropSeasonId = Arr::get($livewire->getTableFilterState('calculation.cropSeason'), 'value');
 
-                            $cropSeason = CropSeason::find($cropSeasonId);
+                                $cropSeason = CropSeason::find($cropSeasonId);
 
-                            if (blank($cropSeason->wheat_rate)) {
-                                return 'Please set Wheat Rate in Crop Season to calculate amount';
-                            }
+                                if (blank($cropSeason->wheat_rate)) {
+                                    return 'Please set Wheat Rate in Crop Season to calculate amount';
+                                }
 
-                            return $query->sum('threshing_charges_in_sacks') * $cropSeason->wheat_rate;
-                        })
-                        ->money('PKR')
-                        ->suffix(fn () => ' (Based on Wheat Rate in Crop Season)'),
+                                return $query->sum('threshing_charges_in_sacks') * $cropSeason->wheat_rate;
+                            })
+                            ->money('PKR')
+                            ->suffix(fn () => ' (Based on Wheat Rate in Crop Season)'),
                     ),
             ])
             ->filters([

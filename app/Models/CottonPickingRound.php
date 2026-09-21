@@ -10,7 +10,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CottonPickingRound extends Model
 {
-    use BelongsToTeam, HasFactory;
+    use BelongsToTeam;
+    use HasFactory;
 
     public function cropSeason(): BelongsTo
     {

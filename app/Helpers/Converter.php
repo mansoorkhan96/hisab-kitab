@@ -4,14 +4,14 @@ namespace App\Helpers;
 
 class Converter
 {
-    public static function kgsToSacksString(int|float $kgs): string
+    public static function kgsToSacksString(int | float $kgs): string
     {
         if ($kgs === 100) {
             return '1 Bori';
         }
 
         if ($kgs < 100) {
-            return $kgs.' KGs';
+            return $kgs . ' KGs';
         }
 
         return str(floor($kgs / 100))
@@ -25,7 +25,7 @@ class Converter
             );
     }
 
-    public static function kgsToMunnString(null|int|float $kgs): string
+    public static function kgsToMunnString(null | int | float $kgs): string
     {
         if ($kgs === null) {
             return '-';

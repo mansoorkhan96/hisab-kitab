@@ -11,7 +11,8 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Tractor extends Model
 {
-    use BelongsToTeam, HasFactory;
+    use BelongsToTeam;
+    use HasFactory;
 
     public function user(): BelongsTo
     {

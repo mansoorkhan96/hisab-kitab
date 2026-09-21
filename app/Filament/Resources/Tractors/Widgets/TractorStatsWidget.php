@@ -54,15 +54,15 @@ class TractorStatsWidget extends BaseWidget
         $netIncome = $totalRevenue - $totalExpenses;
 
         return [
-            Stat::make('Total Expenses', 'PKR '.number_format($totalExpenses, 2))
+            Stat::make('Total Expenses', 'PKR ' . number_format($totalExpenses, 2))
                 ->extraAttributes([
                     'class' => '[&_.fi-wi-stats-overview-stat-value]:text-(--danger-500)',
                 ]),
-            Stat::make('Total Revenue', 'PKR '.number_format($totalRevenue, 2))
+            Stat::make('Total Revenue', 'PKR ' . number_format($totalRevenue, 2))
                 ->extraAttributes([
                     'class' => '[&_.fi-wi-stats-overview-stat-value]:text-(--primary-500)',
                 ]),
-            Stat::make('Net Income', 'PKR '.number_format($netIncome, 2))
+            Stat::make('Net Income', 'PKR ' . number_format($netIncome, 2))
                 ->extraAttributes([
                     'class' => $netIncome > 0
                         ? '[&_.fi-wi-stats-overview-stat-value]:text-(--success-500)'

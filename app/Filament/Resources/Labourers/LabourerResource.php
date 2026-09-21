@@ -20,9 +20,9 @@ class LabourerResource extends Resource
 {
     protected static ?string $model = Labourer::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|UnitEnum|null $navigationGroup = NavigationGroup::CottonCrop;
+    protected static string | UnitEnum | null $navigationGroup = NavigationGroup::CottonCrop;
 
     public static function form(Schema $schema): Schema
     {

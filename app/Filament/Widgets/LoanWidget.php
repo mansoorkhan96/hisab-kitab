@@ -11,7 +11,7 @@ class LoanWidget extends BaseWidget
 {
     public ?User $record = null;
 
-    public array|int|null $columns = 1;
+    public array | int | null $columns = 1;
 
     protected static bool $isDiscovered = false;
 

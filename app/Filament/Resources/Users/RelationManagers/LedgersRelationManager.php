@@ -28,7 +28,7 @@ class LedgersRelationManager extends RelationManager
 {
     protected static string $relationship = 'ledgers';
 
-    protected static string|\BackedEnum|null $icon = 'heroicon-o-book-open';
+    protected static string | \BackedEnum | null $icon = 'heroicon-o-book-open';
 
     public function form(Schema $schema): Schema
     {
@@ -75,7 +75,7 @@ class LedgersRelationManager extends RelationManager
             ->columns([
                 TextColumn::make('farmingResource.title')
                     ->searchable()
-                    ->suffix(fn (Ledger $record) => ' ('.$record->farmingResource->type->name.')'),
+                    ->suffix(fn (Ledger $record) => ' (' . $record->farmingResource->type->name . ')'),
                 TextColumn::make('tractor.title')
                     ->searchable(),
                 TextColumn::make('quantity')

@@ -74,7 +74,7 @@ class CottonCalculationInfolist extends Component implements HasActions, HasForm
                     ->prefix('-')
                     ->color('danger')
                     ->money('PKR')
-                    ->helperText('Remaining: '.$calculation->remainingAfterFertilizerExpenseAmount)
+                    ->helperText('Remaining: ' . $calculation->remainingAfterFertilizerExpenseAmount)
                     ->inlineLabel(),
                 // TextEntry::make('kamdariAmount')
                 //     ->label('Kamdari')
@@ -86,14 +86,14 @@ class CottonCalculationInfolist extends Component implements HasActions, HasForm
                     ->label('Machine Amt')
                     ->color('info')
                     ->money('PKR')
-                    ->helperText('Remaining: '.$calculation->remainingAfterMachineAmount)
+                    ->helperText('Remaining: ' . $calculation->remainingAfterMachineAmount)
                     ->inlineLabel(),
                 TextEntry::make('implementAndSeedExpenseAmount')
                     ->label('Harr & Bijj')
                     ->prefix('-')
                     ->color('danger')
                     ->money('PKR')
-                    ->helperText('Remaining: '.$calculation->remainingAfterImplementAndSeedExpenseAmount)
+                    ->helperText('Remaining: ' . $calculation->remainingAfterImplementAndSeedExpenseAmount)
                     ->inlineLabel(),
                 TextEntry::make('landlordRevenue')
                     ->label('Landlord Amt')

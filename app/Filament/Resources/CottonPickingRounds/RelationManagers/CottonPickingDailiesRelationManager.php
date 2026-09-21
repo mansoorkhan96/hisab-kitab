@@ -242,8 +242,8 @@ class CottonPickingDailiesRelationManager extends RelationManager
 
     public function getEditAction(Carbon $date, int $index): EditAction
     {
-        return EditAction::make('edit'.$date->toDateString().$index)
-            ->modalHeading('Edit Daily for '.$date->format('d-m'))
+        return EditAction::make('edit' . $date->toDateString() . $index)
+            ->modalHeading('Edit Daily for ' . $date->format('d-m'))
             ->fillForm(fn () => [
                 'cotton_picking_daily' => Labourer::query()
                     ->with([
@@ -277,7 +277,7 @@ class CottonPickingDailiesRelationManager extends RelationManager
             });
     }
 
-    public function beforeSavingForm(EditAction|CreateAction $action, array $data)
+    public function beforeSavingForm(EditAction | CreateAction $action, array $data)
     {
         if (array_sum(Arr::pluck($data['cotton_picking_daily'], 'kgs_picked')) <= 0) {
             Notification::make()

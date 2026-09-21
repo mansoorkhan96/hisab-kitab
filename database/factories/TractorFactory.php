@@ -19,7 +19,7 @@ class TractorFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => fake()->word().' Tractor',
+            'title' => fake()->word() . ' Tractor',
             'user_id' => User::factory()->driver(),
             'team_id' => Team::factory(),
         ];

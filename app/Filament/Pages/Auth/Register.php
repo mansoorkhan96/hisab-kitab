@@ -12,11 +12,11 @@ class Register extends \Filament\Auth\Pages\Register
         $name = $data['name'];
 
         $team = Team::create([
-            'name' => $name."'s Team",
+            'name' => $name . "'s Team",
         ]);
 
         $team->cropSeasons()->createQuietly([
-            'title' => 'Season-'.now()->year,
+            'title' => 'Season-' . now()->year,
             'is_current' => true,
         ]);
 

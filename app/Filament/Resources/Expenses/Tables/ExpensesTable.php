@@ -31,9 +31,10 @@ class ExpensesTable
                 TextColumn::make('amount')
                     ->money('PKR')
                     ->sortable()
-                    ->summarize(Sum::make()
-                        ->label('Total')
-                        ->money('PKR')
+                    ->summarize(
+                        Sum::make()
+                            ->label('Total')
+                            ->money('PKR')
                     ),
                 TextColumn::make('date')
                     ->date()

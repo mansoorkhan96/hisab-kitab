@@ -16,7 +16,7 @@ class CalculationResource extends Resource
 {
     protected static ?string $model = Calculation::class;
 
-    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-calculator';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-calculator';
 
     public static function form(Schema $schema): Schema
     {

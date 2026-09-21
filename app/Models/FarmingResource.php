@@ -10,7 +10,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class FarmingResource extends Model
 {
-    use BelongsToTeam, HasFactory;
+    use BelongsToTeam;
+    use HasFactory;
 
     protected $casts = [
         'type' => FarmingResourceType::class,

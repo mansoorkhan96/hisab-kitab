@@ -19,7 +19,7 @@ class TractorResource extends Resource
 {
     protected static ?string $model = Tractor::class;
 
-    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-truck';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-truck';
 
     public static function form(Schema $schema): Schema
     {
