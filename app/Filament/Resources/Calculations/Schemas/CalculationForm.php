@@ -63,13 +63,13 @@ class CalculationForm
                                     ->required(),
                                 TextInput::make('kudhi_in_kgs')
                                     ->label('Kudhi (KGs)')
-                                    ->visible(fn (Get $get) => $get('crop_type') === CropType::Wheat->value)
+                                    ->visible(fn (Get $get) => $get('crop_type') === CropType::Wheat)
                                     ->prefixIcon('heroicon-m-scale')
                                     ->live()
                                     ->numeric(),
                                 TextInput::make('wheat_straw_rate')
                                     ->label('Wheat Straw Rate')
-                                    ->visible(fn (Get $get) => $get('crop_type') === CropType::Wheat->value)
+                                    ->visible(fn (Get $get) => $get('crop_type') === CropType::Wheat)
                                     ->live()
                                     ->minValue(0)
                                     ->default(fn () => CropSeason::current()->wheat_straw_rate)
@@ -77,12 +77,12 @@ class CalculationForm
                                     ->numeric(),
                                 TextInput::make('kamdari')
                                     ->label(
-                                        fn (Get $get) => $get('crop_type') === CropType::Wheat->value
+                                        fn (Get $get) => $get('crop_type') === CropType::Wheat
                                             ? 'Kamdari (KGs)'
                                             : 'Kamdari (PKR)'
                                     )
                                     ->prefixIcon(
-                                        fn (Get $get) => $get('crop_type') === CropType::Wheat->value
+                                        fn (Get $get) => $get('crop_type') === CropType::Wheat
                                             ? Heroicon::OutlinedScale
                                             : Heroicon::OutlinedBanknotes
                                     )
