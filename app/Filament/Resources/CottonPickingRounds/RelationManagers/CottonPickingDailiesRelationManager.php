@@ -51,7 +51,7 @@ class CottonPickingDailiesRelationManager extends RelationManager
                         return function (string $attribute, $value, \Closure $fail) {
                             $exists = CottonPickingDaily::query()
                                 ->whereBelongsTo($this->getOwnerRecord())
-                                ->where('picking_date', Carbon::parse($value)->toDateString())
+                                ->whereDate('picking_date', Carbon::parse($value)->toDateString())
                                 ->exists();
 
                             if ($exists) {
